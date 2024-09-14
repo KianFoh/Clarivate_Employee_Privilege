@@ -1,5 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
+
+    //Custom
+    id("com.google.gms.google-services") version "4.4.2"
 }
 
 android {
@@ -32,7 +35,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -40,4 +42,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Custom Dependency
+    implementation (libs.credentials)
+    implementation (libs.credentials.play.services.auth)
+    implementation (libs.play.services.auth.v2050)
+    implementation(libs.picasso) //Use for getting image from image URL
 }
