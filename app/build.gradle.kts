@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.clarivate_employee_privilege"
-        minSdk = 34
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -44,6 +44,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     // Custom Dependency
+    implementation (libs.com.squareup.okhttp3.okhttp2)
+    implementation (libs.gson)
     implementation (libs.credentials)
     implementation (libs.credentials.play.services.auth)
     implementation (libs.play.services.auth.v2050)
