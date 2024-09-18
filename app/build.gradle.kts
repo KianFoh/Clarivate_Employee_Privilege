@@ -18,6 +18,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("..\\External\\debug.keystore")
+        }
+    }
 
     buildTypes {
         release {
