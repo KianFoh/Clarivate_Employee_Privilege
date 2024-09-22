@@ -56,4 +56,6 @@ dependencies {
     implementation (libs.credentials.play.services.auth)
     implementation (libs.play.services.auth.v2050)
     implementation(libs.picasso) //Use for getting image from image URL
+    implementation (libs.circleimageview)
+    implementation (libs.socket.io.client) // or the latest version
 }

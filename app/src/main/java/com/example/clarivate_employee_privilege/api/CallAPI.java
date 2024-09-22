@@ -1,6 +1,5 @@
-package com.example.clarivate_employee_privilege.API;
+package com.example.clarivate_employee_privilege.api;
 
-import okhttp3.Callback;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -11,7 +10,11 @@ public class CallAPI {
 
     private static final OkHttpClient client = new OkHttpClient();
 
-    public static void post(String url, String json, Callback callback, Headers headers) {
+    public static OkHttpClient getClient() {
+        return client;
+    }
+
+    public static void post(String url, String json, CustomCallback callback, Headers headers) {
         RequestBody body = RequestBody.create(json, MediaType.get("application/json; charset=utf-8"));
         Request request = new Request.Builder()
                 .url(url)
@@ -22,7 +25,7 @@ public class CallAPI {
         client.newCall(request).enqueue(callback);
     }
 
-    public static void put(String url, String json, Callback callback, Headers headers) {
+    public static void put(String url, String json, CustomCallback callback, Headers headers) {
         RequestBody body = RequestBody.create(json, MediaType.get("application/json; charset=utf-8"));
         Request request = new Request.Builder()
                 .url(url)
@@ -33,7 +36,7 @@ public class CallAPI {
         client.newCall(request).enqueue(callback);
     }
 
-    public static void get(String url, Callback callback, Headers headers) {
+    public static void get(String url, CustomCallback callback, Headers headers) {
         Request request = new Request.Builder()
                 .url(url)
                 .headers(headers)
@@ -43,7 +46,7 @@ public class CallAPI {
         client.newCall(request).enqueue(callback);
     }
 
-    public static void delete(String url, Callback callback, Headers headers) {
+    public static void delete(String url, CustomCallback callback, Headers headers) {
         Request request = new Request.Builder()
                 .url(url)
                 .headers(headers)
@@ -52,4 +55,5 @@ public class CallAPI {
 
         client.newCall(request).enqueue(callback);
     }
+
 }

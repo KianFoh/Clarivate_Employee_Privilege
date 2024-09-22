@@ -7,7 +7,9 @@
     <string name="request_merchant">Request Merchant</string>
     <string name="profile">Profile</string>
     <string name="add_merchant">Add Merchant</string>
+
+
     <string name="email_domain">gmail.com</string> <!-- Change this to your email domain -->
     <string name="server_client_id">223452399978-323pardairq17ovgjd075bga67je0he1.apps.googleusercontent.com</string> <!-- Change this to your Server Client ID -->
-    <string name="api_url">http://192.168.50.102:5000</string> <!-- Change this to your API URL -->
+    <string name="api_url">http://192.168.50.102:5000</string>  <!-- Change this to your API URL -->
 </resources>

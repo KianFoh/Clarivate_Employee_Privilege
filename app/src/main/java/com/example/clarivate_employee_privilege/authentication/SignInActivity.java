@@ -12,9 +12,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.clarivate_employee_privilege.API.CallAPI;
 import com.example.clarivate_employee_privilege.MainActivity;
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.api.CallAPI;
+import com.example.clarivate_employee_privilege.api.CustomCallback;
 import com.example.clarivate_employee_privilege.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,13 +30,14 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private static final int ONE_HOUR_IN_MILLIS = 3600 * 1000;
     private GoogleSignInClient googleSignInClient;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
 
@@ -86,9 +88,9 @@ public class SignInActivity extends AppCompatActivity {
             String username = account.getDisplayName();
             String email = account.getEmail();
             String idToken = account.getIdToken();
+            Log.d("Google_Idtoken", idToken);
 
             if (isEmailValid(email)) {
-                storeAuthToken(idToken);
 
                 // Define API request body
                 User newUser = new User(username, email);
@@ -118,40 +120,32 @@ public class SignInActivity extends AppCompatActivity {
         return email != null && email.endsWith("@" + getString(R.string.email_domain));
     }
 
-    // Store the ID token and its expiration time in SharedPreferences
-    private void storeAuthToken(String idToken) {
-        SharedPreferences sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("idToken", idToken);
-        editor.putLong("tokenExpirationTime", System.currentTimeMillis() + ONE_HOUR_IN_MILLIS);
-        editor.apply();
-    }
-
     // Make an API call to check or create a new user
     private void makeApiCall(String body, Headers headers, GoogleSignInAccount account) {
-        CallAPI.post(getString(R.string.api_url) + "/users", body, new Callback() {
 
-            // Handle API call failure debug
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("ERROR", e.toString());
-                runOnUiThread(() -> showToast("Sign-in failed: " + e.getMessage()));
-            }
+        Request request = new Request.Builder()
+                .url(getString(R.string.api_url) + "/users")
+                .post(RequestBody.create(body, MediaType.get("application/json; charset=utf-8")))
+                .headers(headers)
+                .build();
 
-            // Handle API response
+        CallAPI.getClient().newCall(request).enqueue(new CustomCallback(this, request) {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void handleResponse(Response response) throws IOException {
                 if (response.isSuccessful()) {
                     handleApiResponse(response, account);
                 }
-
-                // Handle API response error failure debug
                 else {
-                    Log.d("ERROR", response.toString());
+                    Log.e("API_CALL", "API call failed: " + response.message());
                     runOnUiThread(() -> showToast("Sign-in failed: " + response.message()));
                 }
+
             }
-        }, headers);
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(() -> showToast("Sign-in failed: " + e.getMessage()));
+            }
+        });
     }
 
     private void handleApiResponse(Response response, GoogleSignInAccount account) throws IOException {
@@ -165,18 +159,19 @@ public class SignInActivity extends AppCompatActivity {
         boolean isAdmin = userObject.get("admin").getAsBoolean();
         String profileImageUrl = (account.getPhotoUrl() != null) ? account.getPhotoUrl().toString() : null;
 
-        storeUserInfo(username, email, isAdmin, profileImageUrl);
+        storeUserInfo(username, email, isAdmin, profileImageUrl, account.getIdToken());
         redirectToMainActivity();
     }
 
     // Store user information in SharedPreferences
-    private void storeUserInfo(String username, String email, boolean isAdmin, String profileImageUrl) {
+    private void storeUserInfo(String username, String email, boolean isAdmin, String profileImageUrl, String idToken) {
         SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("username", username);
         editor.putString("email", email);
         editor.putBoolean("isAdmin", isAdmin);
         editor.putString("profile_image", profileImageUrl);
+        editor.putString("google_idToken", idToken);
         editor.apply();
     }
 

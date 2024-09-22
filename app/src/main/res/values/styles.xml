@@ -2,7 +2,10 @@
 <resources>
 
     <style name="BottomNavigationViewTextStyle" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textSize">11sp</item> <!-- Adjust the text size here -->
     </style>
+
+
 
 </resources>
