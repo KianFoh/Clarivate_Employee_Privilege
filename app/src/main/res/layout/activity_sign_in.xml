@@ -10,12 +10,35 @@
 
     <Button
         android:id="@+id/google_sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="291dp"
+        android:layout_height="48dp"
+        android:background="@drawable/rectangle"
+        android:drawableStart="@drawable/ic_google_icon"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/sign_in_with_google"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.904" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/google"
+        app:layout_constraintBottom_toBottomOf="@+id/google_sign_in_button"
+        app:layout_constraintEnd_toEndOf="@+id/google_sign_in_button"
+        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintStart_toStartOf="@+id/google_sign_in_button"
+        app:layout_constraintTop_toTopOf="@+id/google_sign_in_button"
+        app:srcCompat="@drawable/ic_google_icon" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
