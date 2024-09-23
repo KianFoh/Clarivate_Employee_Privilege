@@ -6,4 +6,6 @@
     </style>
 
     <style name="Theme.Clarivate_Employee_Privilege" parent="Base.Theme.Clarivate_Employee_Privilege" />
+
+
 </resources>

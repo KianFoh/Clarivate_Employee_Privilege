@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.clarivate_employee_privilege"
-        minSdk = 34
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -37,6 +37,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -49,8 +50,12 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     // Custom Dependency
+    implementation (libs.com.squareup.okhttp3.okhttp2)
+    implementation (libs.gson)
     implementation (libs.credentials)
     implementation (libs.credentials.play.services.auth)
     implementation (libs.play.services.auth.v2050)
     implementation(libs.picasso) //Use for getting image from image URL
+    implementation (libs.circleimageview)
+    implementation (libs.socket.io.client) // or the latest version
 }
