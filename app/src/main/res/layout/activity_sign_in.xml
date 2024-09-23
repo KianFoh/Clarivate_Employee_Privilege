@@ -32,7 +32,7 @@
         android:id="@+id/imageView"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:contentDescription="@string/google"
+        android:contentDescription="@string/sign_in_with_google"
         app:layout_constraintBottom_toBottomOf="@+id/google_sign_in_button"
         app:layout_constraintEnd_toEndOf="@+id/google_sign_in_button"
         app:layout_constraintHorizontal_bias="0.136"
