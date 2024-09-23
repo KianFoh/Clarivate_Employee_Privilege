@@ -25,6 +25,8 @@ import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -40,6 +42,7 @@ public class ProfileFragment extends Fragment {
 
     private GoogleSignInClient googleSignInClient;
     private SocketService socketService;
+    private View view; // Declare a member variable for the View
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -48,7 +51,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Initialize GoogleSignInClient
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,7 +80,7 @@ public class ProfileFragment extends Fragment {
         ((TextView)view.findViewById(R.id.name)).setText(username);
         ((TextView)view.findViewById(R.id.email)).setText(email);
 
-        int visibility = isAdmin ? View.GONE : View.VISIBLE;
+        int visibility = isAdmin ? View.VISIBLE : View.GONE;
         view.findViewById(R.id.admin_form).setVisibility(visibility);
 
 
@@ -150,26 +153,28 @@ public class ProfileFragment extends Fragment {
                 });
             }
             @Override
-            public void handleResponse(Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    // Show success message
-                    requireActivity().runOnUiThread(() -> {
-                        Context context = requireActivity();
-                        String message = body + " added as Admin";
-                        ToastUtils.showToast(context, message);
-                    });
-                }
-                else {
-                    // show repose error
-                    Log.e("API_CALL", "API call failed: " + response.message());
-                    requireActivity().runOnUiThread(() -> {
-                        Context context = requireActivity();
-                        String message = "Failed to add admin: " + response.message();
-                        ToastUtils.showToast(context, message);
-                    });
-                }
+            public void handleSuccessResponse(Response response){
+                Log.d("API_CALL_ADD_ADMIN", "Admin added successfully");
+                // Show success message
+                requireActivity().runOnUiThread(() -> {
+                    Context context = requireActivity();
+                    String message = body + " added as Admin";
+                    ToastUtils.showToast(context, message);
+                    EditText email_v =  view.findViewById(R.id.admin_email);
+                    email_v.setText("");
+                });
+            }
+            @Override
+            public void handleFailResponse(Response response, String responseBody) {
+                JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
+                String error = jsonObject.get("error").getAsString();
+                Log.e("API_CALL_ADD_ADMIN", "API call failed: " + error);
+                requireActivity().runOnUiThread(() -> {
+                    Context context = requireActivity();
+                    EditText email_v = view.findViewById(R.id.admin_email);
+                    email_v.setError(error);
+                });
             }
         });
-
     }
 }

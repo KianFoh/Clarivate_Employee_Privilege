@@ -19,6 +19,7 @@ public class SocketService extends Service {
 
     private final IBinder binder = new LocalBinder();
     private Socket socket;
+    private SocketEventListener socketEventListener;
 
     public class LocalBinder extends Binder {
         public SocketService getService() {
@@ -42,11 +43,12 @@ public class SocketService extends Service {
 
             socket = IO.socket(getString(R.string.api_url), options);
 
-            SocketEventListener socketEventListener = new SocketEventListener(this, getApplicationContext());
+            socketEventListener = new SocketEventListener(this, getApplicationContext());
 
             socket.on(Socket.EVENT_CONNECT, socketEventListener.onConnect);
             socket.on(Socket.EVENT_DISCONNECT, socketEventListener.onDisconnect);
             socket.on(Socket.EVENT_CONNECT_ERROR, socketEventListener.onConnectError);
+            socket.on("admin_status_update", socketEventListener.onAdminStatusUpdate);
 
             socket.connect();
         } catch (URISyntaxException e) {
@@ -64,6 +66,10 @@ public class SocketService extends Service {
         if (socket != null) {
             socket.disconnect();
         }
+    }
+
+    public SocketEventListener getSocketEventListener() {
+        return socketEventListener;
     }
 
     @Override

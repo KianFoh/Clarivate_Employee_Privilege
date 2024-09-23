@@ -12,6 +12,7 @@ import io.socket.emitter.Emitter;
 public class SocketEventListener {
 
     private final SocketService socketService;
+    private SocketEventCallback.EventCallback eventCallback;
     private Context context;
 
     public SocketEventListener(SocketService socketService, Context context) {
@@ -60,9 +61,22 @@ public class SocketEventListener {
         }
     };
 
-    public Emitter.Listener onUserUpdate = args -> {
+    public Emitter.Listener onAdminStatusUpdate = args -> {
         JSONObject data = (JSONObject) args[0];
         boolean isAdmin = data.optBoolean("isadmin");
         Log.d("SocketEventListener", "User update received: isAdmin = " + isAdmin);
+
+        // Refresh UI based on admin status
+        // Notify the callback
+        if (eventCallback != null) {
+            eventCallback.onAdminStatusUpdated(isAdmin);
+        }
     };
+
+    public void setEventCallback(SocketEventCallback.EventCallback callback) {
+        if (callback == null) {
+            Log.d("SocketEventListener", "Event callback is missing");
+        }
+        this.eventCallback = callback;
+    }
 }
