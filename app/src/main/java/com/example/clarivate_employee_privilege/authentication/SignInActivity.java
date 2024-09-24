@@ -104,14 +104,14 @@ public class SignInActivity extends AppCompatActivity {
 
             // Invalid email domain
             else {
-                ToastUtils.showToast(this,"Sign-in is restricted to Clarivate Employee email only.");
+                ToastUtils.showToast(this,"Sign-in is restricted to Clarivate Employee email only.", false);
                 googleSignInClient.signOut();
             }
         }
         // Sign-in failed debug
         catch (ApiException e) {
             Log.d("ERROR SIGNIN", e.toString());
-            ToastUtils.showToast(this,"Sign-in failed: " + e);
+            ToastUtils.showToast(this,"Sign-in failed: " + e, false);
         }
     }
 
@@ -139,11 +139,13 @@ public class SignInActivity extends AppCompatActivity {
                 JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
                 String error = jsonObject.get("error").getAsString();
                 Log.e("API_SIGNIN", "API call failed: " + error);
-                runOnUiThread(() -> ToastUtils.showToast(SignInActivity.this,"Sign-in failed: " + responseBody));
+                runOnUiThread(() -> ToastUtils.showToast(SignInActivity.this,"Sign-in failed: " + responseBody, false));
+                googleSignInClient.signOut();
             }
             @Override
             public void onFailure(Call call, IOException e) {
-                runOnUiThread(() -> ToastUtils.showToast(SignInActivity.this,"Sign-in failed: " + e.getMessage()));
+                runOnUiThread(() -> ToastUtils.showToast(SignInActivity.this,"Sign-in failed: " + e.getMessage(), false));
+                googleSignInClient.signOut();
             }
         });
     }

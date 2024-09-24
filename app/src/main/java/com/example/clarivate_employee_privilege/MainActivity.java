@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements EventCallback {
             Intent i = new Intent(this, SignInActivity.class);
             startActivity(i);
             finish();
-        } else {
+        }
+        else {
             loadUserInfo();
         }
     }
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements EventCallback {
                     Log.d("ERROR Get User Info:", e.toString());
                     Context context = MainActivity.this;
                     String message = "Failed to load latest user information";
-                    ToastUtils.showToast(context, message);
+                    ToastUtils.showToast(context, message, false);
                     MainActivity.this.runOnUiThread(() -> navbar());
                 });
             }
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements EventCallback {
                 MainActivity.this.runOnUiThread(() -> {
                     Context context = MainActivity.this;
                     String message = "Failed to load latest user information: " + error;
-                    ToastUtils.showToast(context, message);
+                    ToastUtils.showToast(context, message, false);
                     navbar();
                 });
             }

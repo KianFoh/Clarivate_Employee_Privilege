@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.MainActivity;
@@ -25,6 +27,7 @@ import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
@@ -78,17 +81,15 @@ public class ProfileFragment extends Fragment {
             Picasso.get().load(image).into(profile_pic);
         }
         ((TextView)view.findViewById(R.id.name)).setText(username);
-        ((TextView)view.findViewById(R.id.email)).setText(email);
+        ((TextView)view.findViewById(R.id.admin_email)).setText(email);
 
-        int visibility = isAdmin ? View.VISIBLE : View.GONE;
-        view.findViewById(R.id.admin_form).setVisibility(visibility);
+        int visibility = isAdmin ? View.GONE : View.VISIBLE;
+        view.findViewById(R.id.admin).setVisibility(visibility);
 
 
         // Listeners
         view.findViewById(R.id.sign_out).setOnClickListener(v -> signOut());
-        view.findViewById(R.id.add_admin).setOnClickListener(v -> add_admin(
-                ((EditText) view.findViewById(R.id.admin_email)).getText().toString()
-        ));
+        view.findViewById(R.id.admin).setOnClickListener(v -> showAddAdminDialog());
 
         return view;
     }
@@ -123,13 +124,49 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
-    // Add Admin
-    private void add_admin(String body) {
+    // Show Add Admin Dialog
+    private void showAddAdminDialog() {
+        // Inflate the add_admin_form.xml layout
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View dialogView = inflater.inflate(R.layout.add_admin_form, null);
 
+        // Create the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setView(dialogView);
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Set up the close button
+        Button cancel = dialogView.findViewById(R.id.cancel);
+        ImageButton close = dialogView.findViewById(R.id.toast_close);
+        close.setOnClickListener(v -> dialog.dismiss());
+        cancel.setOnClickListener(v -> dialog.dismiss());
+
+        // Set up the submit button
+        Button submit = dialogView.findViewById(R.id.submit);
+
+        submit.setOnClickListener(v -> {
+            String email = ((TextInputLayout)dialogView.findViewById(R.id.admin_email)).getEditText().getText().toString();
+            Log.d("EMAIL", email);
+            add_admin(email, dialog);
+        });
+
+        // Set the dialog window size to custom width and height
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+    }
+
+    // Add Admin
+    // Add Admin
+    private void add_admin(String body, AlertDialog dialog) {
         Headers headers = new Headers.Builder()
                 .add("Authorization", "Bearer " + requireActivity()
-                    .getSharedPreferences("user_info", Context.MODE_PRIVATE)
-                    .getString("google_idToken", ""))
+                        .getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                        .getString("google_idToken", ""))
                 .build();
 
         Request request = new Request.Builder()
@@ -145,33 +182,31 @@ public class ProfileFragment extends Fragment {
                 requireActivity().runOnUiThread(() -> {
                     // Show fail api call message
                     Log.d("ERROR", e.toString());
-                    requireActivity().runOnUiThread(() -> {
-                        Context context = requireActivity();
-                        String message = "Failed to add admin";
-                        ToastUtils.showToast(context, message);
-                    });
+                    Context context = requireActivity();
+                    String message = "Failed to add admin";
+                    ToastUtils.showToast(context, message, false);
                 });
             }
+
             @Override
-            public void handleSuccessResponse(Response response){
+            public void handleSuccessResponse(Response response) {
                 Log.d("API_CALL_ADD_ADMIN", "Admin added successfully");
                 // Show success message
                 requireActivity().runOnUiThread(() -> {
                     Context context = requireActivity();
                     String message = body + " added as Admin";
-                    ToastUtils.showToast(context, message);
-                    EditText email_v =  view.findViewById(R.id.admin_email);
-                    email_v.setText("");
+                    ToastUtils.showToast(context, message, true);
+                    dialog.dismiss();
                 });
             }
+
             @Override
             public void handleFailResponse(Response response, String responseBody) {
                 JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
                 String error = jsonObject.get("error").getAsString();
                 Log.e("API_CALL_ADD_ADMIN", "API call failed: " + error);
                 requireActivity().runOnUiThread(() -> {
-                    Context context = requireActivity();
-                    EditText email_v = view.findViewById(R.id.admin_email);
+                    TextInputLayout email_v = dialog.findViewById(R.id.admin_email);
                     email_v.setError(error);
                 });
             }
