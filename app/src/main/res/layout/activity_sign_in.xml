@@ -14,8 +14,8 @@
         android:layout_width="291dp"
         android:layout_height="48dp"
         android:background="@drawable/rectangle"
+        android:backgroundTint="@color/black"
         android:drawableStart="@drawable/ic_google_icon"
-        android:drawablePadding="8dp"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/sign_in_with_google"
         android:textAlignment="center"
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.904" />
+        app:layout_constraintVertical_bias="0.919" />
 
     <ImageView
         android:id="@+id/imageView"
