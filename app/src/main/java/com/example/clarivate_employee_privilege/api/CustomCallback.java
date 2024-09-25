@@ -64,7 +64,8 @@ public abstract class CustomCallback implements Callback {
                     }
                     // Handle other errors
                     else {
-                        handleResponse(response); //Override to handle error response
+                        Log.d("API_CALL", "API call failed: " + error);
+                        handleFailResponse(response, responseBody); //Override to handle error response
                     }
                 }
             }
@@ -73,7 +74,7 @@ public abstract class CustomCallback implements Callback {
             }
         }
         else {
-            handleResponse(response); // Override to handle successful response
+            handleSuccessResponse(response); // Override to handle successful response
         }
     }
 
@@ -86,5 +87,6 @@ public abstract class CustomCallback implements Callback {
         CallAPI.getClient().newCall(newRequest).enqueue(this);
     }
 
-    public abstract void handleResponse(Response response) throws IOException;
+    public abstract void handleSuccessResponse(Response response) throws IOException;
+    public abstract void handleFailResponse(Response response, String responseBody);
 }

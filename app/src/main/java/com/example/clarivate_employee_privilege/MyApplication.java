@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.clarivate_employee_privilege.api.SocketService;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 
 
 // Start the SocketService when the application starts
@@ -13,9 +14,16 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Start the SocketService
-        Intent intent = new Intent(this, SocketService.class);
-        startService(intent);
+
+        if (AppUtils.isAppInForeground(this)) {
+            try {
+                startService(new Intent(this, SocketService.class));
+            } catch (Exception e) {
+                Log.e("MyApplication", "Failed to start service", e);
+            }
+        } else {
+            Log.w("MyApplication", "App is in background, not starting service");
+        }
     }
 
     @Override

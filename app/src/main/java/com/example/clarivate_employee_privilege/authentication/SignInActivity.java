@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,6 +16,7 @@ import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.api.CallAPI;
 import com.example.clarivate_employee_privilege.api.CustomCallback;
 import com.example.clarivate_employee_privilege.model.User;
+import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -99,19 +99,19 @@ public class SignInActivity extends AppCompatActivity {
                 // Define API request headers
                 Headers headers = new Headers.Builder().add("Authorization", "Bearer " + idToken).build();
 
-                makeApiCall(body, headers, account);
+                createUser(body, headers, account);
             }
 
             // Invalid email domain
             else {
-                showToast("Sign-in is restricted to Clarivate Employee email only.");
+                ToastUtils.showToast(this,"Sign-in is restricted to Clarivate Employee email only.", false);
                 googleSignInClient.signOut();
             }
         }
         // Sign-in failed debug
         catch (ApiException e) {
-            Log.d("ERROR", e.toString());
-            showToast("Sign-in failed: " + e);
+            Log.d("ERROR SIGNIN", e.toString());
+            ToastUtils.showToast(this,"Sign-in failed: " + e, false);
         }
     }
 
@@ -121,7 +121,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     // Make an API call to check or create a new user
-    private void makeApiCall(String body, Headers headers, GoogleSignInAccount account) {
+    private void createUser(String body, Headers headers, GoogleSignInAccount account) {
 
         Request request = new Request.Builder()
                 .url(getString(R.string.api_url) + "/users")
@@ -131,24 +131,26 @@ public class SignInActivity extends AppCompatActivity {
 
         CallAPI.getClient().newCall(request).enqueue(new CustomCallback(this, request) {
             @Override
-            public void handleResponse(Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    handleApiResponse(response, account);
-                }
-                else {
-                    Log.e("API_CALL", "API call failed: " + response.message());
-                    runOnUiThread(() -> showToast("Sign-in failed: " + response.message()));
-                }
-
+            public void handleSuccessResponse(Response response) throws IOException {
+                handleCreateUser(response, account);
+            }
+            @Override
+            public void handleFailResponse(Response response, String responseBody) {
+                JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
+                String error = jsonObject.get("error").getAsString();
+                Log.e("API_SIGNIN", "API call failed: " + error);
+                runOnUiThread(() -> ToastUtils.showToast(SignInActivity.this,"Sign-in failed: " + responseBody, false));
+                googleSignInClient.signOut();
             }
             @Override
             public void onFailure(Call call, IOException e) {
-                runOnUiThread(() -> showToast("Sign-in failed: " + e.getMessage()));
+                runOnUiThread(() -> ToastUtils.showToast(SignInActivity.this,"Sign-in failed: " + e.getMessage(), false));
+                googleSignInClient.signOut();
             }
         });
     }
 
-    private void handleApiResponse(Response response, GoogleSignInAccount account) throws IOException {
+    private void handleCreateUser(Response response, GoogleSignInAccount account) throws IOException {
         // Extract user information from the API response
         String responseData = response.body().string();
         JsonObject jsonObject = JsonParser.parseString(responseData).getAsJsonObject();
@@ -173,10 +175,6 @@ public class SignInActivity extends AppCompatActivity {
         editor.putString("profile_image", profileImageUrl);
         editor.putString("google_idToken", idToken);
         editor.apply();
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void redirectToMainActivity() {

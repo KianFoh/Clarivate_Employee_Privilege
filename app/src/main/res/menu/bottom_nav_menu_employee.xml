@@ -3,14 +3,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
+        android:icon="@drawable/baseline_home_24"
         android:title="@string/home" />
     <item
         android:id="@+id/nav_merchants"
+        android:icon="@drawable/baseline_store_24"
         android:title="@string/merchants" />
     <item
         android:id="@+id/nav_Request"
+        android:icon="@drawable/baseline_list_alt_24"
         android:title="@string/request_merchant" />
     <item
         android:id="@+id/nav_profile"
+        android:icon="@drawable/round_account_circle_24"
         android:title="@string/profile" />
 </menu>
