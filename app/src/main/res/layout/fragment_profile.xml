@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".navbar_menu.ProfileFragment">
 
     <ScrollView
@@ -38,18 +40,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 
-            <Button
-                android:id="@+id/sign_out"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="@string/signout"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/admin_email" />
-
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
@@ -69,14 +59,39 @@
                 app:layout_constraintTop_toBottomOf="@+id/name" />
 
             <Button
+                android:id="@+id/sign_out"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="@string/signout"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+            <Button
                 android:id="@+id/admin"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Add Admin"
+                android:layout_marginBottom="50dp"
+                android:text="Manage Admin"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sign_out" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:clickable="true"
+                android:src="@drawable/frame_47"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/admin_email" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

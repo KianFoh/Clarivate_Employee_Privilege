@@ -128,10 +128,10 @@ public class ProfileFragment extends Fragment {
     private void showAddAdminDialog() {
         // Inflate the add_admin_form.xml layout
         LayoutInflater inflater = LayoutInflater.from(requireContext());
-        View dialogView = inflater.inflate(R.layout.add_admin_form, null);
+        View dialogView = inflater.inflate(R.layout.admin_manage, null);
 
-        // Create the AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        // Create the AlertDialog with custom style
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.CustomDialog);
         builder.setView(dialogView);
 
         // Show the dialog
@@ -139,28 +139,31 @@ public class ProfileFragment extends Fragment {
         dialog.show();
 
         // Set up the close button
-        Button cancel = dialogView.findViewById(R.id.cancel);
         ImageButton close = dialogView.findViewById(R.id.toast_close);
         close.setOnClickListener(v -> dialog.dismiss());
-        cancel.setOnClickListener(v -> dialog.dismiss());
 
-        // Set up the submit button
-        Button submit = dialogView.findViewById(R.id.submit);
-
+        // Set up the add admin button
+        Button submit = dialogView.findViewById(R.id.add_admin);
         submit.setOnClickListener(v -> {
             String email = ((TextInputLayout)dialogView.findViewById(R.id.admin_email)).getEditText().getText().toString();
             Log.d("EMAIL", email);
             add_admin(email, dialog);
         });
 
+        // Set up the remove admin button
+        Button remove = dialogView.findViewById(R.id.remove_admin);
+        remove.setOnClickListener(v -> {
+            String email = ((TextInputLayout)dialogView.findViewById(R.id.admin_email)).getEditText().getText().toString();
+            Log.d("EMAIL", email);
+            remove_admin(email, dialog);
+        });
+
         // Set the dialog window size to custom width and height
         if (dialog.getWindow() != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
-
     }
 
-    // Add Admin
     // Add Admin
     private void add_admin(String body, AlertDialog dialog) {
         Headers headers = new Headers.Builder()
@@ -205,6 +208,60 @@ public class ProfileFragment extends Fragment {
                 JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
                 String error = jsonObject.get("error").getAsString();
                 Log.e("API_CALL_ADD_ADMIN", "API call failed: " + error);
+                requireActivity().runOnUiThread(() -> {
+                    TextInputLayout email_v = dialog.findViewById(R.id.admin_email);
+                    email_v.setError(error);
+                });
+            }
+        });
+    }
+
+    private void remove_admin(String email, AlertDialog dialog) {
+        Headers headers = new Headers.Builder()
+                .add("Authorization", "Bearer " + requireActivity()
+                        .getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                        .getString("google_idToken", ""))
+                .build();
+
+        // Build the URL with the email as a query parameter
+        String url = getString(R.string.api_url) + "/remove_admin?email=" + email;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .delete()
+                .headers(headers)
+                .build();
+
+        CallAPI.getClient().newCall(request).enqueue(new CustomCallback(requireActivity(), request) {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                requireActivity().runOnUiThread(() -> {
+                    // Show fail API call message
+                    Log.d("ERROR", e.toString());
+                    Context context = requireActivity();
+                    String message = "Failed to remove admin";
+                    ToastUtils.showToast(context, message, false);
+                });
+            }
+
+            @Override
+            public void handleSuccessResponse(Response response) {
+                Log.d("API_CALL_REMOVE_ADMIN", "Admin removed successfully");
+                // Show success message
+                requireActivity().runOnUiThread(() -> {
+                    Context context = requireActivity();
+                    String message = email + " removed from Admin";
+                    ToastUtils.showToast(context, message, true);
+                    dialog.dismiss();
+                });
+            }
+
+            @Override
+            public void handleFailResponse(Response response, String responseBody) {
+                JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
+                String error = jsonObject.get("error").getAsString();
+                Log.e("API_CALL_REMOVE_ADMIN", "API call failed: " + error);
                 requireActivity().runOnUiThread(() -> {
                     TextInputLayout email_v = dialog.findViewById(R.id.admin_email);
                     email_v.setError(error);

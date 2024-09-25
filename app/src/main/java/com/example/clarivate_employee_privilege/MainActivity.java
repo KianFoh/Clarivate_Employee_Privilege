@@ -1,10 +1,13 @@
 package com.example.clarivate_employee_privilege;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements EventCallback {
 
     private SocketServiceManager socketServiceManager;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements EventCallback {
 
         // Initialize SocketServiceManager
         socketServiceManager = new SocketServiceManager(this, email, token, this);
+
     }
 
     @Override
@@ -65,6 +70,16 @@ public class MainActivity extends AppCompatActivity implements EventCallback {
         // Bind to the SocketService
         Log.d("MainActivity", "onStart");
         socketServiceManager.bindService();
+    }
+
+    // Hide the keyboard when the user taps outside of an input field
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
