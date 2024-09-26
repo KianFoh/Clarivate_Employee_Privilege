@@ -1,13 +1,14 @@
 package com.example.clarivate_employee_privilege.profile;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -38,6 +41,9 @@ public class ScanCardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_card);
+
+        // Hide the status bar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // Check if camera permission is granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -57,21 +63,33 @@ public class ScanCardActivity extends AppCompatActivity {
         ImageView discardButton = findViewById(R.id.back);
 
         keepButton.setOnClickListener(v -> {
-            if (photoFile != null) {
-                File newFile = new File(photoFile.getParent(), "card_id.jpg");
-                if (photoFile.renameTo(newFile)) {
-                    Toast.makeText(this, "Photo saved as card_id.jpg", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Failed to save photo", Toast.LENGTH_SHORT).show();
-                }
-                resetUI();
-            }
-        });
 
-        discardButton.setOnClickListener(v -> {
-            if (photoFile != null && photoFile.delete()) {
-                Toast.makeText(this, "Photo discarded", Toast.LENGTH_SHORT).show();
-                resetUI();
+            String username = getSharedPreferences("user_info", MODE_PRIVATE).getString("username", "User");
+
+            if (photoFile != null) {
+                // Create the new file for card_id.jpg
+                File newFile = new File(photoFile.getParent(), username + "card_id.jpg");
+
+                // Check if the target file already exists and delete it
+                if (newFile.exists()) {
+                    newFile.delete();  // Deletes the existing card_id.jpg file
+                }
+
+                // Rename the photoFile to username + "card_id.jpg"
+                if (photoFile.renameTo(newFile)) {
+                    ToastUtils.showToast(this, "Photo saved", true);
+                }
+                else {
+                    ToastUtils.showToast(this, "Failed to save photo", false);
+                }
+
+                Uri imageUri = Uri.fromFile(newFile);
+                SharedPreferences sharedPreferences = getSharedPreferences("name_card " + username, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("card_id", imageUri.toString());
+                editor.apply();
+
+                finish();
             }
         });
 
@@ -81,10 +99,11 @@ public class ScanCardActivity extends AppCompatActivity {
             if (isPhotoTaken) {
                 // Discard the temp image and reset UI
                 if (photoFile != null && photoFile.delete()) {
-                    Toast.makeText(this, "Photo discarded", Toast.LENGTH_SHORT).show();
+                    Log.d("CameraXApp", "Temp image deleted");
                 }
                 resetUI();
-            } else {
+            }
+            else {
                 // Navigate back to the ProfileFragment
                 finish();
             }
@@ -100,8 +119,9 @@ public class ScanCardActivity extends AppCompatActivity {
                 // Bind the camera provider to the lifecycle
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 bindPreview(cameraProvider);
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
+            }
+            catch (ExecutionException | InterruptedException e) {
+                Log.d("CameraXApp", "Error starting camera: " + e.getMessage());
             }
         }, ContextCompat.getMainExecutor(this));
     }
@@ -138,18 +158,16 @@ public class ScanCardActivity extends AppCompatActivity {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                 String msg = "Photo capture succeeded: " + outputFileResults.getSavedUri();
-                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
                 Log.d("CameraXApp", msg);
                 isPhotoTaken = true;
                 showCapturedImage();
                 showButtons();
-
             }
 
             @Override
             public void onError(@NonNull ImageCaptureException exception) {
                 String msg = "Photo capture failed: " + exception.getMessage();
-                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(getBaseContext(), msg, false);
                 Log.e("CameraXApp", msg);
             }
         });
@@ -169,7 +187,13 @@ public class ScanCardActivity extends AppCompatActivity {
         capturedImageView.setVisibility(View.VISIBLE);
 
         Uri imageUri = Uri.fromFile(photoFile);
-        Picasso.get().load(imageUri).into(capturedImageView);
+
+        // Force Picasso to skip caching and load the image fresh
+        Picasso.get()
+                .load(imageUri)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .into(capturedImageView);
+
         Log.d("CameraXApp", "Captured image displayed");
     }
 

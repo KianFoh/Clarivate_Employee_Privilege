@@ -1,9 +1,10 @@
+// app/src/main/java/com/example/clarivate_employee_privilege/profile/ProfileFragment.java
 package com.example.clarivate_employee_privilege.profile;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +12,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.MainActivity;
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.api.SocketService;
 import com.example.clarivate_employee_privilege.api.SocketServiceManager;
+import com.example.clarivate_employee_privilege.utils.PermissionUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
 
@@ -29,6 +29,8 @@ public class ProfileFragment extends Fragment {
     private SocketService socketService;
     private Profile_API profileAPI;
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
+    private String username;
+    private String cardId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,21 +45,19 @@ public class ProfileFragment extends Fragment {
         // Initialize Profile_API
         profileAPI = new Profile_API(requireContext());
 
-        // Register the permissions callback
-        requestPermissionLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestMultiplePermissions(),
-                result -> {
-                    Boolean cameraGranted = result.getOrDefault(Manifest.permission.CAMERA, false);
-                    if (cameraGranted != null && cameraGranted) {
-                        // Permission is granted. Continue the action or workflow in your app.
-                        Profile_Utils.startScanCardActivity(requireActivity());
-                    } else {
-                        // Explain to the user that the feature is unavailable because the
-                        // features requires a permission that the user has denied.
-                        Profile_Utils.handlePermissionDenied(requireActivity());
-                    }
-                }
+        // Register the permissions callback using PermissionUtils
+        requestPermissionLauncher = PermissionUtils.registerForCameraPermission(
+                this,
+                () -> Profile_Utils.startScanCardActivity(requireActivity()),
+                () -> PermissionUtils.handlePermissionDenied(requireActivity())
         );
+
+        // Get user details
+        SharedPreferences sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        username = sharedpreferences.getString("username", "Not found");
+
+        sharedpreferences = requireActivity().getSharedPreferences("name_card " + username, Context.MODE_PRIVATE);
+        cardId = sharedpreferences.getString("card_id", "Not found");
     }
 
     @Override
@@ -67,20 +67,17 @@ public class ProfileFragment extends Fragment {
 
         // Get user details
         SharedPreferences sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        String username = sharedpreferences.getString("username", "Not found");
         String email = sharedpreferences.getString("email", "Not found");
         String image = sharedpreferences.getString("profile_image", "Not found");
         boolean isAdmin = sharedpreferences.getBoolean("isAdmin", false);
 
         // Display user details
         ImageView profile_pic = view.findViewById(R.id.profile_pic);
-        if (image.equals("Not found")) {
-            // Set default profile image
-            profile_pic.setImageResource(R.drawable.round_account_circle_24);
-        } else {
-            // Load profile image form URL
-            Picasso.get().load(image).into(profile_pic);
-        }
+        Profile_Utils.loadProfileImage(image, profile_pic);
+
+        ImageView card_pic = view.findViewById(R.id.scan_card);
+        Profile_Utils.loadCardImage(cardId, card_pic, requestPermissionLauncher, requireActivity());
+
         ((TextView) view.findViewById(R.id.name)).setText(username);
         ((TextView) view.findViewById(R.id.admin_email)).setText(email);
 
@@ -90,9 +87,17 @@ public class ProfileFragment extends Fragment {
         // Listeners
         view.findViewById(R.id.sign_out).setOnClickListener(v -> Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService));
         view.findViewById(R.id.admin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
-        view.findViewById(R.id.scan_card).setOnClickListener(v -> requestPermissionLauncher.launch(new String[]{Manifest.permission.CAMERA}));
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("ProfileFragment", "Reloading image from URL: " + cardId);
+
+        ImageView card_pic = getView().findViewById(R.id.scan_card);
+        Profile_Utils.loadCardImage(cardId, card_pic, requestPermissionLauncher, requireActivity());
     }
 
     @Override

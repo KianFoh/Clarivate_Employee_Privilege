@@ -51,7 +51,8 @@ public class SocketService extends Service {
             socket.on("admin_status_update", socketEventListener.onAdminStatusUpdate);
 
             socket.connect();
-        } catch (URISyntaxException e) {
+        }
+        catch (URISyntaxException e) {
             Log.d("SocketService", "Error initializing socket: " + e.getMessage());
         }
     }

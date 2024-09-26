@@ -87,10 +87,12 @@
             <ImageView
                 android:id="@+id/scan_card"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="180dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
                 android:clickable="true"
-                android:src="@drawable/frame_47"
+                android:src="@drawable/card_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/admin_email" />

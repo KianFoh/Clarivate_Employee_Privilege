@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -22,6 +24,8 @@ import com.example.clarivate_employee_privilege.api.SocketService;
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.textfield.TextInputLayout;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 public class Profile_Utils {
     private static final int REQUEST_CAMERA_PERMISSION = 200;
@@ -105,5 +109,35 @@ public class Profile_Utils {
     // Handle permission denied
     public static void handlePermissionDenied(Activity activity) {
         Toast.makeText(activity, "Camera permission denied. Please enable it in settings.", Toast.LENGTH_LONG).show();
+    }
+
+    public static void loadProfileImage(String imageUrl, ImageView imageView) {
+        if (imageUrl.equals("Not found")) {
+            imageView.setImageResource(R.drawable.round_account_circle_24);
+        }
+        else {
+            Picasso.get().load(imageUrl).into(imageView);
+        }
+    }
+
+    public static void loadCardImage(String cardId, ImageView cardImageView, ActivityResultLauncher<String[]> requestPermissionLauncher, Activity activity) {
+        Picasso.get()
+                .load(cardId)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .into(cardImageView, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        cardImageView.setOnClickListener(v -> {
+                            Intent intent = new Intent(activity, CardName.class);
+                            activity.startActivity(intent);
+                        });
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        cardImageView.setImageResource(R.drawable.card_name);
+                        cardImageView.setOnClickListener(v -> requestPermissionLauncher.launch(new String[]{Manifest.permission.CAMERA}));
+                    }
+                });
     }
 }

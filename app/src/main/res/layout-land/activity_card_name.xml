@@ -1,42 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".profile.ScanCardActivity"
+    tools:context=".profile.CardName"
     android:background="@color/black">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/camera_preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <com.example.clarivate_employee_privilege.profile.CameraOverlayView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <ImageView
-        android:id="@+id/captured_image"
+        android:id="@+id/cardname"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/button_capture"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginEnd="20dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/takephoto_button" />
-
-    <ImageView
-        android:id="@+id/back"
+        android:id="@+id/back2"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
@@ -47,16 +27,14 @@
         app:srcCompat="@drawable/baseline_arrow_back_ios_24" />
 
     <ImageView
-        android:id="@+id/save"
+        android:id="@+id/startcamera"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="50dp"
-        android:clickable="true"
-        android:visibility="gone"
-        android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/cardname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/baseline_check_circle_24" />
+        app:srcCompat="@drawable/baseline_camera_alt_24" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
