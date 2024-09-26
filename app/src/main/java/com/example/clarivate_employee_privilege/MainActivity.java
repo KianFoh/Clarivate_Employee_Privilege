@@ -24,7 +24,7 @@ import com.example.clarivate_employee_privilege.authentication.SignInActivity;
 import com.example.clarivate_employee_privilege.navbar_menu.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.HomeFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.MerchantsFragment;
-import com.example.clarivate_employee_privilege.navbar_menu.ProfileFragment;
+import com.example.clarivate_employee_privilege.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.RequestMerchantFragment;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

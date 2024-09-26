@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".navbar_menu.ProfileFragment">
+    tools:context=".profile.ProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,12 +63,14 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
                 android:text="@string/signout"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+                app:layout_constraintTop_toBottomOf="@+id/scan_card" />
 
             <Button
                 android:id="@+id/admin"
@@ -83,7 +85,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/sign_out" />
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/scan_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
