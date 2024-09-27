@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.api;
+package com.example.clarivate_employee_privilege.websocket;
 
 import android.content.Context;
 import android.util.Log;
@@ -67,16 +67,7 @@ public class SocketEventListener {
         Log.d("SocketEventListener", "User update received: isAdmin = " + isAdmin);
 
         // Refresh UI based on admin status
-        // Notify the callback
-        if (eventCallback != null) {
-            eventCallback.onAdminStatusUpdated(isAdmin);
-        }
+        // Post the event to the EventBus
+        EventBus.getInstance().postAdminStatusUpdate(isAdmin);
     };
-
-    public void setEventCallback(SocketEventCallback.EventCallback callback) {
-        if (callback == null) {
-            Log.d("SocketEventListener", "Event callback is missing");
-        }
-        this.eventCallback = callback;
-    }
 }

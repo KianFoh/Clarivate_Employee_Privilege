@@ -5,7 +5,7 @@ import android.content.ComponentCallbacks2;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.clarivate_employee_privilege.api.SocketService;
+import com.example.clarivate_employee_privilege.websocket.SocketService;
 import com.example.clarivate_employee_privilege.utils.AppUtils;
 
 

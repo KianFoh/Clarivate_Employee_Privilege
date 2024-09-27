@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.api;
+package com.example.clarivate_employee_privilege.websocket;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,11 +12,9 @@ public class SocketServiceManager {
     private SocketService socketService;
     private boolean isBound = false;
     private ServiceConnection connection;
-    private SocketEventCallback.EventCallback eventCallback;
 
-    public SocketServiceManager(Context context, String email, String token, SocketEventCallback.EventCallback eventCallback) {
+    public SocketServiceManager(Context context, String email, String token) {
         this.context = context;
-        this.eventCallback = eventCallback;
 
         // Define the service connection
         this.connection = new ServiceConnection() {
@@ -35,10 +33,6 @@ public class SocketServiceManager {
                 // Initialize the socket connection
                 socketService.initializeSocket(email, token);
                 Log.d("SocketServiceManager", "SocketService connected and socket initialized");
-
-                // Set the event callback
-                socketService.getSocketEventListener().setEventCallback(eventCallback);
-                Log.d("SocketServiceManager", "Event callback set");
             }
 
             // Callback when the service is disconnected

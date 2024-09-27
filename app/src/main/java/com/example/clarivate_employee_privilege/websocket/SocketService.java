@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.api;
+package com.example.clarivate_employee_privilege.websocket;
 
 import android.app.Service;
 import android.content.Context;

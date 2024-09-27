@@ -14,19 +14,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 
 import com.example.clarivate_employee_privilege.api.CallAPI;
 import com.example.clarivate_employee_privilege.api.CustomCallback;
-import com.example.clarivate_employee_privilege.api.SocketEventCallback.EventCallback;
-import com.example.clarivate_employee_privilege.api.SocketServiceManager;
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
 import com.example.clarivate_employee_privilege.navbar_menu.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.HomeFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.MerchantsFragment;
-import com.example.clarivate_employee_privilege.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.RequestMerchantFragment;
+import com.example.clarivate_employee_privilege.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
+import com.example.clarivate_employee_privilege.websocket.EventBus;
+import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,7 +41,7 @@ import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity implements EventCallback {
+public class MainActivity extends AppCompatActivity {
 
     private SocketServiceManager socketServiceManager;
 
@@ -60,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements EventCallback {
         String token = sharedpreferences.getString("google_idToken", "Not found");
 
         // Initialize SocketServiceManager
-        socketServiceManager = new SocketServiceManager(this, email, token, this);
-
+        socketServiceManager = new SocketServiceManager(this, email, token);
+        observeEventBus();
     }
 
     @Override
@@ -261,16 +262,22 @@ public class MainActivity extends AppCompatActivity implements EventCallback {
         return socketServiceManager;
     }
 
-    @Override
-    public void onAdminStatusUpdated(boolean isAdmin) {
-        // Update admin status in SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isAdmin", isAdmin);
-        editor.apply();
 
-        // Handle the admin status update here
-        MainActivity.this.runOnUiThread(this::navbar);
-        Log.d("MainActivity", "Admin Status UI updated");
+    public void observeEventBus() {
+        // Observe the admin status updates
+        EventBus.getInstance().getAdminStatusLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isAdmin) {
+                // Update admin status in SharedPreferences
+                SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isAdmin", isAdmin);
+                editor.apply();
+
+                // Handle the admin status update here
+                MainActivity.this.runOnUiThread(MainActivity.this::navbar);
+                Log.d("MainActivity", "Admin Status UI updated");
+            }
+        });
     }
 }

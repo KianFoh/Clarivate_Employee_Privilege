@@ -20,7 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.clarivate_employee_privilege.R;
-import com.example.clarivate_employee_privilege.api.SocketService;
+import com.example.clarivate_employee_privilege.websocket.SocketService;
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.textfield.TextInputLayout;
