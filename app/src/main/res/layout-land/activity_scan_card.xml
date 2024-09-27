@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.example.clarivate_employee_privilege.profile.CameraOverlayView
+    <com.example.clarivate_employee_privilege.profile.CameraOverlayViewLand
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -50,10 +50,10 @@
         android:id="@+id/save"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="20dp"
         android:clickable="true"
-        android:visibility="gone"
         android:elevation="10dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

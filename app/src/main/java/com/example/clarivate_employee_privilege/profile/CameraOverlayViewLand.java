@@ -12,23 +12,23 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-public class CameraOverlayView extends View {
+public class CameraOverlayViewLand extends View {
 
     private Paint paint;
     private Paint bracketPaint;
     private RectF rect;
 
-    public CameraOverlayView(Context context) {
+    public CameraOverlayViewLand(Context context) {
         super(context);
         init();
     }
 
-    public CameraOverlayView(Context context, @Nullable AttributeSet attrs) {
+    public CameraOverlayViewLand(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public CameraOverlayView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CameraOverlayViewLand(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

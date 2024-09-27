@@ -49,7 +49,8 @@ public class ScanCardActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // Request camera permission if not granted
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-        } else {
+        }
+        else {
             // Start the camera if permission is already granted
             startCamera();
         }

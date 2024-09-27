@@ -36,13 +36,12 @@
 
         <activity
             android:name=".profile.CardName"
-            android:exported="false"
-            android:screenOrientation="landscape" />
+            android:exported="false" />
 
         <activity
             android:name=".profile.ScanCardActivity"
             android:exported="true"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".authentication.SignInActivity"
