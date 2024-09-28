@@ -50,7 +50,7 @@ public class Profile_API {
             public void onFailure(Call call, IOException e) {
                 ((Activity) context).runOnUiThread(() -> {
                     // Show fail api call message
-                    Log.d("ERROR", e.toString());
+                    Log.d("API_CALL_ADD_ADMIN", e.toString());
                     String message = "Failed to add admin";
                     ToastUtils.showToast(context, message, false);
                 });
@@ -74,7 +74,7 @@ public class Profile_API {
                 Log.e("API_CALL_ADD_ADMIN", "API call failed: " + error);
                 ((Activity) context).runOnUiThread(() -> {
                     TextInputLayout email_v = dialog.findViewById(R.id.admin_email);
-                    email_v.setError(error);
+                    email_v.setError((("**"+error)));
                 });
             }
         });
