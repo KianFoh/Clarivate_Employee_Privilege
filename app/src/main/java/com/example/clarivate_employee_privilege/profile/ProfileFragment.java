@@ -16,9 +16,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.MainActivity;
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.utils.PermissionUtils;
 import com.example.clarivate_employee_privilege.websocket.SocketService;
 import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
-import com.example.clarivate_employee_privilege.utils.PermissionUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -83,11 +83,12 @@ public class ProfileFragment extends Fragment {
 
         int visibility = isAdmin ? View.GONE : View.VISIBLE;
         view.findViewById(R.id.admin).setVisibility(visibility);
+        view.findViewById(R.id.download_requests).setVisibility(visibility);
 
         // Listeners
         view.findViewById(R.id.sign_out).setOnClickListener(v -> Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService));
         view.findViewById(R.id.admin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
-
+        view.findViewById(R.id.download_requests).setOnClickListener(v -> Profile_API.downloadRequests(requireContext()));
         return view;
     }
 

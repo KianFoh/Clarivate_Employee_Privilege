@@ -51,7 +51,7 @@ public class RequestMerchantFragment extends Fragment {
         AutoCompleteTextView type_dropdown = view.findViewById(R.id.type_dropdown);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, typeOfBusiness);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, typeOfBusiness);
 
         // Set the adapter to the AutoCompleteTextView
         type_dropdown.setAdapter(adapter);
@@ -112,7 +112,7 @@ public class RequestMerchantFragment extends Fragment {
                 Log.d("API_CALL_ADD_REQUEST_MERCHANT", "Requested merchant added successfully");
                 // Show success message
                 ((Activity) context).runOnUiThread(() -> {
-                    String message = body + " added as Admin";
+                    String message = name_field.getEditText().getText().toString() + " added to request merchant list";
                     ToastUtils.showToast(context, message, true);
                     name_field.getEditText().setText("");
                     type_field.getEditText().setText("");
