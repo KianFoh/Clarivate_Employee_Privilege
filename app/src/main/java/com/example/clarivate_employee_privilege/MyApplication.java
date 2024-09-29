@@ -18,10 +18,12 @@ public class MyApplication extends Application {
         if (AppUtils.isAppInForeground(this)) {
             try {
                 startService(new Intent(this, SocketService.class));
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Log.e("MyApplication", "Failed to start service", e);
             }
-        } else {
+        }
+        else {
             Log.w("MyApplication", "App is in background, not starting service");
         }
     }

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.activity.EdgeToEdge;
@@ -20,11 +21,11 @@ import com.example.clarivate_employee_privilege.api.CallAPI;
 import com.example.clarivate_employee_privilege.api.CustomCallback;
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
-import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.HomeFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.MerchantsFragment;
-import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.profile.ProfileFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
@@ -77,8 +78,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (getCurrentFocus() != null) {
+            View currentFocus = getCurrentFocus();
+            currentFocus.clearFocus();
+
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -130,11 +134,11 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 MainActivity.this.runOnUiThread(() -> {
                     // Show fail api call message
-                    Log.d("ERROR Get User Info:", e.toString());
+                    Log.d("ERROR_API_CALL_GET_USER_INFO", e.toString());
                     Context context = MainActivity.this;
                     String message = "Failed to load latest user information";
                     ToastUtils.showToast(context, message, false);
-                    MainActivity.this.runOnUiThread(() -> navbar());
+                    navbar();
                 });
             }
 
@@ -168,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("API_CALL_GET_USER_INFO", "API call failed: " + error);
                 MainActivity.this.runOnUiThread(() -> {
                     Context context = MainActivity.this;
-                    String message = "Failed to load latest user information: " + error;
+                    String message = "Failed to load latest user information";
                     ToastUtils.showToast(context, message, false);
                     navbar();
                 });
