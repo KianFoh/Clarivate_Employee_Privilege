@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Clarivate Employee Privilege</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="signout">SignOut</string>
+    <string name="signout">Log out</string>
     <string name="home">Home</string>
     <string name="merchants">Merchants</string>
     <string name="request_merchant">Request Merchant</string>
