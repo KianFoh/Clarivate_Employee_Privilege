@@ -4,22 +4,23 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".profile.ScanCardActivity"
+    tools:context=".navbar_menu.profile.ScanCardActivity"
     android:background="@color/black">
 
     <androidx.camera.view.PreviewView
-        android:id="@+id/camera_preview"
+        android:id="@+id/scan_camera_camerapreview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
     </androidx.camera.view.PreviewView>
 
-    <com.example.clarivate_employee_privilege.profile.CameraOverlayViewPortrait
+    <com.example.clarivate_employee_privilege.navbar_menu.profile.CameraOverlayViewPortrait
+        android:id="@+id/scancard_filter_portrait"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <ImageView
-        android:id="@+id/captured_image"
+        android:id="@+id/scancard_capturedimg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -27,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/button_capture"
+        android:id="@+id/scancard_capture"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginBottom="20dp"
@@ -38,7 +39,7 @@
         app:srcCompat="@drawable/takephoto_button" />
 
     <ImageView
-        android:id="@+id/back"
+        android:id="@+id/scancard_back"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
@@ -49,7 +50,7 @@
         app:srcCompat="@drawable/baseline_arrow_back_ios_24" />
 
     <ImageView
-        android:id="@+id/save"
+        android:id="@+id/scancard_save"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="20dp"

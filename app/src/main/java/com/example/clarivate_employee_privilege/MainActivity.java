@@ -20,11 +20,11 @@ import com.example.clarivate_employee_privilege.api.CallAPI;
 import com.example.clarivate_employee_privilege.api.CustomCallback;
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
-import com.example.clarivate_employee_privilege.navbar_menu.AddMerchantFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.HomeFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.MerchantsFragment;
-import com.example.clarivate_employee_privilege.navbar_menu.RequestMerchantFragment;
-import com.example.clarivate_employee_privilege.profile.ProfileFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
@@ -183,10 +183,10 @@ public class MainActivity extends AppCompatActivity {
         boolean isAdmin = sharedPreferences.getBoolean("isAdmin", false);
 
         // Get the current fragment
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
 
         // Set the appropriate menu based on user role
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottomnavigation);
 
         // Get the selected item ID
         int selectedItemId = bottomNavigationView.getSelectedItemId();
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView, fragment);
+        fragmentTransaction.replace(R.id.main_fragment, fragment);
         fragmentTransaction.commit();
     }
 

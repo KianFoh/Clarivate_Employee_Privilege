@@ -35,11 +35,11 @@
             android:exported="false" />
 
         <activity
-            android:name=".profile.CardName"
+            android:name=".navbar_menu.profile.CardName"
             android:exported="false" />
 
         <activity
-            android:name=".profile.ScanCardActivity"
+            android:name=".navbar_menu.profile.ScanCardActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
 

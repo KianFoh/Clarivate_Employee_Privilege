@@ -1,5 +1,5 @@
 
-package com.example.clarivate_employee_privilege.profile;
+package com.example.clarivate_employee_privilege.navbar_menu.profile;
 
 import android.Manifest;
 import android.content.Context;
@@ -43,7 +43,7 @@ public class CardName extends AppCompatActivity {
         String cardId = sharedpreferences.getString("card_id", "Not found");
         Log.d("Inside CardName", "Card ID: " + cardId);
 
-        ImageView cardname = findViewById(R.id.cardname);
+        ImageView cardname = findViewById(R.id.cardname_img);
 
         Log.d("Inside CardName", "Loading image from URL: " + cardname);
 
@@ -53,8 +53,8 @@ public class CardName extends AppCompatActivity {
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(cardname);
 
-        findViewById(R.id.back2).setOnClickListener(v -> finish());
-        findViewById(R.id.startcamera).setOnClickListener(v -> {
+        findViewById(R.id.cardname_back).setOnClickListener(v -> finish());
+        findViewById(R.id.cardname_startcamera).setOnClickListener(v -> {
             requestPermissionLauncher.launch(new String[]{Manifest.permission.CAMERA});
             finish();
         });

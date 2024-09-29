@@ -22,7 +22,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        ImageView img = view.findViewById(R.id.profile_pic);
+        ImageView img = view.findViewById(R.id.home_pic);
         Picasso.get().load("https://lh5.googleusercontent.com/p/AF1QipNMQVtmIuSIiGdzilPPpVGoFBEa-mKyUX3XUCyS=w408-h306-k-no").into(img);
 
         return view;

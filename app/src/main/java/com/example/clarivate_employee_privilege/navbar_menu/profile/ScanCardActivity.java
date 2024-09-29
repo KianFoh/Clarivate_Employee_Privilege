@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.profile;
+package com.example.clarivate_employee_privilege.navbar_menu.profile;
 
 import android.Manifest;
 import android.content.SharedPreferences;
@@ -56,12 +56,12 @@ public class ScanCardActivity extends AppCompatActivity {
         }
 
         // Set up the capture button to take a photo when clicked
-        ImageView captureButton = findViewById(R.id.button_capture);
+        ImageView captureButton = findViewById(R.id.scancard_capture);
         captureButton.setOnClickListener(v -> takePhoto());
 
         // Set up the keep and discard buttons
-        ImageView keepButton = findViewById(R.id.save);
-        ImageView discardButton = findViewById(R.id.back);
+        ImageView keepButton = findViewById(R.id.scancard_save);
+        ImageView discardButton = findViewById(R.id.scancard_back);
 
         keepButton.setOnClickListener(v -> {
 
@@ -95,7 +95,7 @@ public class ScanCardActivity extends AppCompatActivity {
         });
 
         // Set up the back button
-        ImageView backButton = findViewById(R.id.back);
+        ImageView backButton = findViewById(R.id.scancard_back);
         backButton.setOnClickListener(v -> {
             if (isPhotoTaken) {
                 // Discard the temp image and reset UI
@@ -138,7 +138,7 @@ public class ScanCardActivity extends AppCompatActivity {
         imageCapture = new ImageCapture.Builder().build();
 
         // Bind the preview to the PreviewView
-        PreviewView previewView = findViewById(R.id.camera_preview);
+        PreviewView previewView = findViewById(R.id.scan_camera_camerapreview);
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
         // Bind the camera to the lifecycle with the preview and image capture use cases
@@ -175,14 +175,14 @@ public class ScanCardActivity extends AppCompatActivity {
     }
 
     private void showButtons() {
-        findViewById(R.id.save).setVisibility(View.VISIBLE);
-        findViewById(R.id.button_capture).setVisibility(View.GONE);
+        findViewById(R.id.scancard_save).setVisibility(View.VISIBLE);
+        findViewById(R.id.scancard_capture).setVisibility(View.GONE);
         Log.d("CameraXApp", "Buttons displayed");
     }
 
     private void showCapturedImage() {
-        PreviewView previewView = findViewById(R.id.camera_preview);
-        ImageView capturedImageView = findViewById(R.id.captured_image);
+        PreviewView previewView = findViewById(R.id.scan_camera_camerapreview);
+        ImageView capturedImageView = findViewById(R.id.scancard_capturedimg);
 
         previewView.setVisibility(View.GONE);
         capturedImageView.setVisibility(View.VISIBLE);
@@ -199,10 +199,10 @@ public class ScanCardActivity extends AppCompatActivity {
     }
 
     private void resetUI() {
-        findViewById(R.id.save).setVisibility(View.GONE);
-        findViewById(R.id.button_capture).setVisibility(View.VISIBLE);
-        findViewById(R.id.camera_preview).setVisibility(View.VISIBLE);
-        findViewById(R.id.captured_image).setVisibility(View.GONE);
+        findViewById(R.id.scancard_save).setVisibility(View.GONE);
+        findViewById(R.id.scancard_capture).setVisibility(View.VISIBLE);
+        findViewById(R.id.scan_camera_camerapreview).setVisibility(View.VISIBLE);
+        findViewById(R.id.scancard_capturedimg).setVisibility(View.GONE);
         isPhotoTaken = false;
         photoFile = null;
         Log.d("CameraXApp", "UI reset");

@@ -73,7 +73,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void setupListener() {
-        findViewById(R.id.google_sign_in_button).setOnClickListener(v -> googleSignIn());
+        findViewById(R.id.signin_googlesignin_button).setOnClickListener(v -> googleSignIn());
     }
 
     private void googleSignIn() {

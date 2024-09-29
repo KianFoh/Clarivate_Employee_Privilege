@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/toasterror_img"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginStart="12dp"
@@ -25,7 +25,7 @@
             app:srcCompat="@drawable/baseline_error_outline_24" />
 
         <TextView
-            android:id="@+id/status"
+            android:id="@+id/toasterror_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -34,11 +34,11 @@
             android:textColor="#BEEB4343"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/toasterror_img"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/message"
+            android:id="@+id/toasterror_message"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -51,8 +51,8 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/status" />
+            app:layout_constraintStart_toEndOf="@+id/toasterror_img"
+            app:layout_constraintTop_toBottomOf="@+id/toasterror_status" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.profile;
+package com.example.clarivate_employee_privilege.navbar_menu.profile;
 
 import android.app.Activity;
 import android.content.Context;
@@ -78,7 +78,7 @@ public class Profile_API {
                 String error = jsonObject.get("error").getAsString();
                 Log.e("API_CALL_ADD_ADMIN", "API call failed: " + error);
                 ((Activity) context).runOnUiThread(() -> {
-                    TextInputLayout email_v = dialog.findViewById(R.id.admin_email);
+                    TextInputLayout email_v = dialog.findViewById(R.id.adminmanage_adminemail);
                     email_v.setError((("**"+error)));
                 });
             }
@@ -131,8 +131,8 @@ public class Profile_API {
                 String error = jsonObject.get("error").getAsString();
                 Log.e("API_CALL_REMOVE_ADMIN", "API call failed: " + error);
                 ((Activity) context).runOnUiThread(() -> {
-                    TextInputLayout email_v = dialog.findViewById(R.id.admin_email);
-                    email_v.setError(error);
+                    TextInputLayout email_v = dialog.findViewById(R.id.adminmanage_adminemail);
+                    email_v.setError("**"+error);
                 });
             }
         });

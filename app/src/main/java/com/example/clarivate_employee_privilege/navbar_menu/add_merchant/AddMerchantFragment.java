@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.navbar_menu;
+package com.example.clarivate_employee_privilege.navbar_menu.add_merchant;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,10 +15,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class AddMerchantFragment extends Fragment {
 
-    private LinearLayout imageUrlLayout;
-    private LinearLayout adressLayout;
-    private ImageView add_imageURL;
-    private ImageView add_address;
+    private LinearLayout imageUrlLayout, adressLayout;
+    private ImageView add_imageURL, add_address;
+    private TextInputLayout imageurl, name, type, address, discount, terms;
 
     public AddMerchantFragment() {
         // Required empty public constructor
@@ -29,15 +28,34 @@ public class AddMerchantFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_merchant, container, false);
 
-        imageUrlLayout = view.findViewById(R.id.image_url_layout);
-        adressLayout = view.findViewById(R.id.address_layout);
+        imageurl = view.findViewById(R.id.addmerchant_imageurl_field);
+        name = view.findViewById(R.id.addmerchant_name_field);
+        type = view.findViewById(R.id.addmerchant_type_field);
+        address = view.findViewById(R.id.addmerchant_address_field);
+        discount = view.findViewById(R.id.addmerchant_discount_field);
+        terms = view.findViewById(R.id.addmerchant_terms_field);
 
-        add_imageURL = view.findViewById(R.id.add_imageurl);
-        add_address = view.findViewById(R.id.add_address);
+        imageUrlLayout = view.findViewById(R.id.addmerchant_imageurl_layout);
+        adressLayout = view.findViewById(R.id.addmerchant_address_layout);
+
+        add_imageURL = view.findViewById(R.id.addmerchant_addimageurl_button);
+        add_address = view.findViewById(R.id.addmerchant_addaddress_button);
 
         add_imageURL.setOnClickListener(v -> addNewFields(imageUrlLayout, "Paste Image URL"));
         add_address.setOnClickListener(v -> addNewFields(adressLayout, "Enter merchant address"));
+        view.findViewById(R.id.addmerchant_submit).setOnClickListener(v -> {
+            // Clear all errors
+            for (int i = 0; i < imageUrlLayout.getChildCount(); i++) {
+                TextInputLayout textInputLayout = (TextInputLayout) imageUrlLayout.getChildAt(i);
+                textInputLayout.setError(null);
+            }
+            for (int i = 0; i < adressLayout.getChildCount(); i++) {
+                TextInputLayout textInputLayout = (TextInputLayout) adressLayout.getChildAt(i);
+                textInputLayout.setError(null);
+            }
 
+
+        });
 
         return view;
     }
@@ -64,11 +82,17 @@ public class AddMerchantFragment extends Fragment {
 
         // Add the TextInputEditText to the TextInputLayout
         newTextInputLayout.addView(newTextInputEditText);
+        newTextInputEditText.setMaxLines(1);
+        newTextInputEditText.setSingleLine(true);
+        newTextInputEditText.setHorizontallyScrolling(true);
 
         // Add the TextInputLayout to the specified LinearLayout
         layout.addView(newTextInputLayout);
     }
 
+    private void clearErrors() {
+
+    }
 
 
     private int dpToPx(int dp) {

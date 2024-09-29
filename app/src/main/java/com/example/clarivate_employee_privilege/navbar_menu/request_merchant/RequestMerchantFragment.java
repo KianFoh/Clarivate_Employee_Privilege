@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.navbar_menu;
+package com.example.clarivate_employee_privilege.navbar_menu.request_merchant;
 
 import android.app.Activity;
 import android.content.Context;
@@ -48,7 +48,7 @@ public class RequestMerchantFragment extends Fragment {
         // Type of business
         String[] typeOfBusiness = new String[] {"F&B", "LifeStyle"};
 
-        AutoCompleteTextView type_dropdown = view.findViewById(R.id.type_dropdown);
+        AutoCompleteTextView type_dropdown = view.findViewById(R.id.requestmerchant_type_dropdown);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, typeOfBusiness);
@@ -57,10 +57,10 @@ public class RequestMerchantFragment extends Fragment {
         type_dropdown.setAdapter(adapter);
 
 
-        name_field = view.findViewById(R.id.name);
-        type_field = view.findViewById(R.id.type);
-        contact_field = view.findViewById(R.id.contact);
-        Button submit = view.findViewById(R.id.submit);
+        name_field = view.findViewById(R.id.requestmerchant_name_field);
+        type_field = view.findViewById(R.id.requestmerchant_type_field);
+        contact_field = view.findViewById(R.id.requestmerchant_contact_field);
+        Button submit = view.findViewById(R.id.requestmerchant_submit);
 
         submit.setOnClickListener(v -> {
             clearErrors();

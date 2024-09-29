@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".profile.ProfileFragment">
+    tools:context=".navbar_menu.profile.ProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/request_merchant_tag"
+                android:id="@+id/profile_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="140dp"
@@ -37,11 +37,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/request_merchant_tag" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_tag" />
 
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
@@ -50,16 +50,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/profile_pic" />
 
             <TextView
-                android:id="@+id/admin_email"
+                android:id="@+id/profile_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/name" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_name" />
 
             <Button
-                android:id="@+id/sign_out"
+                android:id="@+id/profile_signout"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
@@ -73,14 +73,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/scan_card" />
 
             <Button
-                android:id="@+id/admin"
+                android:id="@+id/profile_manageadmin"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Manage Admin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sign_out" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_signout" />
 
             <ImageView
                 android:id="@+id/scan_card"
@@ -93,10 +93,10 @@
                 android:src="@drawable/card_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/admin_email" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_email" />
 
             <Button
-                android:id="@+id/download_requests"
+                android:id="@+id/profile_downloadrequests"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -105,7 +105,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/admin" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_manageadmin" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

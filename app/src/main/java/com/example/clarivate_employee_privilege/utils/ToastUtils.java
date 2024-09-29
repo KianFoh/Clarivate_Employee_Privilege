@@ -12,15 +12,18 @@ public class ToastUtils {
     public static void showToast(Context context, String message, boolean isSuccess) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View layout;
+        TextView text;
+
 
         if (isSuccess) {
             layout = inflater.inflate(R.layout.custom_toast_success, null);
+            text = layout.findViewById(R.id.toastsucccess_message);
         }
         else {
             layout = inflater.inflate(R.layout.custom_toast_error, null);
+            text = layout.findViewById(R.id.toasterror_message);
         }
 
-        TextView text = layout.findViewById(R.id.message);
         text.setText(message);
 
         Toast toast = new Toast(context);

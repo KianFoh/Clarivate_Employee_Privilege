@@ -1,5 +1,5 @@
 // app/src/main/java/com/example/clarivate_employee_privilege/profile/ProfileFragment.java
-package com.example.clarivate_employee_privilege.profile;
+package com.example.clarivate_employee_privilege.navbar_menu.profile;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -78,17 +78,17 @@ public class ProfileFragment extends Fragment {
         ImageView card_pic = view.findViewById(R.id.scan_card);
         Profile_Utils.loadCardImage(cardId, card_pic, requestPermissionLauncher, requireActivity());
 
-        ((TextView) view.findViewById(R.id.name)).setText(username);
-        ((TextView) view.findViewById(R.id.admin_email)).setText(email);
+        ((TextView) view.findViewById(R.id.profile_name)).setText(username);
+        ((TextView) view.findViewById(R.id.profile_email)).setText(email);
 
-        int visibility = isAdmin ? View.GONE : View.VISIBLE;
-        view.findViewById(R.id.admin).setVisibility(visibility);
-        view.findViewById(R.id.download_requests).setVisibility(visibility);
+        int visibility = isAdmin ? View.VISIBLE : View.GONE;
+        view.findViewById(R.id.profile_manageadmin).setVisibility(visibility);
+        view.findViewById(R.id.profile_downloadrequests).setVisibility(visibility);
 
         // Listeners
-        view.findViewById(R.id.sign_out).setOnClickListener(v -> Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService));
-        view.findViewById(R.id.admin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
-        view.findViewById(R.id.download_requests).setOnClickListener(v -> Profile_API.downloadRequests(requireContext()));
+        view.findViewById(R.id.profile_signout).setOnClickListener(v -> Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService));
+        view.findViewById(R.id.profile_manageadmin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
+        view.findViewById(R.id.profile_downloadrequests).setOnClickListener(v -> Profile_API.downloadRequests(requireContext()));
         return view;
     }
 

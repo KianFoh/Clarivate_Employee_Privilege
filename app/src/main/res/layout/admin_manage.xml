@@ -10,7 +10,7 @@
     android:padding="5dp">
 
     <ImageButton
-        android:id="@+id/toast_close"
+        android:id="@+id/adminmanage_close"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:backgroundTint="#00FFFFFF"
@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/baseline_close_24" />
 
     <Button
-        android:id="@+id/remove_admin"
+        android:id="@+id/adminmanage_removeadmin"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_gravity="center_vertical"
@@ -34,13 +34,13 @@
         android:text="Remove"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/add_admin"
+        app:layout_constraintEnd_toStartOf="@+id/adminmanage_addadmin"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_email" />
+        app:layout_constraintTop_toBottomOf="@+id/adminmanage_adminemail" />
 
     <Button
-        android:id="@+id/add_admin"
+        android:id="@+id/adminmanage_addadmin"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_marginTop="5dp"
@@ -55,11 +55,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/remove_admin"
-        app:layout_constraintTop_toBottomOf="@+id/admin_email" />
+        app:layout_constraintStart_toEndOf="@+id/adminmanage_removeadmin"
+        app:layout_constraintTop_toBottomOf="@+id/adminmanage_adminemail" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/adminmanage_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/adminmanage_des"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -80,10 +80,10 @@
         android:text="Enter Email to add or remove admin"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/adminmanage_tag" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/admin_email"
+        android:id="@+id/adminmanage_adminemail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -100,7 +100,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5">
+        app:layout_constraintTop_toBottomOf="@+id/adminmanage_des">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/EditFieldOneLine"

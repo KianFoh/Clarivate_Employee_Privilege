@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.profile;
+package com.example.clarivate_employee_privilege.navbar_menu.profile;
 
 import android.content.Context;
 import android.graphics.Canvas;

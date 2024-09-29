@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navbar_menu.RequestMerchantFragment">
+    tools:context=".navbar_menu.request_merchant.RequestMerchantFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/request_merchant_tag"
+            android:id="@+id/requestmerchant_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/request_merchant_des"
+            android:id="@+id/requestmerchant_des"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -33,10 +33,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/request_merchant_tag" />
+            app:layout_constraintTop_toBottomOf="@+id/requestmerchant_tag" />
 
         <TextView
-            android:id="@+id/name_tag"
+            android:id="@+id/requestmerchant_name_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -45,10 +45,10 @@
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/request_merchant_des" />
+            app:layout_constraintTop_toBottomOf="@+id/requestmerchant_des" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/name"
+            android:id="@+id/requestmerchant_name_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -59,7 +59,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name_tag">
+            app:layout_constraintTop_toBottomOf="@+id/requestmerchant_name_tag">
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/EditFieldOneLine"
@@ -69,7 +69,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/type_tag"
+            android:id="@+id/requestmerchant_type_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -78,10 +78,10 @@
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name" />
+            app:layout_constraintTop_toBottomOf="@+id/requestmerchant_name_field" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/type"
+            android:id="@+id/requestmerchant_type_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -93,10 +93,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/type_tag">
+            app:layout_constraintTop_toBottomOf="@+id/requestmerchant_type_tag">
 
             <AutoCompleteTextView
-                android:id="@+id/type_dropdown"
+                android:id="@+id/requestmerchant_type_dropdown"
                 style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/contact_tag"
+            android:id="@+id/requestmerchant_contact_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -114,10 +114,10 @@
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/type" />
+            app:layout_constraintTop_toBottomOf="@+id/requestmerchant_type_field" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/contact"
+            android:id="@+id/requestmerchant_contact_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -128,7 +128,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_tag">
+            app:layout_constraintTop_toBottomOf="@+id/requestmerchant_contact_tag">
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/EditFieldOneLine"
@@ -139,7 +139,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/submit"
+            android:id="@+id/requestmerchant_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -149,7 +149,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact" />
+            app:layout_constraintTop_toBottomOf="@+id/requestmerchant_contact_field" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

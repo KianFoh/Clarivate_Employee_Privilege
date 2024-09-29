@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.profile;
+package com.example.clarivate_employee_privilege.navbar_menu.profile;
 
 import android.Manifest;
 import android.app.Activity;
@@ -60,22 +60,25 @@ public class Profile_Utils {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+        TextInputLayout email_field = dialogView.findViewById(R.id.adminmanage_adminemail);
+
         // Set up the close button
-        ImageButton close = dialogView.findViewById(R.id.toast_close);
+        ImageButton close = dialogView.findViewById(R.id.adminmanage_close);
         close.setOnClickListener(v -> dialog.dismiss());
 
         // Set up the add admin button
-        Button submit = dialogView.findViewById(R.id.add_admin);
+        Button submit = dialogView.findViewById(R.id.adminmanage_addadmin);
         submit.setOnClickListener(v -> {
-            String email = ((TextInputLayout) dialogView.findViewById(R.id.admin_email)).getEditText().getText().toString();
+            email_field.setError(null);
+            String email = email_field.getEditText().getText().toString();
             Log.d("EMAIL", email);
             profileAPI.add_admin(email, dialog);
         });
 
         // Set up the remove admin button
-        Button remove = dialogView.findViewById(R.id.remove_admin);
+        Button remove = dialogView.findViewById(R.id.adminmanage_removeadmin);
         remove.setOnClickListener(v -> {
-            String email = ((TextInputLayout) dialogView.findViewById(R.id.admin_email)).getEditText().getText().toString();
+            String email = email_field.getEditText().getText().toString();
             Log.d("EMAIL", email);
             profileAPI.remove_admin(email, dialog);
         });
