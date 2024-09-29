@@ -10,74 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:hint="Name"
-            app:helperText="Required*"
-            app:helperTextTextColor="@color/design_default_color_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-            <com.google.android.material.textfield.TextInputEditText style="@style/EditFieldOneLine" />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:hint="Type of business"
-            app:endIconMode="dropdown_menu"
-            app:helperText="Required*"
-            app:helperTextTextColor="@color/design_default_color_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name">
-
-            <AutoCompleteTextView
-                android:id="@+id/type_dropdown"
-                style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/contact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:hint="Contact No."
-            app:helperText="Start with country code eg. +60"
-            app:helperTextTextColor="@color/design_default_color_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/type">
-
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/EditFieldOneLine"
-                android:text="+60 " />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/request_merchant_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
@@ -89,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/request_merchant_des"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -99,7 +33,110 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/request_merchant_tag" />
+
+        <TextView
+            android:id="@+id/name_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="Name"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/request_merchant_des" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="30dp"
+            app:helperTextTextColor="@color/design_default_color_error"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name_tag">
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/EditFieldOneLine"
+                android:hint="Enter merchant name" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/type_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="Type of business"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="30dp"
+            app:endIconMode="dropdown_menu"
+            app:helperTextTextColor="@color/design_default_color_error"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/type_tag">
+
+            <AutoCompleteTextView
+                android:id="@+id/type_dropdown"
+                style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select type of business"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/contact_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="Contact No."
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/type" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="30dp"
+            app:helperTextTextColor="@color/design_default_color_error"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contact_tag">
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/EditFieldOneLine"
+                android:hint="e.g. +60 12-3456789"
+                android:text="+60 " />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/submit"

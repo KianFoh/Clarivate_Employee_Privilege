@@ -139,6 +139,7 @@ public class Profile_API {
     }
 
     public static void downloadRequests(Context context) {
+
         Headers headers = new Headers.Builder()
                 .add("Authorization", "Bearer " + context
                         .getSharedPreferences("user_info", Context.MODE_PRIVATE)
@@ -166,32 +167,31 @@ public class Profile_API {
 
             @Override
             public void handleSuccessResponse(Response response) {
+
                 ResponseBody responseBody = response.body();
-                if (responseBody != null) {
-                    File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                    File file = new File(downloadsDir, "request_merchants.xlsx");
 
-                    try (InputStream inputStream = responseBody.byteStream();
-                         FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                // Define the file path in the Downloads directory
+                File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                File file = new File(downloadsDir, "request_merchants.xlsx");
 
-                        byte[] buffer = new byte[2048];
-                        int bytesRead;
-                        while ((bytesRead = inputStream.read(buffer)) != -1) {
-                            fileOutputStream.write(buffer, 0, bytesRead);
-                        }
+                try (InputStream inputStream = responseBody.byteStream();
+                     FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 
-                        ((Activity) context).runOnUiThread(() -> {
-                            ToastUtils.showToast(context, "Requests downloaded successfully", true);
-                        });
-
-                    } catch (IOException e) {
-                        ((Activity) context).runOnUiThread(() -> {
-                            ToastUtils.showToast(context, "Failed to save the file", false);
-                        });
+                    // Write the response body to the file
+                    byte[] buffer = new byte[2048];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        fileOutputStream.write(buffer, 0, bytesRead);
                     }
-                } else {
+
                     ((Activity) context).runOnUiThread(() -> {
-                        ToastUtils.showToast(context, "Response body is null", false);
+                        ToastUtils.showToast(context, "Requests downloaded successfully", true);
+                    });
+
+                }
+                catch (IOException e) {
+                    ((Activity) context).runOnUiThread(() -> {
+                        ToastUtils.showToast(context, "Failed to save the file", false);
                     });
                 }
             }

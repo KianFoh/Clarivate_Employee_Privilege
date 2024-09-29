@@ -15,53 +15,110 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/add_merchant_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="140dp"
                 android:text="Add Merchant"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.516"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/img_url"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/imageurl_tag"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="30dp"
+                android:text="Image URL (Optional)"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_merchant_tag" />
+
+            <LinearLayout
+                android:id="@+id/image_url_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="24dp"
-                android:hint="Image Link"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintTop_toBottomOf="@+id/imageurl_tag">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    style = "@style/EditFieldOneLine" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_imageurl_tag">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/EditFieldOneLine"
+                        android:hint="Paste Image URL" />
 
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/add_imageurl_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="7dp"
+                android:text="Add Image URL"
+                app:layout_constraintStart_toEndOf="@+id/add_imageurl"
+                app:layout_constraintTop_toBottomOf="@+id/image_url_layout" />
+
+            <ImageButton
+                android:id="@+id/add_imageurl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:clickable="true"
+                android:src="@drawable/add_field"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_url_layout" />
+
+            <TextView
+                android:id="@+id/nametype_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:text="Merchant Name &amp; Type"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_imageurl_tag" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="24dp"
-                android:hint="Name"
-                app:helperText="Required*"
-                app:helperTextTextColor="@color/design_default_color_error"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_url">
+                app:layout_constraintTop_toBottomOf="@+id/nametype_tag">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    style = "@style/EditFieldOneLine" />
+                    style="@style/EditFieldOneLine"
+                    android:hint="Enter merchant name" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -69,112 +126,184 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/type"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="24dp"
-                android:hint="Type"
-                app:helperText="Required*"
-                app:helperTextTextColor="@color/design_default_color_error"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    style = "@style/EditFieldOneLine" />
+                    style="@style/EditFieldOneLine"
+                    android:hint="Enter type of business" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <TextView
+                android:id="@+id/address_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="24dp"
-                android:hint="Address"
-                app:helperText="Required*"
-                app:helperTextTextColor="@color/design_default_color_error"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginTop="20dp"
+                android:text="Address"
+                android:textSize="18dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/type">
+                app:layout_constraintTop_toBottomOf="@+id/type" />
 
-                <com.google.android.material.textfield.TextInputEditText
+            <LinearLayout
+                android:id="@+id/address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/address_tag">
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_imageurl_tag">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/EditFieldOneLine"
+                        android:hint="Enter merchant address" />
 
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/add_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:src="@drawable/add_field"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/address_layout" />
+
+            <TextView
+                android:id="@+id/add_address_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="7dp"
+                android:text="Add New Address"
+                app:layout_constraintStart_toEndOf="@+id/add_address"
+                app:layout_constraintTop_toBottomOf="@+id/address_layout" />
+
+            <TextView
+                android:id="@+id/discount_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:text="Discount"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_address_tag" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/discount"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="24dp"
-                android:hint="Discount"
-                app:helperText="Required*"
-                app:helperTextTextColor="@color/design_default_color_error"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/address">
+                app:layout_constraintTop_toBottomOf="@+id/discount_tag">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:hint="Enter discount here..." />
 
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/info_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:text="Extra Info (optional)"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/discount" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/info"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
                 android:layout_marginEnd="24dp"
-                android:hint="Extra Info"
-                app:helperText="Required*"
-                app:helperTextTextColor="@color/design_default_color_error"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/discount">
+                app:layout_constraintTop_toBottomOf="@+id/info_tag">
 
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:hint="Enter extra info here..." />
 
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/terms_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:text="Terms &amp; Conditions"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/info" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/terms"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="24dp"
-                android:hint="Term &amp; Conditions"
-                app:helperText="Required*"
-                app:helperTextTextColor="@color/design_default_color_error"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/info">
+                app:layout_constraintTop_toBottomOf="@+id/terms_tag">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:hint="Enter terms &amp; conditions here..." />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/submit_add_merchant"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="24dp"
