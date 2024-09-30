@@ -22,6 +22,8 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AddMerchantFragment extends Fragment {
 
@@ -122,26 +124,40 @@ public class AddMerchantFragment extends Fragment {
     private void addMerchant(Context context) {
         List<String> imageURLList = new ArrayList<>();
         List<String> addressList = new ArrayList<>();
+        AtomicBoolean hasError = new AtomicBoolean(false);
+        CountDownLatch latch = new CountDownLatch(imageUrlLayout.getChildCount());
 
-        AddMerchantUtils.getTextInputValues(imageURLList, imageUrlLayout);
+        AddMerchantUtils.validateImageURLs(imageURLList, imageUrlLayout, latch, hasError);
         AddMerchantUtils.getTextInputValues(addressList, adressLayout);
 
-        String merchantName = name.getEditText().getText().toString();
-        String merchantType = type.getEditText().getText().toString();
-        String merchantDiscount = discount.getEditText().getText().toString();
-        String merchantInfo = info.getEditText().getText().toString();
-        String merchantTerms = terms.getEditText().getText().toString();
+        new Thread(() -> {
+            try {
+                latch.await(); // Wait for all image URL validations to complete
+                if (hasError.get()) {
+                    // If there was an error, do not proceed with the API call
+                    return;
+                }
 
-        JsonObject add_merchant = new JsonObject();
-        add_merchant.add("imageURL", AddMerchantUtils.convertListToJsonArray(imageURLList));
-        add_merchant.addProperty("name", merchantName);
-        add_merchant.addProperty("type", merchantType);
-        add_merchant.add("address", AddMerchantUtils.convertListToJsonArray(addressList));
-        add_merchant.addProperty("discount", merchantDiscount);
-        add_merchant.addProperty("info", merchantInfo);
-        add_merchant.addProperty("terms", merchantTerms);
+                String merchantName = name.getEditText().getText().toString();
+                String merchantType = type.getEditText().getText().toString();
+                String merchantDiscount = discount.getEditText().getText().toString();
+                String merchantInfo = info.getEditText().getText().toString();
+                String merchantTerms = terms.getEditText().getText().toString();
 
-        AddMerchant_API.addMerchant(context, add_merchant, this);
+                JsonObject add_merchant = new JsonObject();
+                add_merchant.add("imageURL", AddMerchantUtils.convertListToJsonArray(imageURLList));
+                add_merchant.addProperty("name", merchantName);
+                add_merchant.addProperty("type", merchantType);
+                add_merchant.add("address", AddMerchantUtils.convertListToJsonArray(addressList));
+                add_merchant.addProperty("discount", merchantDiscount);
+                add_merchant.addProperty("info", merchantInfo);
+                add_merchant.addProperty("terms", merchantTerms);
+
+                AddMerchant_API.addMerchant(context, add_merchant, AddMerchantFragment.this);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void clearAllFields() {

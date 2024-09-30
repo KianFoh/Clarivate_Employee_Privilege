@@ -7,8 +7,12 @@ import android.widget.LinearLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonArray;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AddMerchantUtils {
 
@@ -52,6 +56,39 @@ public class AddMerchantUtils {
             TextInputEditText editText = (TextInputEditText) textInputLayout.getEditText();
             if (editText != null) {
                 list.add(editText.getText().toString());
+            }
+        }
+    }
+
+    public static void validateImageURLs(List<String> imageURLList, LinearLayout layout, CountDownLatch latch, AtomicBoolean hasError) {
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            TextInputLayout textInputLayout = (TextInputLayout) layout.getChildAt(i);
+            TextInputEditText editText = (TextInputEditText) textInputLayout.getEditText();
+            if (editText != null) {
+                String url = editText.getText().toString().trim();
+                if (url.isEmpty()) {
+                    latch.countDown(); // Decrement latch for empty URLs
+                    continue; // Ignore empty URLs
+                }
+
+                // Use Picasso to check if the image URL is valid
+                Picasso.get().load(url).fetch(new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        textInputLayout.setError(null); // Clear any previous error
+                        imageURLList.add(url); // Add to valid URLs if the image is successfully loaded
+                        latch.countDown(); // Decrement latch on success
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        textInputLayout.setError("Invalid image URL"); // Set error message
+                        hasError.set(true); // Set error flag
+                        latch.countDown(); // Decrement latch on error
+                    }
+                });
+            } else {
+                latch.countDown(); // Decrement latch if editText is null
             }
         }
     }
