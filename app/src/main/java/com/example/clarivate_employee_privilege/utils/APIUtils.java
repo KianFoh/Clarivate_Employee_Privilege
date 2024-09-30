@@ -4,11 +4,10 @@ package com.example.clarivate_employee_privilege.utils;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.api.CallAPI;
 import com.example.clarivate_employee_privilege.api.CustomCallback;
+import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,7 +21,7 @@ import okhttp3.Response;
 
 public class APIUtils {
 
-    public static void loadCategories(Context context, MutableLiveData<JsonArray> categoriesLiveData) {
+    public static void loadCategories(Context context) {
         Headers headers = new Headers.Builder()
                 .add("Authorization", "Bearer " + context
                         .getSharedPreferences("user_info", Context.MODE_PRIVATE)
@@ -40,7 +39,6 @@ public class APIUtils {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("ERROR_API_CALL_GET_CATEGORIES", e.toString());
-                categoriesLiveData.postValue(null);
             }
 
             @Override
@@ -48,13 +46,12 @@ public class APIUtils {
                 String responseData = response.body().string();
                 JsonObject responseObject = JsonParser.parseString(responseData).getAsJsonObject();
                 JsonArray categoriesArray = responseObject.getAsJsonArray("Categories");
-                categoriesLiveData.postValue(categoriesArray);
+                EventBus.getInstance().postCategoriesUpdate(categoriesArray);
             }
 
             @Override
             public void handleFailResponse(Response response, String responseBody) {
                 Log.e("API_CALL_GET_CATEGORIES", "API call failed: " + responseBody);
-                categoriesLiveData.postValue(null);
             }
         });
     }
