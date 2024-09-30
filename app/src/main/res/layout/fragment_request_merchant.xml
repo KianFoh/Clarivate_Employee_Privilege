@@ -101,7 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Select type of business"
-                android:inputType="none" />
+                android:inputType="none"
+                app:dropDownBackgroundTint="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
