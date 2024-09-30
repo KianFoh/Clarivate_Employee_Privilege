@@ -7,6 +7,7 @@
     tools:context=".navbar_menu.add_merchant.AddMerchantFragment">
 
     <ScrollView
+        android:id="@+id/addmerchant_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -142,7 +143,10 @@
                     style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter type of business" />
+                    android:dropDownWidth="wrap_content"
+                    android:dropDownHeight="wrap_content"
+                    android:hint="Enter type of business"
+                    app:dropDownBackgroundTint="@color/white" />
 
 
             </com.google.android.material.textfield.TextInputLayout>

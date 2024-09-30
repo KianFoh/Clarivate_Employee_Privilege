@@ -1,5 +1,7 @@
 package com.example.clarivate_employee_privilege;
 
+import static com.example.clarivate_employee_privilege.utils.APIUtils.loadCategories;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.activity.EdgeToEdge;
@@ -14,17 +17,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 
 import com.example.clarivate_employee_privilege.api.CallAPI;
 import com.example.clarivate_employee_privilege.api.CustomCallback;
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
-import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.HomeFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.MerchantsFragment;
-import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.profile.ProfileFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
@@ -63,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         // Initialize SocketServiceManager
         socketServiceManager = new SocketServiceManager(this, email, token);
         observeEventBus();
+
+        // Load categories
+        loadCategories(this);
     }
 
     @Override
@@ -77,8 +82,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (getCurrentFocus() != null) {
+            View currentFocus = getCurrentFocus();
+            currentFocus.clearFocus();
+
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -130,11 +138,11 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 MainActivity.this.runOnUiThread(() -> {
                     // Show fail api call message
-                    Log.d("ERROR Get User Info:", e.toString());
+                    Log.d("ERROR_API_CALL_GET_USER_INFO", e.toString());
                     Context context = MainActivity.this;
                     String message = "Failed to load latest user information";
                     ToastUtils.showToast(context, message, false);
-                    MainActivity.this.runOnUiThread(() -> navbar());
+                    navbar();
                 });
             }
 
@@ -168,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("API_CALL_GET_USER_INFO", "API call failed: " + error);
                 MainActivity.this.runOnUiThread(() -> {
                     Context context = MainActivity.this;
-                    String message = "Failed to load latest user information: " + error;
+                    String message = "Failed to load latest user information";
                     ToastUtils.showToast(context, message, false);
                     navbar();
                 });
@@ -265,19 +273,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void observeEventBus() {
         // Observe the admin status updates
-        EventBus.getInstance().getAdminStatusLiveData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isAdmin) {
-                // Update admin status in SharedPreferences
-                SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("isAdmin", isAdmin);
-                editor.apply();
+        EventBus.getInstance().getAdminStatusLiveData().observe(this, isAdmin -> {
+            // Update admin status in SharedPreferences
+            SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isAdmin", isAdmin);
+            editor.apply();
 
-                // Handle the admin status update here
-                MainActivity.this.runOnUiThread(MainActivity.this::navbar);
-                Log.d("MainActivity", "Admin Status UI updated");
-            }
+            // Handle the admin status update here
+            MainActivity.this.runOnUiThread(MainActivity.this::navbar);
+            Log.d("MainActivity", "Admin Status UI updated");
         });
     }
 }

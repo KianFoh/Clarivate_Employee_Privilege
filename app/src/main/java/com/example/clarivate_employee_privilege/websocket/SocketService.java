@@ -49,6 +49,7 @@ public class SocketService extends Service {
             socket.on(Socket.EVENT_DISCONNECT, socketEventListener.onDisconnect);
             socket.on(Socket.EVENT_CONNECT_ERROR, socketEventListener.onConnectError);
             socket.on("admin_status_update", socketEventListener.onAdminStatusUpdate);
+            socket.on("category_update", socketEventListener.onCategoriesUpdate);
 
             socket.connect();
         }

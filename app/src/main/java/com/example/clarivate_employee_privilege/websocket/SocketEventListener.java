@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
 
@@ -12,7 +14,6 @@ import io.socket.emitter.Emitter;
 public class SocketEventListener {
 
     private final SocketService socketService;
-    private SocketEventCallback.EventCallback eventCallback;
     private Context context;
 
     public SocketEventListener(SocketService socketService, Context context) {
@@ -69,5 +70,16 @@ public class SocketEventListener {
         // Refresh UI based on admin status
         // Post the event to the EventBus
         EventBus.getInstance().postAdminStatusUpdate(isAdmin);
+    };
+
+    public Emitter.Listener onCategoriesUpdate = args -> {
+        JSONObject data = (JSONObject) args[0];
+        Log.d("SocketEventListener", "Categories update received: " + data);
+
+        JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
+        JsonObject categoriesArray = responseObject.getAsJsonObject("Categories");
+
+        // Append the new category to the existing categories in the EventBus
+        EventBus.getInstance().appendCategoriesUpdate(categoriesArray);
     };
 }
