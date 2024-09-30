@@ -122,28 +122,41 @@ public class AddMerchantFragment extends Fragment {
     }
 
     private void addMerchant(Context context) {
+        // Initialize lists to store image URLs and addresses
         List<String> imageURLList = new ArrayList<>();
         List<String> addressList = new ArrayList<>();
+
+        // AtomicBoolean to track if there are any errors during URL validation
         AtomicBoolean hasError = new AtomicBoolean(false);
+
+        // CountDownLatch to wait for all image URL validations to complete
         CountDownLatch latch = new CountDownLatch(imageUrlLayout.getChildCount());
 
+        // Validate image URLs and populate imageURLList
         AddMerchantUtils.validateImageURLs(imageURLList, imageUrlLayout, latch, hasError);
+
+        // Get text input values for addresses and populate addressList
         AddMerchantUtils.getTextInputValues(addressList, adressLayout);
 
+        // Start a new thread to wait for URL validations to complete
         new Thread(() -> {
             try {
-                latch.await(); // Wait for all image URL validations to complete
+                // Wait for all image URL validations to complete
+                latch.await();
+
+                // If there was an error, do not proceed with the API call
                 if (hasError.get()) {
-                    // If there was an error, do not proceed with the API call
                     return;
                 }
 
+                // Retrieve merchant details from input fields
                 String merchantName = name.getEditText().getText().toString();
                 String merchantType = type.getEditText().getText().toString();
                 String merchantDiscount = discount.getEditText().getText().toString();
                 String merchantInfo = info.getEditText().getText().toString();
                 String merchantTerms = terms.getEditText().getText().toString();
 
+                // Create a JSON object to hold the merchant details
                 JsonObject add_merchant = new JsonObject();
                 add_merchant.add("imageURL", AddMerchantUtils.convertListToJsonArray(imageURLList));
                 add_merchant.addProperty("name", merchantName);
@@ -153,8 +166,10 @@ public class AddMerchantFragment extends Fragment {
                 add_merchant.addProperty("info", merchantInfo);
                 add_merchant.addProperty("terms", merchantTerms);
 
+                // Call the API to add the merchant
                 AddMerchant_API.addMerchant(context, add_merchant, AddMerchantFragment.this);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }).start();

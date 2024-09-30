@@ -61,11 +61,14 @@ public class AddMerchantUtils {
     }
 
     public static void validateImageURLs(List<String> imageURLList, LinearLayout layout, CountDownLatch latch, AtomicBoolean hasError) {
+        // Iterate through each child view in the layout
         for (int i = 0; i < layout.getChildCount(); i++) {
             TextInputLayout textInputLayout = (TextInputLayout) layout.getChildAt(i);
             TextInputEditText editText = (TextInputEditText) textInputLayout.getEditText();
+
             if (editText != null) {
                 String url = editText.getText().toString().trim();
+
                 if (url.isEmpty()) {
                     latch.countDown(); // Decrement latch for empty URLs
                     continue; // Ignore empty URLs
@@ -87,7 +90,8 @@ public class AddMerchantUtils {
                         latch.countDown(); // Decrement latch on error
                     }
                 });
-            } else {
+            }
+            else {
                 latch.countDown(); // Decrement latch if editText is null
             }
         }
