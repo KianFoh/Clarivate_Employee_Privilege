@@ -27,6 +27,7 @@ import com.example.clarivate_employee_privilege.navbar_menu.merchants.MerchantsF
 import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
+import com.example.clarivate_employee_privilege.utils.APIUtils;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Load categories
         loadCategories(this);
+
+        // Load merchants
+        APIUtils.loadMerchants(this);
     }
 
     @Override

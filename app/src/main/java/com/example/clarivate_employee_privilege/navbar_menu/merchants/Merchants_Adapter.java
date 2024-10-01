@@ -122,18 +122,15 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
             merchantCategory.setText(truncateText(category, 20)); // Adjust the maxLength as needed
 
             String imageUrl = merchant.has("Image") && !merchant.get("Image").isJsonNull() ? merchant.get("Image").getAsString() : null;
-            if (imageUrl != null) {
+            if (imageUrl != null && !imageUrl.isEmpty()) {
                 Picasso.get()
                         .load(imageUrl)
                         .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
-                        .resize(150, 150) // Resize to desired dimensions
-                        .centerCrop() // Crop to fit the dimensions
                         .into(merchantImage);
             } else {
                 Picasso.get()
-                        .load(R.drawable.card_name) // Default image
-                        .resize(150, 150) // Resize to desired dimensions
-                        .centerCrop() // Crop to fit the dimensions
+                        .load(R.drawable.merchant_image_placeholder) // Default image
+                        .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
                         .into(merchantImage);
             }
         }

@@ -72,14 +72,25 @@ public class SocketEventListener {
         EventBus.getInstance().postAdminStatusUpdate(isAdmin);
     };
 
-    public Emitter.Listener onCategoriesUpdate = args -> {
+    public Emitter.Listener onCategoriesAddedUpdate = args -> {
         JSONObject data = (JSONObject) args[0];
-        Log.d("SocketEventListener", "Categories update received: " + data);
+        Log.d("SocketEventListener", "Categories Added received: " + data);
 
         JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
         JsonObject categoriesArray = responseObject.getAsJsonObject("Categories");
 
         // Append the new category to the existing categories in the EventBus
         EventBus.getInstance().appendCategoriesUpdate(categoriesArray);
+    };
+
+    public Emitter.Listener onMerchantAddedUpdate = args -> {
+        JSONObject data = (JSONObject) args[0];
+        Log.d("SocketEventListener", "Merchant Added received: " + data);
+
+        JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
+        JsonObject merchant = responseObject.getAsJsonObject("Merchants");
+
+        // Append the new merchant to the existing merchants in the EventBus
+        EventBus.getInstance().appendMerchantsUpdate(merchant);
     };
 }

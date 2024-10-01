@@ -23,7 +23,11 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         ImageView img = view.findViewById(R.id.home_pic);
-        Picasso.get().load("https://lh5.googleusercontent.com/p/AF1QipNMQVtmIuSIiGdzilPPpVGoFBEa-mKyUX3XUCyS=w408-h306-k-no").into(img);
+        Picasso.get()
+                .load("https://lh5.googleusercontent.com/p/AF1QipNMQVtmIuSIiGdzilPPpVGoFBEa-mKyUX3XUCyS=w408-h306-k-no")
+                .resize(150, 150) // Resize to desired dimensions
+                .centerCrop() // Crop to fit the dimensions
+                .into(img);
 
         return view;
     }

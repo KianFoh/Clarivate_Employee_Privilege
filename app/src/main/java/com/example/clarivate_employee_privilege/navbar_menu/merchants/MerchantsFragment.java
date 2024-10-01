@@ -1,24 +1,26 @@
-// MerchantsFragment.java
 package com.example.clarivate_employee_privilege.navbar_menu.merchants;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clarivate_employee_privilege.R;
-import com.example.clarivate_employee_privilege.utils.APIUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MerchantsFragment extends Fragment {
@@ -26,32 +28,49 @@ public class MerchantsFragment extends Fragment {
     private JsonArray categories_json;
     private FilterButton_Adapter buttonAdapter;
     private Merchants_Adapter merchantsAdapter;
+    private MerchantsSearchAdapter searchAdapter;
+    private AutoCompleteTextView searchAutocomplete;
+    private boolean isFragmentVisible = false;
 
     public MerchantsFragment() {
         // Required empty public constructor
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getLifecycle().addObserver(new MerchantsFragmentLifecycleObserver());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_merchants, container, false);
+
+        // Get categories JSON
         categories_json = EventBus.getInstance().getCategoriesLiveData().getValue();
 
-        // Initialize the categoryNames list and add "All" to the beginning
-        List<String> categoryNames = new ArrayList<>();
-        categoryNames.add("All");
-
-        // Extract category names from the JSON array
-        if (categories_json != null) {
-            for (int i = 0; i < categories_json.size(); i++) {
-                JsonObject category = categories_json.get(i).getAsJsonObject();
-                String categoryName = category.get("Name").getAsString();
-                categoryNames.add(categoryName);
-            }
-        }
+        // Initialize category names
+        List<String> categoryNames = MerchantsUtils.initializeCategoryNames(categories_json);
         Log.d("MerchantsFragment", "Category names: " + categoryNames);
 
         // Set up the RecyclerView for categories
+        setupCategoryRecyclerView(view, categoryNames);
+
+        // Set up the RecyclerView for merchants
+        setupMerchantsRecyclerView(view);
+
+        // Set up the AutoCompleteTextView for search
+        setupSearchAutocomplete(view);
+
+        // Observe data changes
+        observeMerchants();
+        observeCategories();
+
+        return view;
+    }
+
+    private void setupCategoryRecyclerView(View view, List<String> categoryNames) {
         RecyclerView categoryRecyclerView = view.findViewById(R.id.merchants_filterRecycler);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         buttonAdapter = new FilterButton_Adapter(categoryNames, this::filterMerchants);
@@ -60,54 +79,106 @@ public class MerchantsFragment extends Fragment {
         // Set the "All" button to be toggled initially
         buttonAdapter.updateCategories(categoryNames);
         buttonAdapter.toggleButton("All");
+    }
 
-        // Set up the RecyclerView for merchants with GridLayoutManager
+    private void setupMerchantsRecyclerView(View view) {
         RecyclerView merchantsRecyclerView = view.findViewById(R.id.merchants_merchantList_Recycler);
         merchantsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns
-
-        // Initialize the adapter
         merchantsAdapter = new Merchants_Adapter(getContext(), new JsonArray());
         merchantsRecyclerView.setAdapter(merchantsAdapter);
-
-        // Load initial data
-        loadMerchantsData();
-
-        observeMerchants();
-        observeCategories();
-
-        return view;
     }
 
-    private void filterMerchants(String category) {
-        // Implement filtering logic here
+    private void updateSearchAdapter() {
+        List<String> merchantNames = getMerchantNamesBySelectedCategories();
+        searchAdapter = new MerchantsSearchAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, merchantNames);
+        searchAutocomplete.setAdapter(searchAdapter);
     }
 
-    private void loadMerchantsData() {
-        APIUtils.loadMerchants(getContext());
+    private List<String> getMerchantNamesBySelectedCategories() {
+        JsonArray allMerchants = EventBus.getInstance().getMerchantsLiveData().getValue();
+        return MerchantsUtils.getMerchantNamesBySelectedCategories(allMerchants, buttonAdapter.getSelectedCategories());
+    }
+
+    private void setupSearchAutocomplete(View view) {
+        searchAutocomplete = view.findViewById(R.id.merchants_searchAutocomplete);
+        updateSearchAdapter();
+
+        searchAutocomplete.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No action needed before text changes
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterMerchantsByName(s.toString());
+                updateSearchAdapter(); // Update the dropdown suggestions based on the current input
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // No action needed after text changes
+            }
+        });
+    }
+
+    private void filterMerchants(List<String> selectedCategories) {
+        if (merchantsAdapter == null) {
+            Log.e("MerchantsFragment", "merchantsAdapter is null");
+            return;
+        }
+
+        JsonArray allMerchants = EventBus.getInstance().getMerchantsLiveData().getValue();
+        JsonArray filteredMerchants = MerchantsUtils.filterMerchantsByCategories(allMerchants, selectedCategories);
+        merchantsAdapter.updateData(filteredMerchants);
+    }
+
+    private void filterMerchantsByName(String name) {
+        if (merchantsAdapter == null) {
+            Log.e("MerchantsFragment", "merchantsAdapter is null");
+            return;
+        }
+
+        JsonArray allMerchants = EventBus.getInstance().getMerchantsLiveData().getValue();
+        JsonArray filteredMerchants = MerchantsUtils.filterMerchantsByName(allMerchants, name, buttonAdapter.getSelectedCategories());
+        merchantsAdapter.updateData(filteredMerchants);
     }
 
     private void observeMerchants() {
         EventBus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), merchants -> {
-            List<JsonObject> merchantList = new ArrayList<>();
-            for (int i = 0; i < merchants.size(); i++) {
-                JsonObject merchant = merchants.get(i).getAsJsonObject();
-                merchantList.add(merchant);
+            if (isFragmentVisible) {
+                List<JsonObject> merchantList = MerchantsUtils.convertJsonArrayToList(merchants);
+                Log.d("MerchantsFragment", "Merchants updated: " + merchantList);
+                merchantsAdapter.updateData(merchants);
+                updateSearchAdapter(); // Update the search adapter when merchants data changes
+            } else {
+                Log.d("MerchantsFragment", "Fragment not visible, skipping UI update.");
             }
-            Log.d("MerchantsFragment", "Merchants updated: " + merchantList);
-            merchantsAdapter.updateData(merchants);
         });
     }
 
     private void observeCategories() {
         EventBus.getInstance().getCategoriesLiveData().observe(requireActivity(), categories -> {
-            List<String> categoryNames = new ArrayList<>();
-            categoryNames.add("All");
-            for (int i = 0; i < categories.size(); i++) {
-                JsonObject category = categories.get(i).getAsJsonObject();
-                String categoryName = category.get("Name").getAsString();
-                categoryNames.add(categoryName);
+            if (isFragmentVisible) {
+                List<String> categoryNames = MerchantsUtils.initializeCategoryNames(categories);
+                buttonAdapter.updateCategories(categoryNames);
+                updateSearchAdapter(); // Update the search adapter when categories change
+            } else {
+                Log.d("MerchantsFragment", "Fragment not visible, skipping UI update.");
             }
-            buttonAdapter.updateCategories(categoryNames);
         });
+    }
+
+    class MerchantsFragmentLifecycleObserver implements DefaultLifecycleObserver {
+
+        @Override
+        public void onStart(LifecycleOwner owner) {
+            isFragmentVisible = true;
+        }
+
+        @Override
+        public void onStop(LifecycleOwner owner) {
+            isFragmentVisible = false;
+        }
     }
 }

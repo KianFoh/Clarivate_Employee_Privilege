@@ -27,7 +27,7 @@ public class FilterButton_Adapter extends RecyclerView.Adapter<FilterButton_Adap
 
     // Interface for handling button click events
     public interface OnButtonClickListener {
-        void onButtonClick(String buttonText);
+        void onButtonClick(List<String> selectedCategories);
     }
 
     // Constructor for ButtonAdapter
@@ -46,7 +46,6 @@ public class FilterButton_Adapter extends RecyclerView.Adapter<FilterButton_Adap
         return new ButtonViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position) {
         // Set the button text and click listener
@@ -58,6 +57,12 @@ public class FilterButton_Adapter extends RecyclerView.Adapter<FilterButton_Adap
         holder.button.setOnClickListener(v -> {
             // Toggle the button state
             boolean newState = !buttonStates.get(position);
+
+            // If "All" is clicked and it's the only one toggled, do nothing
+            if (buttonText.equals("All") && buttonStates.contains(true) && buttonStates.indexOf(true) == position) {
+                return;
+            }
+
             buttonStates.set(position, newState);
 
             // If "All" is toggled, untoggle all other buttons
@@ -88,7 +93,17 @@ public class FilterButton_Adapter extends RecyclerView.Adapter<FilterButton_Adap
 
             // Update button colors based on new state
             updateButtonColors(holder.button, newState);
-            onButtonClickListener.onButtonClick(buttonText);
+
+            // Collect all selected categories
+            List<String> selectedCategories = new ArrayList<>();
+            for (int i = 0; i < buttonStates.size(); i++) {
+                if (buttonStates.get(i)) {
+                    selectedCategories.add(buttonList.get(i));
+                }
+            }
+
+            // Notify the listener with the selected categories
+            onButtonClickListener.onButtonClick(selectedCategories);
         });
     }
 
@@ -154,12 +169,6 @@ public class FilterButton_Adapter extends RecyclerView.Adapter<FilterButton_Adap
                 notifyItemChanged(i);
             }
         }
-
-        // Check if "All" is toggled and rerun its listener
-        int allIndex = buttonList.indexOf("All");
-        if (allIndex != -1 && buttonStates.get(allIndex)) {
-            onButtonClickListener.onButtonClick("All");
-        }
     }
 
     public void toggleButton(String buttonText) {
@@ -168,8 +177,27 @@ public class FilterButton_Adapter extends RecyclerView.Adapter<FilterButton_Adap
             boolean newState = !buttonStates.get(position);
             buttonStates.set(position, newState);
             notifyItemChanged(position);
-            onButtonClickListener.onButtonClick(buttonText);
+
+            // Collect all selected categories
+            List<String> selectedCategories = new ArrayList<>();
+            for (int i = 0; i < buttonStates.size(); i++) {
+                if (buttonStates.get(i)) {
+                    selectedCategories.add(buttonList.get(i));
+                }
+            }
+
+            // Notify the listener with the selected categories
+            onButtonClickListener.onButtonClick(selectedCategories);
         }
     }
 
+    public List<String> getSelectedCategories() {
+        List<String> selectedCategories = new ArrayList<>();
+        for (int i = 0; i < buttonStates.size(); i++) {
+            if (buttonStates.get(i)) {
+                selectedCategories.add(buttonList.get(i));
+            }
+        }
+        return selectedCategories;
+    }
 }
