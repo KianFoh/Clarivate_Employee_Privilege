@@ -63,7 +63,8 @@ public class AddMerchantFragment extends Fragment {
             ScrollView scroll = view.findViewById(R.id.addmerchant_scroll);
             typeAutoComplete.setOnFocusChangeListener((v, hasFocus) -> {
                 if (hasFocus) {
-                    scroll.smoothScrollTo(0, discount.getTop());
+                    int offset = 400;
+                    scroll.smoothScrollTo(type.getLeft(), ((int)type.getY()-offset));
                 }
             });
         }

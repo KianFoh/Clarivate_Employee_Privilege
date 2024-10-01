@@ -23,7 +23,7 @@ import com.example.clarivate_employee_privilege.api.CustomCallback;
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
 import com.example.clarivate_employee_privilege.navbar_menu.HomeFragment;
-import com.example.clarivate_employee_privilege.navbar_menu.MerchantsFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.merchants.MerchantsFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
