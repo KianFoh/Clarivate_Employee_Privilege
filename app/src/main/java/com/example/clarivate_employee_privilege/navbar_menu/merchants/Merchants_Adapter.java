@@ -1,6 +1,7 @@
 package com.example.clarivate_employee_privilege.navbar_menu.merchants;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clarivate_employee_privilege.R;
@@ -117,7 +121,7 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
         return merchants.size();
     }
 
-    static class MerchantViewHolder extends RecyclerView.ViewHolder {
+    class MerchantViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView merchantImage;
         private final TextView merchantName;
@@ -135,8 +139,9 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
          * @param merchant The merchant data.
          */
         public void bind(JsonObject merchant) {
-            String name = merchant.get("Name").getAsString();
-            String category = merchant.get("Category").getAsString();
+            String name = merchant.has("Name") && !merchant.get("Name").isJsonNull() ? merchant.get("Name").getAsString() : "Unknown";
+            String category = merchant.has("Category") && !merchant.get("Category").isJsonNull() ? merchant.get("Category").getAsString() : "Unknown";
+            String merchantId = merchant.has("ID") && !merchant.get("ID").isJsonNull() ? merchant.get("ID").getAsString() : "";
 
             merchantName.setText(truncateText(name, 20)); // Adjust the maxLength as needed
             merchantCategory.setText(truncateText(category, 20)); // Adjust the maxLength as needed
@@ -167,6 +172,7 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
                         .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
                         .into(merchantImage);
             }
+            merchantImage.setOnClickListener(v -> startMerchantFragment(merchantId));
         }
     }
 
@@ -183,4 +189,19 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
             return text;
         }
     }
+
+    private void startMerchantFragment(String merchantId) {
+        FragmentActivity activity = (FragmentActivity) context;
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        Fragment merchantFragment = new fragment_merchant();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("merchantId", merchantId);
+        merchantFragment.setArguments(bundle);
+
+        transaction.replace(R.id.main_fragment, merchantFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 }

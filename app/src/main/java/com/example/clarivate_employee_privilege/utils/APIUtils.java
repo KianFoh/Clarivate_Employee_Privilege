@@ -91,4 +91,39 @@ public class APIUtils {
             }
         });
     }
+
+    public static void loadMerchantById(Context context, String merchantId) {
+        Headers headers = new Headers.Builder()
+                .add("Authorization", "Bearer " + context
+                        .getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                        .getString("google_idToken", ""))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(context.getString(R.string.api_url) + "/merchant?id=" + merchantId)
+                .get()
+                .headers(headers)
+                .build();
+
+        CallAPI.getClient().newCall(request).enqueue(new CustomCallback(context, request) {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("API_CALL_GET_MERCHANT_BY_ID_ERROR", e.toString());
+            }
+
+            @Override
+            public void handleSuccessResponse(Response response) throws IOException {
+                String responseData = response.body().string();
+                JsonObject responseObject = JsonParser.parseString(responseData).getAsJsonObject();
+                EventBus.getInstance().postMerchantByIdUpdate(responseObject);
+                Log.d("API_CALL_GET_MERCHANT_BY_ID", "Merchant loaded: " + responseObject);
+            }
+
+            @Override
+            public void handleFailResponse(Response response, String responseBody) {
+                Log.d("API_CALL_GET_MERCHANT_BY_ID", "API call failed: " + responseBody);
+            }
+        });
+    }
 }

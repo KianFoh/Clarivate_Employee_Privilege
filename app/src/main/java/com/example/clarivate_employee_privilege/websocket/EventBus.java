@@ -1,3 +1,4 @@
+// EventBus.java
 package com.example.clarivate_employee_privilege.websocket;
 
 import android.util.Log;
@@ -13,6 +14,7 @@ public class EventBus {
     private final MutableLiveData<Boolean> adminStatusLiveData = new MutableLiveData<>();
     private final MutableLiveData<JsonArray> categoriesLiveData = new MutableLiveData<>();
     private final MutableLiveData<JsonArray> merchantsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<JsonObject> merchantByIdLiveData = new MutableLiveData<>();
 
     private EventBus() {}
 
@@ -45,7 +47,6 @@ public class EventBus {
         if (currentCategories == null) {
             currentCategories = new JsonArray();
         }
-        Log.d("EventBus", "Appending category: " + category);
         currentCategories.add(category);
         categoriesLiveData.postValue(currentCategories);
     }
@@ -96,5 +97,15 @@ public class EventBus {
             }
             merchantsLiveData.postValue(updatedMerchants);
         }
+    }
+
+    // New method to post merchant by ID update
+    public LiveData<JsonObject> getMerchantByIdLiveData() {
+        return merchantByIdLiveData;
+    }
+
+    public void postMerchantByIdUpdate(JsonObject merchant) {
+        Log.d("EventBus", "Posting merchant by ID update: " + merchant);
+        merchantByIdLiveData.postValue(merchant);
     }
 }
