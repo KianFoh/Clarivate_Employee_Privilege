@@ -22,6 +22,8 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AddMerchantFragment extends Fragment {
 
@@ -120,28 +122,57 @@ public class AddMerchantFragment extends Fragment {
     }
 
     private void addMerchant(Context context) {
+        // Initialize lists to store image URLs and addresses
         List<String> imageURLList = new ArrayList<>();
         List<String> addressList = new ArrayList<>();
 
-        AddMerchantUtils.getTextInputValues(imageURLList, imageUrlLayout);
+        // AtomicBoolean to track if there are any errors during URL validation
+        AtomicBoolean hasError = new AtomicBoolean(false);
+
+        // CountDownLatch to wait for all image URL validations to complete
+        CountDownLatch latch = new CountDownLatch(imageUrlLayout.getChildCount());
+
+        // Validate image URLs and populate imageURLList
+        AddMerchantUtils.validateImageURLs(imageURLList, imageUrlLayout, latch, hasError);
+
+        // Get text input values for addresses and populate addressList
         AddMerchantUtils.getTextInputValues(addressList, adressLayout);
 
-        String merchantName = name.getEditText().getText().toString();
-        String merchantType = type.getEditText().getText().toString();
-        String merchantDiscount = discount.getEditText().getText().toString();
-        String merchantInfo = info.getEditText().getText().toString();
-        String merchantTerms = terms.getEditText().getText().toString();
+        // Start a new thread to wait for URL validations to complete
+        new Thread(() -> {
+            try {
+                // Wait for all image URL validations to complete
+                latch.await();
 
-        JsonObject add_merchant = new JsonObject();
-        add_merchant.add("imageURL", AddMerchantUtils.convertListToJsonArray(imageURLList));
-        add_merchant.addProperty("name", merchantName);
-        add_merchant.addProperty("type", merchantType);
-        add_merchant.add("address", AddMerchantUtils.convertListToJsonArray(addressList));
-        add_merchant.addProperty("discount", merchantDiscount);
-        add_merchant.addProperty("info", merchantInfo);
-        add_merchant.addProperty("terms", merchantTerms);
+                // If there was an error, do not proceed with the API call
+                if (hasError.get()) {
+                    return;
+                }
 
-        AddMerchant_API.addMerchant(context, add_merchant, this);
+                // Retrieve merchant details from input fields
+                String merchantName = name.getEditText().getText().toString();
+                String merchantType = type.getEditText().getText().toString();
+                String merchantDiscount = discount.getEditText().getText().toString();
+                String merchantInfo = info.getEditText().getText().toString();
+                String merchantTerms = terms.getEditText().getText().toString();
+
+                // Create a JSON object to hold the merchant details
+                JsonObject add_merchant = new JsonObject();
+                add_merchant.add("imageURL", AddMerchantUtils.convertListToJsonArray(imageURLList));
+                add_merchant.addProperty("name", merchantName);
+                add_merchant.addProperty("type", merchantType);
+                add_merchant.add("address", AddMerchantUtils.convertListToJsonArray(addressList));
+                add_merchant.addProperty("discount", merchantDiscount);
+                add_merchant.addProperty("info", merchantInfo);
+                add_merchant.addProperty("terms", merchantTerms);
+
+                // Call the API to add the merchant
+                AddMerchant_API.addMerchant(context, add_merchant, AddMerchantFragment.this);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void clearAllFields() {
