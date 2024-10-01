@@ -28,6 +28,10 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
         this.merchants = merchants;
     }
 
+    /**
+     * Updates the data in the adapter and notifies the changes.
+     * @param newMerchants The new list of merchants.
+     */
     public void updateData(JsonArray newMerchants) {
         // Store previous states in a map
         Map<String, JsonObject> previousStates = new HashMap<>();
@@ -65,6 +69,12 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
         merchants = updatedMerchants;
     }
 
+    /**
+     * Checks if a merchant with the given name exists in the JsonArray.
+     * @param merchants The JsonArray of merchants.
+     * @param name The name of the merchant to check.
+     * @return True if the merchant exists, false otherwise.
+     */
     private boolean containsMerchant(JsonArray merchants, String name) {
         for (int i = 0; i < merchants.size(); i++) {
             if (merchants.get(i).getAsJsonObject().get("Name").getAsString().equals(name)) {
@@ -74,6 +84,12 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
         return false;
     }
 
+    /**
+     * Gets the index of a merchant with the given name in the JsonArray.
+     * @param merchants The JsonArray of merchants.
+     * @param name The name of the merchant to find.
+     * @return The index of the merchant, or -1 if not found.
+     */
     private int getMerchantIndex(JsonArray merchants, String name) {
         for (int i = 0; i < merchants.size(); i++) {
             if (merchants.get(i).getAsJsonObject().get("Name").getAsString().equals(name)) {
@@ -114,6 +130,10 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
             merchantCategory = itemView.findViewById(R.id.merchant_category);
         }
 
+        /**
+         * Binds the merchant data to the view holder.
+         * @param merchant The merchant data.
+         */
         public void bind(JsonObject merchant) {
             String name = merchant.get("Name").getAsString();
             String category = merchant.get("Category").getAsString();
@@ -136,6 +156,12 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
         }
     }
 
+    /**
+     * Truncates the text to a specified maximum length.
+     * @param text The text to truncate.
+     * @param maxLength The maximum length of the text.
+     * @return The truncated text.
+     */
     private static String truncateText(String text, int maxLength) {
         if (text.length() > maxLength) {
             return text.substring(0, maxLength - 3) + "...";

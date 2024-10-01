@@ -9,6 +9,11 @@ import java.util.List;
 
 public class MerchantsUtils {
 
+    /**
+     * Initializes category names from a JsonArray.
+     * @param categoriesJson The JsonArray containing category data.
+     * @return A list of category names.
+     */
     public static List<String> initializeCategoryNames(JsonArray categoriesJson) {
         List<String> categoryNames = new ArrayList<>();
         if (categoriesJson != null) {
@@ -22,6 +27,11 @@ public class MerchantsUtils {
         return categoryNames;
     }
 
+    /**
+     * Converts a JsonArray to a list of JsonObjects.
+     * @param jsonArray The JsonArray to convert.
+     * @return A list of JsonObjects.
+     */
     public static List<JsonObject> convertJsonArrayToList(JsonArray jsonArray) {
         List<JsonObject> list = new ArrayList<>();
         if (jsonArray != null) {
@@ -34,6 +44,12 @@ public class MerchantsUtils {
         return list;
     }
 
+    /**
+     * Gets merchant names by selected categories.
+     * @param allMerchants The JsonArray containing all merchants.
+     * @param selectedCategories The list of selected categories.
+     * @return A list of merchant names.
+     */
     public static List<String> getMerchantNamesBySelectedCategories(JsonArray allMerchants, List<String> selectedCategories) {
         List<String> merchantNames = new ArrayList<>();
         if (allMerchants != null) {
@@ -50,6 +66,12 @@ public class MerchantsUtils {
         return merchantNames;
     }
 
+    /**
+     * Filters merchants by selected categories.
+     * @param allMerchants The JsonArray containing all merchants.
+     * @param selectedCategories The list of selected categories.
+     * @return A JsonArray of filtered merchants.
+     */
     public static JsonArray filterMerchantsByCategories(JsonArray allMerchants, List<String> selectedCategories) {
         JsonArray filteredMerchants = new JsonArray();
         if (selectedCategories.contains("All") || selectedCategories.isEmpty()) {
@@ -67,6 +89,13 @@ public class MerchantsUtils {
         return filteredMerchants;
     }
 
+    /**
+     * Filters merchants by name and selected categories.
+     * @param allMerchants The JsonArray containing all merchants.
+     * @param name The name to filter by.
+     * @param selectedCategories The list of selected categories.
+     * @return A JsonArray of filtered merchants.
+     */
     public static JsonArray filterMerchantsByName(JsonArray allMerchants, String name, List<String> selectedCategories) {
         JsonArray filteredMerchants = new JsonArray();
         for (JsonElement merchantElement : allMerchants) {

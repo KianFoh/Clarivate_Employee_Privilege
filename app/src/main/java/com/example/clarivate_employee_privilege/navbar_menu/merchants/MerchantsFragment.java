@@ -70,6 +70,11 @@ public class MerchantsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Sets up the RecyclerView for displaying categories.
+     * @param view The root view of the fragment.
+     * @param categoryNames The list of category names.
+     */
     private void setupCategoryRecyclerView(View view, List<String> categoryNames) {
         RecyclerView categoryRecyclerView = view.findViewById(R.id.merchants_filterRecycler);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -81,6 +86,10 @@ public class MerchantsFragment extends Fragment {
         buttonAdapter.toggleButton("All");
     }
 
+    /**
+     * Sets up the RecyclerView for displaying merchants.
+     * @param view The root view of the fragment.
+     */
     private void setupMerchantsRecyclerView(View view) {
         RecyclerView merchantsRecyclerView = view.findViewById(R.id.merchants_merchantList_Recycler);
         merchantsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns
@@ -88,17 +97,28 @@ public class MerchantsFragment extends Fragment {
         merchantsRecyclerView.setAdapter(merchantsAdapter);
     }
 
+    /**
+     * Updates the search adapter with the current list of merchant names.
+     */
     private void updateSearchAdapter() {
         List<String> merchantNames = getMerchantNamesBySelectedCategories();
         searchAdapter = new MerchantsSearchAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, merchantNames);
         searchAutocomplete.setAdapter(searchAdapter);
     }
 
+    /**
+     * Gets the list of merchant names based on the selected categories.
+     * @return A list of merchant names.
+     */
     private List<String> getMerchantNamesBySelectedCategories() {
         JsonArray allMerchants = EventBus.getInstance().getMerchantsLiveData().getValue();
         return MerchantsUtils.getMerchantNamesBySelectedCategories(allMerchants, buttonAdapter.getSelectedCategories());
     }
 
+    /**
+     * Sets up the AutoCompleteTextView for searching merchants.
+     * @param view The root view of the fragment.
+     */
     private void setupSearchAutocomplete(View view) {
         searchAutocomplete = view.findViewById(R.id.merchants_searchAutocomplete);
         updateSearchAdapter();
@@ -122,6 +142,10 @@ public class MerchantsFragment extends Fragment {
         });
     }
 
+    /**
+     * Filters the merchants based on the selected categories.
+     * @param selectedCategories The list of selected categories.
+     */
     private void filterMerchants(List<String> selectedCategories) {
         if (merchantsAdapter == null) {
             Log.e("MerchantsFragment", "merchantsAdapter is null");
@@ -133,6 +157,10 @@ public class MerchantsFragment extends Fragment {
         merchantsAdapter.updateData(filteredMerchants);
     }
 
+    /**
+     * Filters the merchants based on the search input name.
+     * @param name The name to filter by.
+     */
     private void filterMerchantsByName(String name) {
         if (merchantsAdapter == null) {
             Log.e("MerchantsFragment", "merchantsAdapter is null");
@@ -144,6 +172,9 @@ public class MerchantsFragment extends Fragment {
         merchantsAdapter.updateData(filteredMerchants);
     }
 
+    /**
+     * Observes changes in the merchants data and updates the UI accordingly.
+     */
     private void observeMerchants() {
         EventBus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), merchants -> {
             if (isFragmentVisible) {
@@ -157,6 +188,9 @@ public class MerchantsFragment extends Fragment {
         });
     }
 
+    /**
+     * Observes changes in the categories data and updates the UI accordingly.
+     */
     private void observeCategories() {
         EventBus.getInstance().getCategoriesLiveData().observe(requireActivity(), categories -> {
             if (isFragmentVisible) {
@@ -169,6 +203,9 @@ public class MerchantsFragment extends Fragment {
         });
     }
 
+    /**
+     * Lifecycle observer to track the fragment's visibility state.
+     */
     class MerchantsFragmentLifecycleObserver implements DefaultLifecycleObserver {
 
         @Override
