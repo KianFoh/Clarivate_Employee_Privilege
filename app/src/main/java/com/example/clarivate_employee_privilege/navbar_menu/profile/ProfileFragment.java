@@ -6,12 +6,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.MainActivity;
@@ -82,13 +86,13 @@ public class ProfileFragment extends Fragment {
         ((TextView) view.findViewById(R.id.profile_email)).setText(email);
 
         int visibility = isAdmin ? View.VISIBLE : View.GONE;
-        view.findViewById(R.id.profile_manageadmin).setVisibility(visibility);
-        view.findViewById(R.id.profile_downloadrequests).setVisibility(visibility);
+//        view.findViewById(R.id.profile_manageadmin).setVisibility(visibility);
+//        view.findViewById(R.id.profile_downloadrequests).setVisibility(visibility);
 
         // Listeners
         view.findViewById(R.id.profile_signout).setOnClickListener(v -> Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService));
-        view.findViewById(R.id.profile_manageadmin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
-        view.findViewById(R.id.profile_downloadrequests).setOnClickListener(v -> Profile_API.downloadRequests(requireContext()));
+//        view.findViewById(R.id.profile_manageadmin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
+//        view.findViewById(R.id.profile_downloadrequests).setOnClickListener(v -> Profile_API.downloadRequests(requireContext()));
         return view;
     }
 
@@ -109,5 +113,46 @@ public class ProfileFragment extends Fragment {
             SocketServiceManager socketServiceManager = mainActivity.getSocketServiceManager();
             socketService = socketServiceManager.getSocketService();
         }
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        SharedPreferences sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        boolean isAdmin = sharedpreferences.getBoolean("isAdmin", false);
+
+        ImageButton menuButton = view.findViewById(R.id.menu_button);
+        if (isAdmin) {
+            menuButton.setVisibility(View.VISIBLE);
+            menuButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopupMenu(v);
+                }
+            });
+        } else {
+            menuButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.profile_manageadmin:
+                        Profile_Utils.showAddAdminDialog(requireContext(), profileAPI);
+                        return true;
+                    case R.id.profile_downloadrequests:
+                        Profile_API.downloadRequests(requireContext());
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
     }
 }
