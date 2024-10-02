@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.navbar_menu.merchantdetail.fragment_merchant;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
