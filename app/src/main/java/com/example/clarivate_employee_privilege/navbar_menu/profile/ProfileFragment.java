@@ -62,6 +62,8 @@ public class ProfileFragment extends Fragment {
 
         sharedpreferences = requireActivity().getSharedPreferences("name_card " + username, Context.MODE_PRIVATE);
         cardId = sharedpreferences.getString("card_id", "Not found");
+
+
     }
 
     @Override
@@ -93,6 +95,7 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.profile_signout).setOnClickListener(v -> Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService));
 //        view.findViewById(R.id.profile_manageadmin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
 //        view.findViewById(R.id.profile_downloadrequests).setOnClickListener(v -> Profile_API.downloadRequests(requireContext()));
+
         return view;
     }
 
