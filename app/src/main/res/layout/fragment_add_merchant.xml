@@ -78,6 +78,8 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="7dp"
                 android:text="Add Image URL"
+                android:textColor="#B075E1"
+                android:textColorLink="#000"
                 app:layout_constraintStart_toEndOf="@+id/addmerchant_addimageurl_button"
                 app:layout_constraintTop_toBottomOf="@+id/addmerchant_imageurl_layout" />
 
