@@ -16,6 +16,8 @@ public class MerchantsUtils {
      */
     public static List<String> initializeCategoryNames(JsonArray categoriesJson) {
         List<String> categoryNames = new ArrayList<>();
+        categoryNames.add("All"); // Add "All" category
+
         if (categoriesJson != null) {
             for (JsonElement categoryElement : categoriesJson) {
                 if (categoryElement.isJsonObject()) {
