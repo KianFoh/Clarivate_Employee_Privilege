@@ -3,6 +3,7 @@ package com.example.clarivate_employee_privilege;
 import static com.example.clarivate_employee_privilege.utils.APIUtils.loadCategories;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerc
 import com.example.clarivate_employee_privilege.navbar_menu.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
 import com.example.clarivate_employee_privilege.utils.APIUtils;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        AppUtils.showLoading(true, findViewById(R.id.main_progressbar));
 
         // Redirect to sign in page if user is not signed in or load latest user information
         user_Authentication();
@@ -146,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     Context context = MainActivity.this;
                     String message = "Failed to load latest user information";
                     ToastUtils.showToast(context, message, false);
+                    AppUtils.showLoading(false, ((Activity) context).findViewById(R.id.main_progressbar));
                     navbar();
                 });
             }
@@ -171,7 +176,11 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 Log.d("API_CALL_GET_USER_INFO", "Loaded Latest User information");
 
-                MainActivity.this.runOnUiThread(() -> navbar());
+                MainActivity.this.runOnUiThread(() -> {
+                    Context context = MainActivity.this;
+                    navbar();
+                    AppUtils.showLoading(false, ((Activity) context).findViewById(R.id.main_progressbar));
+                });
             }
             @Override
             public void handleFailResponse(Response response, String responseBody) {
@@ -182,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                     Context context = MainActivity.this;
                     String message = "Failed to load latest user information";
                     ToastUtils.showToast(context, message, false);
+                    AppUtils.showLoading(false, ((Activity) context).findViewById(R.id.main_progressbar));
                     navbar();
                 });
             }

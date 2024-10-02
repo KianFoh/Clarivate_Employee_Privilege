@@ -100,6 +100,10 @@ public class MerchantsUtils {
      */
     public static JsonArray filterMerchantsByName(JsonArray allMerchants, String name, List<String> selectedCategories) {
         JsonArray filteredMerchants = new JsonArray();
+
+        if (allMerchants == null) {
+            return filteredMerchants; // Return an empty JsonArray if allMerchants is null
+        }
         for (JsonElement merchantElement : allMerchants) {
             if (merchantElement.isJsonObject()) {
                 JsonObject merchant = merchantElement.getAsJsonObject();

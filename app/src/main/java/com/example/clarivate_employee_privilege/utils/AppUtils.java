@@ -2,6 +2,7 @@ package com.example.clarivate_employee_privilege.utils;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.view.View;
 
 import java.util.List;
 
@@ -44,5 +45,13 @@ public class AppUtils {
 
         // Return false if the app is not found to be in the foreground
         return false;
+    }
+
+    public static void showLoading(Boolean isLoading, View progressBar) {
+        if (isLoading) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 }
