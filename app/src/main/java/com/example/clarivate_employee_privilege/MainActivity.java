@@ -24,8 +24,8 @@ import com.example.clarivate_employee_privilege.api.CustomCallback;
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
 import com.example.clarivate_employee_privilege.navbar_menu.HomeFragment;
-import com.example.clarivate_employee_privilege.navbar_menu.merchants.MerchantsFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.merchants.MerchantsFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
 import com.example.clarivate_employee_privilege.utils.APIUtils;
@@ -76,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Load merchants
         APIUtils.loadMerchants(this);
+
+
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//            ((TextView)findViewById(R.id.toolbar_title)).setText("Activity Title");
     }
 
     @Override
