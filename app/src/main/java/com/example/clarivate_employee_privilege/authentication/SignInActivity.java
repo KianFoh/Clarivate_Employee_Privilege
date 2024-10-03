@@ -124,7 +124,7 @@ public class SignInActivity extends AppCompatActivity {
     private void createUser(String body, Headers headers, GoogleSignInAccount account) {
 
         Request request = new Request.Builder()
-                .url(getString(R.string.api_url) + "/users")
+                .url(getString(R.string.api_url) + "/user")
                 .post(RequestBody.create(body, MediaType.get("application/json; charset=utf-8")))
                 .headers(headers)
                 .build();
