@@ -9,13 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -31,7 +36,7 @@ public class fragment_merchant extends Fragment {
     private List<String> imgList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_merchantdetail, container, false);
@@ -47,12 +52,17 @@ public class fragment_merchant extends Fragment {
         addressesAdapter = new Addresses_Adapter(addressList);
         recyclerView.setAdapter(addressesAdapter);
 
-        // Initialize RecyclerView and Adapter for images
-        RecyclerView imageRecyclerView = view.findViewById(R.id.merchantdetail_imgs_recycler);
-        imageRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        // Initialize ViewPager2 and Adapter for images
+        ViewPager2 viewPager = view.findViewById(R.id.merchantdetail_imgs_viewpager);
+        TabLayout tabLayout = view.findViewById(R.id.merchantdetail_tab_layout);
         imgList = new ArrayList<>();
         imageAdapter = new Image_Adapter(imgList);
-        imageRecyclerView.setAdapter(imageAdapter);
+        viewPager.setAdapter(imageAdapter);
+
+        // Attach TabLayout with ViewPager2
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            // This can be left empty
+        }).attach();
 
         return view;
     }
