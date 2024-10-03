@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -66,6 +67,8 @@ public class MerchantsFragment extends Fragment {
         // Observe data changes
         observeMerchants();
         observeCategories();
+
+        AppUtils.setToolbarTitle(requireActivity(), "Merchants");
 
         return view;
     }

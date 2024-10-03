@@ -25,6 +25,7 @@ public class AddMerchantUtils {
         params.setMargins(0, 0, 0, dpToPx(5, context));
         newTextInputLayout.setLayoutParams(params);
         newTextInputLayout.setHintEnabled(false);
+        newTextInputLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT); // Set the end icon mode to clear text
 
         TextInputEditText newTextInputEditText = new TextInputEditText(newTextInputLayout.getContext());
         newTextInputEditText.setLayoutParams(new LinearLayout.LayoutParams(

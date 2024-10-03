@@ -9,17 +9,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.MainActivity;
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.utils.PermissionUtils;
 import com.example.clarivate_employee_privilege.websocket.SocketService;
 import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
@@ -63,7 +62,7 @@ public class ProfileFragment extends Fragment {
         sharedpreferences = requireActivity().getSharedPreferences("name_card " + username, Context.MODE_PRIVATE);
         cardId = sharedpreferences.getString("card_id", "Not found");
 
-
+        AppUtils.setToolbarTitle(requireActivity(), "Profile");
     }
 
     @Override
@@ -117,26 +116,26 @@ public class ProfileFragment extends Fragment {
             socketService = socketServiceManager.getSocketService();
         }
     }
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        SharedPreferences sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        boolean isAdmin = sharedpreferences.getBoolean("isAdmin", false);
-
-        ImageButton menuButton = view.findViewById(R.id.menu_button);
-        if (isAdmin) {
-            menuButton.setVisibility(View.VISIBLE);
-            menuButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPopupMenu(v);
-                }
-            });
-        } else {
-            menuButton.setVisibility(View.GONE);
-        }
-    }
+//    @Override
+//    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        SharedPreferences sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+//        boolean isAdmin = sharedpreferences.getBoolean("isAdmin", false);
+//
+//        ImageButton menuButton = view.findViewById(R.id.menu_button);
+//        if (isAdmin) {
+//            menuButton.setVisibility(View.VISIBLE);
+//            menuButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    showPopupMenu(v);
+//                }
+//            });
+//        } else {
+//            menuButton.setVisibility(View.GONE);
+//        }
+//    }
 
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);

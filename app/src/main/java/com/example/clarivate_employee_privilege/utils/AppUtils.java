@@ -1,8 +1,12 @@
 package com.example.clarivate_employee_privilege.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.view.View;
+import android.widget.TextView;
+
+import com.example.clarivate_employee_privilege.R;
 
 import java.util.List;
 
@@ -53,5 +57,11 @@ public class AppUtils {
         } else {
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    // Method to set the toolbar title
+    public static void setToolbarTitle(Activity activity, String title) {
+        TextView toolbarTitle = activity.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(title);
     }
 }
