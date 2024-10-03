@@ -27,7 +27,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class fragment_merchant extends Fragment {
+public class MerchantDetailFragment extends Fragment {
 
     private JsonObject merchantData;
     private Addresses_Adapter addressesAdapter;
