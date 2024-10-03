@@ -32,7 +32,7 @@ public class AddMerchant_API {
                 .build();
 
         Request request = new Request.Builder()
-                .url(context.getString(R.string.api_url) + "/add_merchant")
+                .url(context.getString(R.string.api_url) + "/merchant")
                 .post(RequestBody.create(body, MediaType.get("application/json; charset=utf-8")))
                 .headers(headers)
                 .build();

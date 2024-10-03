@@ -44,7 +44,7 @@ public class Profile_API {
                 .build();
 
         Request request = new Request.Builder()
-                .url(context.getString(R.string.api_url) + "/add_admin")
+                .url(context.getString(R.string.api_url) + "/admin")
                 .post(RequestBody.create(body, MediaType.get("application/json; charset=utf-8")))
                 .headers(headers)
                 .build();
@@ -94,7 +94,7 @@ public class Profile_API {
                 .build();
 
         // Build the URL with the email as a query parameter
-        String url = context.getString(R.string.api_url) + "/remove_admin?email=" + email;
+        String url = context.getString(R.string.api_url) + "/admin?email=" + email;
 
         Request request = new Request.Builder()
                 .url(url)

@@ -36,20 +36,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/menu_button"-->
-<!--            android:layout_width="27dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginTop="50dp"-->
-<!--            android:layout_marginEnd="20dp"-->
-<!--            android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--            android:src="@drawable/baseline_more_vert_24"-->
-<!--            android:visibility="visible"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="1.0"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/toolbar_title"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
         <View
             android:id="@+id/toolbar_line"
             android:layout_width="match_parent"

@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url(getString(R.string.api_url) + "/user_info?email=" + email)
+                .url(getString(R.string.api_url) + "/user?email=" + email)
                 .get()
                 .headers(headers)
                 .build();
