@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -63,6 +63,8 @@ public class fragment_merchant extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             // This can be left empty
         }).attach();
+
+        AppUtils.setToolbarTitle(requireActivity(), "Merchant Details");
 
         return view;
     }

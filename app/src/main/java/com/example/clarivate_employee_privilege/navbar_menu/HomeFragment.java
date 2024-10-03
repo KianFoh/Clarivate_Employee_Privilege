@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends Fragment {
@@ -29,6 +30,7 @@ public class HomeFragment extends Fragment {
                 .centerCrop() // Crop to fit the dimensions
                 .into(img);
 
+        AppUtils.setToolbarTitle(getActivity(), "Home");
         return view;
     }
 

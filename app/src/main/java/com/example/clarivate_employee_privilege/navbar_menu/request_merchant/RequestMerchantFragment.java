@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.api.CallAPI;
 import com.example.clarivate_employee_privilege.api.CustomCallback;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonObject;
@@ -70,6 +71,7 @@ public class RequestMerchantFragment extends Fragment {
             add_request_merchant(requireActivity(), name, type, contact);
         });
 
+        AppUtils.setToolbarTitle(requireActivity(), "Request Merchant");
 
         return view;
     }

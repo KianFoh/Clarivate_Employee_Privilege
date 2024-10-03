@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Load merchants
         APIUtils.loadMerchants(this);
+        setupToolbarBackButton();
 
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
@@ -303,6 +305,35 @@ public class MainActivity extends AppCompatActivity {
             // Handle the admin status update here
             MainActivity.this.runOnUiThread(MainActivity.this::navbar);
             Log.d("MainActivity", "Admin Status UI updated");
+        });
+    }
+
+    private void setupToolbarBackButton() {
+        ImageButton backButton = findViewById(R.id.toolbar_back_button);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        // Check the back stack count and set the visibility of the back button
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            backButton.setVisibility(View.VISIBLE);
+        } else {
+            backButton.setVisibility(View.GONE);
+        }
+
+        // Set the click listener for the back button
+        backButton.setOnClickListener(v -> {
+            if (fragmentManager.getBackStackEntryCount() > 0) {
+                Log.d("MainActivity", "Popping back stack");
+                fragmentManager.popBackStack();
+            }
+        });
+
+        // Add a back stack change listener to update the button visibility
+        fragmentManager.addOnBackStackChangedListener(() -> {
+            if (fragmentManager.getBackStackEntryCount() > 0) {
+                backButton.setVisibility(View.VISIBLE);
+            } else {
+                backButton.setVisibility(View.GONE);
+            }
         });
     }
 }

@@ -36,8 +36,8 @@ public class Image_Adapter extends RecyclerView.Adapter<Image_Adapter.ImageViewH
             Picasso.get()
                     .load(imageUrl)
                     .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
-                    .fit() // Automatically resize the image to fit the ImageView
-                    .centerCrop() // Crop to fit the ImageView
+                    .fit()
+                    .centerCrop()
                     .into(holder.imageView, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {

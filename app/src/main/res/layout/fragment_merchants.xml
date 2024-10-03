@@ -10,36 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/merchants_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="Merchants Fragment"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/merchants_searchLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
+            app:endIconMode="clear_text"
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/merchants_tag"
-            app:startIconDrawable="@drawable/merchants_search"
-            app:endIconMode="clear_text">
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/merchants_search">
 
             <AutoCompleteTextView
-                style="@style/EditFieldOneLine"
                 android:id="@+id/merchants_searchAutocomplete"
+                style="@style/EditFieldOneLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dropDownWidth="wrap_content"

@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.MainActivity;
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.utils.PermissionUtils;
 import com.example.clarivate_employee_privilege.websocket.SocketService;
 import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
@@ -63,7 +64,7 @@ public class ProfileFragment extends Fragment {
         sharedpreferences = requireActivity().getSharedPreferences("name_card " + username, Context.MODE_PRIVATE);
         cardId = sharedpreferences.getString("card_id", "Not found");
 
-
+        AppUtils.setToolbarTitle(requireActivity(), "Profile");
     }
 
     @Override

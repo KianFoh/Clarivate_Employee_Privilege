@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.google.android.material.textfield.TextInputLayout;
@@ -90,6 +91,8 @@ public class AddMerchantFragment extends Fragment {
             clearErrors();
             addMerchant(requireContext());
         });
+
+        AppUtils.setToolbarTitle(requireActivity(), "Add Merchant");
 
         return view;
     }

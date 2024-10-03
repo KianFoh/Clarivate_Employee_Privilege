@@ -152,6 +152,8 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
                 Picasso.get()
                         .load(imageUrl)
                         .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
+                        .fit()
+                        .centerCrop()
                         .into(merchantImage, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
@@ -164,6 +166,8 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
                                 Picasso.get()
                                         .load(R.drawable.merchant_image_placeholder) // Default image
                                         .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
+                                        .fit()
+                                        .centerCrop()
                                         .into(merchantImage);
                             }
                         });
@@ -171,6 +175,8 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
                 Picasso.get()
                         .load(R.drawable.merchant_image_placeholder) // Default image
                         .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
+                        .fit()
+                        .centerCrop()
                         .into(merchantImage);
             }
             merchantImage.setOnClickListener(v -> startMerchantFragment(merchantId));
