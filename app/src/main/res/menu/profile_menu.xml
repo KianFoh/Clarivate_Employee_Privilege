@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/more_item"
-        android:title="More"
-        android:icon="@drawable/lb_ic_more"
+        android:id="@+id/profile_menu"
+        android:title="Profile_menu"
+        android:icon="@drawable/baseline_more_vert_24"
         app:showAsAction="always">
         <menu>
             <item
