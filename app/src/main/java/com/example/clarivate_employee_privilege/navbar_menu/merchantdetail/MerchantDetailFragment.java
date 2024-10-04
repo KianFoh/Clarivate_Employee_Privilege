@@ -2,11 +2,15 @@ package com.example.clarivate_employee_privilege.navbar_menu.merchantdetail;
 
 import static com.example.clarivate_employee_privilege.utils.APIUtils.loadMerchantById;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.navbar_menu.profile.Profile_API;
+import com.example.clarivate_employee_privilege.navbar_menu.profile.Profile_Utils;
 import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.google.android.material.tabs.TabLayout;
@@ -32,8 +38,9 @@ public class MerchantDetailFragment extends Fragment {
     private JsonObject merchantData;
     private Addresses_Adapter addressesAdapter;
     private Image_Adapter imageAdapter;
-    private List<String> addressList;
-    private List<String> imgList;
+    private List<String> addressList, imgList;
+    private String merchantId;
+    private ImageButton toolbar_more;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -41,7 +48,7 @@ public class MerchantDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_merchantdetail, container, false);
 
-        String merchantId = getArguments().getString("merchantId");
+        merchantId = getArguments().getString("merchantId");
         observeMerchantById(merchantId, view);
         loadMerchantById(requireContext(), merchantId);
 
@@ -58,9 +65,6 @@ public class MerchantDetailFragment extends Fragment {
         imgList = new ArrayList<>();
         imageAdapter = new Image_Adapter(imgList);
         viewPager.setAdapter(imageAdapter);
-        view.findViewById(R.id.merchantdetail_delete_button).setOnClickListener(v -> {
-            Merchant_Utils.showDeleteMerchantDialog(requireContext(), new Merchant_API(), merchantId);
-        });
 
         // Attach TabLayout with ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
@@ -69,7 +73,45 @@ public class MerchantDetailFragment extends Fragment {
 
         AppUtils.setToolbarTitle(requireActivity(), "Merchant Details");
 
+        boolean isAdmin = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                .getBoolean("isAdmin", false);
+        int visibility = isAdmin ? View.VISIBLE : View.GONE;
+
+        toolbar_more = requireActivity().findViewById(R.id.toolbar_more);
+        toolbar_more.setVisibility(visibility);
+        toolbar_more.setOnClickListener(v -> merchantDetail_Popup(v));
+
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (toolbar_more != null && toolbar_more.getVisibility() == View.VISIBLE) {
+            toolbar_more.setVisibility(View.GONE);
+        }
+    }
+
+    private void merchantDetail_Popup(View view) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.getMenuInflater().inflate(R.menu.merchantdetail_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.merchantdetail_edit:
+                        // Edit merchant
+                        return true;
+                    case R.id.merchantdetail_delete:
+                        Merchant_Utils.showDeleteMerchantDialog(requireContext(), new Merchant_API(), merchantId);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
     }
 
     private void observeMerchantById(String merchantId, View view) {

@@ -2,6 +2,8 @@ package com.example.clarivate_employee_privilege.navbar_menu.merchantdetail;
 
 import android.app.Activity;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -57,6 +59,9 @@ public class Merchant_API {
                     String message = "Merchant removed successfully";
                     ToastUtils.showToast(context, message, true);
                     dialog.dismiss();
+
+                    // Go back to the previous fragment in the stack
+                    ((FragmentActivity) context).getSupportFragmentManager().popBackStack();
                 });
             }
 

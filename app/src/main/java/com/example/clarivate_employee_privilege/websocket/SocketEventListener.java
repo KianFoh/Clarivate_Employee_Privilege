@@ -83,6 +83,17 @@ public class SocketEventListener {
         EventBus.getInstance().appendCategoriesUpdate(categoriesArray);
     };
 
+    public Emitter.Listener onCategoriesDeletedUpdate = args -> {
+        JSONObject data = (JSONObject) args[0];
+        Log.d("SocketEventListener", "Categories Deleted received: " + data);
+
+        JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
+        int categoryID = responseObject.get("Categories").getAsInt();
+
+        // Append the new category to the existing categories in the EventBus
+        EventBus.getInstance().removeCategoriesUpdate(categoryID);
+    };
+
     public Emitter.Listener onMerchantAddedUpdate = args -> {
         JSONObject data = (JSONObject) args[0];
         Log.d("SocketEventListener", "Merchant Added received: " + data);
@@ -96,7 +107,7 @@ public class SocketEventListener {
 
     public Emitter.Listener onMerchantDeletedUpdate  = args -> {
         JSONObject data = (JSONObject) args[0];
-        Log.d("SocketEventListener", "Merchant Added received: " + data);
+        Log.d("SocketEventListener", "Merchant Deleted received: " + data);
 
         JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
         int merchantId = responseObject.get("Merchants").getAsInt();
