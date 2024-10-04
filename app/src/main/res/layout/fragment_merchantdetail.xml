@@ -218,6 +218,18 @@
 
             </FrameLayout>
 
+            <Button
+                android:id="@+id/merchantdetail_delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:text="Delete Merchant"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/merchantdetail_terms_container" />
+
             <!-- ProgressBar visible during loading -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>

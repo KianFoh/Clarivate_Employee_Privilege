@@ -14,8 +14,8 @@ import com.example.clarivate_employee_privilege.R;
 public class Merchant_Utils {
 
     // Show Add Admin Dialog
-    public static void showAddAdminDialog(Context context, Merchant_API merchantApi, String merchantId) {
-        // Inflate the add_admin_form.xml layout
+    public static void showDeleteMerchantDialog(Context context, Merchant_API merchantApi, String merchantId) {
+        // Inflate the delete merchant form layout
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.merchantdetail_delete, null);
 
@@ -33,10 +33,10 @@ public class Merchant_Utils {
         close.setOnClickListener(v -> dialog.dismiss());
         cancel.setOnClickListener(v -> dialog.dismiss());
 
-        // Set up the add admin button
+        // Set up the delete merchant button
         Button delete = dialogView.findViewById(R.id.merchantdetail_delete_delete);
         delete.setOnClickListener(v -> {
-            merchantApi.deleteMerchant(context,  merchantId);
+            merchantApi.deleteMerchant(context, dialog,  merchantId);
         });
 
         // Set the dialog window size to custom width and height
