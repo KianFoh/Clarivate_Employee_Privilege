@@ -27,7 +27,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class fragment_merchant extends Fragment {
+public class MerchantDetailFragment extends Fragment {
 
     private JsonObject merchantData;
     private Addresses_Adapter addressesAdapter;
@@ -58,6 +58,9 @@ public class fragment_merchant extends Fragment {
         imgList = new ArrayList<>();
         imageAdapter = new Image_Adapter(imgList);
         viewPager.setAdapter(imageAdapter);
+        view.findViewById(R.id.merchantdetail_delete_button).setOnClickListener(v -> {
+            Merchant_Utils.showDeleteMerchantDialog(requireContext(), new Merchant_API(), merchantId);
+        });
 
         // Attach TabLayout with ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
