@@ -88,14 +88,10 @@ public class ProfileFragment extends Fragment {
 
         int visibility = isAdmin ? View.VISIBLE : View.GONE;
         requireActivity().findViewById(R.id.toolbar_more).setVisibility(visibility);
-//        view.findViewById(R.id.profile_manageadmin).setVisibility(visibility);
-//        view.findViewById(R.id.profile_downloadrequests).setVisibility(visibility);
 
         // Listeners
         view.findViewById(R.id.profile_signout).setOnClickListener(v -> Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService));
         requireActivity().findViewById(R.id.toolbar_more).setOnClickListener(v -> showPopupMenu(v));
-//        view.findViewById(R.id.profile_manageadmin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
-//        view.findViewById(R.id.profile_downloadrequests).setOnClickListener(v -> Profile_API.downloadRequests(requireContext()));
 
         return view;
     }
@@ -124,29 +120,6 @@ public class ProfileFragment extends Fragment {
         super.onStop();
         requireActivity().findViewById(R.id.toolbar_more).setVisibility(View.GONE);
     }
-
-
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        SharedPreferences sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-//        boolean isAdmin = sharedpreferences.getBoolean("isAdmin", false);
-//
-//        ImageButton menuButton = view.findViewById(R.id.menu_button);
-//        if (isAdmin) {
-//            menuButton.setVisibility(View.VISIBLE);
-//            menuButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    showPopupMenu(v);
-//                }
-//            });
-//        } else {
-//            menuButton.setVisibility(View.GONE);
-//        }
-//    }
 
      private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
