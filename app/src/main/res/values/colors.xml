@@ -6,5 +6,6 @@
     <color name="offBlack">#2A2b2D</color>
     <color name="pastelPurple">#FAF6FF</color>
     <color name="primary">#FF000000</color>
+    <color name="gray">#FFBDBDBD</color>
 
 </resources>

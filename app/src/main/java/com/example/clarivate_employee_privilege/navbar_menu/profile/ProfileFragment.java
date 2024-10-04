@@ -87,11 +87,13 @@ public class ProfileFragment extends Fragment {
         ((TextView) view.findViewById(R.id.profile_email)).setText(email);
 
         int visibility = isAdmin ? View.VISIBLE : View.GONE;
+        requireActivity().findViewById(R.id.toolbar_more).setVisibility(visibility);
 //        view.findViewById(R.id.profile_manageadmin).setVisibility(visibility);
 //        view.findViewById(R.id.profile_downloadrequests).setVisibility(visibility);
 
         // Listeners
         view.findViewById(R.id.profile_signout).setOnClickListener(v -> Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService));
+        requireActivity().findViewById(R.id.toolbar_more).setOnClickListener(v -> showPopupMenu(v));
 //        view.findViewById(R.id.profile_manageadmin).setOnClickListener(v -> Profile_Utils.showAddAdminDialog(requireContext(), profileAPI));
 //        view.findViewById(R.id.profile_downloadrequests).setOnClickListener(v -> Profile_API.downloadRequests(requireContext()));
 
@@ -116,6 +118,15 @@ public class ProfileFragment extends Fragment {
             socketService = socketServiceManager.getSocketService();
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        requireActivity().findViewById(R.id.toolbar_more).setVisibility(View.GONE);
+    }
+
+
+
 //    @Override
 //    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 //        super.onViewCreated(view, savedInstanceState);
@@ -137,7 +148,7 @@ public class ProfileFragment extends Fragment {
 //        }
 //    }
 
-    private void showPopupMenu(View view) {
+     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
