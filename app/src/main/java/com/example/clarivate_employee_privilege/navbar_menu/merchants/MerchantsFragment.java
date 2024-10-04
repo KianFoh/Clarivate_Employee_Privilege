@@ -22,6 +22,7 @@ import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MerchantsFragment extends Fragment {
@@ -70,6 +71,9 @@ public class MerchantsFragment extends Fragment {
 
         AppUtils.setToolbarTitle(requireActivity(), "Merchants");
 
+        // Ensure the "All" button is toggled initially
+        buttonAdapter.toggleButton("All");
+
         return view;
     }
 
@@ -104,8 +108,17 @@ public class MerchantsFragment extends Fragment {
      * Updates the search adapter with the current list of merchant names.
      */
     private void updateSearchAdapter() {
-        List<String> merchantNames = getMerchantNamesBySelectedCategories();
-        searchAdapter = new MerchantsSearchAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, merchantNames);
+        String currentText = searchAutocomplete.getText().toString().toLowerCase();
+        List<String> allMerchantNames = getMerchantNamesBySelectedCategories();
+        List<String> filteredMerchantNames = new ArrayList<>();
+
+        for (String name : allMerchantNames) {
+            if (name.toLowerCase().contains(currentText)) {
+                filteredMerchantNames.add(name);
+            }
+        }
+
+        searchAdapter = new MerchantsSearchAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, filteredMerchantNames);
         searchAutocomplete.setAdapter(searchAdapter);
     }
 
@@ -156,8 +169,12 @@ public class MerchantsFragment extends Fragment {
         }
 
         JsonArray allMerchants = EventBus.getInstance().getMerchantsLiveData().getValue();
-        JsonArray filteredMerchants = MerchantsUtils.filterMerchantsByCategories(allMerchants, selectedCategories);
+        String currentSearchText = searchAutocomplete.getText().toString();
+        JsonArray filteredMerchants = MerchantsUtils.filterMerchantsByName(allMerchants, currentSearchText, selectedCategories);
         merchantsAdapter.updateData(filteredMerchants);
+
+        // Update the search adapter with the filtered merchant names
+        updateSearchAdapter();
     }
 
     /**
@@ -173,18 +190,31 @@ public class MerchantsFragment extends Fragment {
         JsonArray allMerchants = EventBus.getInstance().getMerchantsLiveData().getValue();
         JsonArray filteredMerchants = MerchantsUtils.filterMerchantsByName(allMerchants, name, buttonAdapter.getSelectedCategories());
         merchantsAdapter.updateData(filteredMerchants);
+
+        // Update the search adapter with the filtered merchant names
+        updateSearchAdapter();
     }
 
     /**
      * Observes changes in the merchants data and updates the UI accordingly.
      */
+// MerchantsFragment.java
     private void observeMerchants() {
         EventBus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), merchants -> {
             if (isFragmentVisible) {
                 List<JsonObject> merchantList = MerchantsUtils.convertJsonArrayToList(merchants);
                 Log.d("MerchantsFragment", "Merchants updated: " + merchantList);
                 merchantsAdapter.updateData(merchants);
-                updateSearchAdapter(); // Update the search adapter when merchants data changes
+
+                // Reapply the current filters
+                filterMerchants(buttonAdapter.getSelectedCategories());
+
+                // Reapply the search filter
+                String currentSearchText = searchAutocomplete.getText().toString();
+                filterMerchantsByName(currentSearchText);
+
+                // Update the search adapter with the filtered merchant names
+                updateSearchAdapter();
             } else {
                 Log.d("MerchantsFragment", "Fragment not visible, skipping UI update.");
             }

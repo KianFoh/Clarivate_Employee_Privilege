@@ -14,17 +14,18 @@ import com.example.clarivate_employee_privilege.R;
 public class Merchant_Utils {
 
     // Show Add Admin Dialog
-    public static void showDeleteMerchantDialog(Context context, Merchant_API merchantApi, String merchantId) {
+    public static AlertDialog showDeleteMerchantDialog(Context context, Merchant_API merchantApi, String merchantId) {
         // Inflate the delete merchant form layout
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.merchantdetail_delete, null);
+        AlertDialog dialog;
 
         // Create the AlertDialog with custom style
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomDialog);
         builder.setView(dialogView);
 
         // Show the dialog
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.show();
 
         // Set up the close button
@@ -43,5 +44,6 @@ public class Merchant_Utils {
         if (dialog.getWindow() != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
+        return dialog;
     }
 }

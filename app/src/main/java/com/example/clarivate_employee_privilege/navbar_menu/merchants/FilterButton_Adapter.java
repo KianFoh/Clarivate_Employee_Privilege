@@ -135,7 +135,7 @@ public class FilterButton_Adapter extends RecyclerView.Adapter<FilterButton_Adap
         }
     }
 
-    // Method to update categories
+    // FilterButton_Adapter.java
     public void updateCategories(List<String> newCategoryNames) {
         // Store previous states in a map
         Map<String, Boolean> previousStates = new HashMap<>();
@@ -167,6 +167,15 @@ public class FilterButton_Adapter extends RecyclerView.Adapter<FilterButton_Adap
             } else {
                 buttonStates.set(i, previousStates.get(category));
                 notifyItemChanged(i);
+            }
+        }
+
+        // Ensure "All" is toggled if no other buttons are toggled
+        if (!buttonStates.contains(true)) {
+            int allIndex = buttonList.indexOf("All");
+            if (allIndex != -1 && !buttonStates.get(allIndex)) {
+                buttonStates.set(allIndex, true);
+                notifyItemChanged(allIndex);
             }
         }
     }
