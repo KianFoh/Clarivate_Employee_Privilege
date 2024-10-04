@@ -17,8 +17,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/merchantdetail_address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:longClickable="true"
             android:padding="10dp">
 
             <TextView
@@ -27,6 +29,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="50dp"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:linksClickable="false"
+                android:longClickable="false"
                 android:text="address"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/merchantdetail_copy"
@@ -35,12 +41,12 @@
 
             <ImageButton
                 android:id="@+id/merchantdetail_copy"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:background="#00FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/merchantdetail_copyicon" />
+                app:srcCompat="@drawable/merchantdetail_address_map" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>

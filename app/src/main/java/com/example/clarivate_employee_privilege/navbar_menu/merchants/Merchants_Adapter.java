@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clarivate_employee_privilege.R;
-import com.example.clarivate_employee_privilege.navbar_menu.merchantdetail.fragment_merchant;
+import com.example.clarivate_employee_privilege.navbar_menu.merchantdetail.MerchantDetailFragment;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
@@ -200,7 +200,7 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
     private void startMerchantFragment(String merchantId) {
         FragmentActivity activity = (FragmentActivity) context;
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        Fragment merchantFragment = new fragment_merchant();
+        Fragment merchantFragment = new MerchantDetailFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString("merchantId", merchantId);
