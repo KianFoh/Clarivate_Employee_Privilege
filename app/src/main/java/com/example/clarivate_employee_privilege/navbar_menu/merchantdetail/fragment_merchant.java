@@ -92,7 +92,7 @@ public class fragment_merchant extends Fragment {
                     }
                     if (imgList.isEmpty()) {
                         Log.d("fragment_merchant", "No valid images found, adding placeholder image");
-                        imgList.add("android.resource://" + requireContext().getPackageName() + "/" + R.drawable.merchant_image_placeholder); // Add the resource URI of the placeholder image
+                        imgList.add("android.resource://" + requireContext().getPackageName() + "/" + R.drawable.clarivate_logo_black); // Add the resource URI of the placeholder image
                     } else {
                         Log.d("fragment_merchant", "Images found: " + imgList.size());
                     }

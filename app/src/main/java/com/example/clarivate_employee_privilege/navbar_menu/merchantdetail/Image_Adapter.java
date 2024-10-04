@@ -35,7 +35,7 @@ public class Image_Adapter extends RecyclerView.Adapter<Image_Adapter.ImageViewH
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Picasso.get()
                     .load(imageUrl)
-                    .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
+                    .placeholder(R.drawable.clarivate_logo_black) // Placeholder image
                     .fit()
                     .centerCrop()
                     .into(holder.imageView, new com.squareup.picasso.Callback() {
@@ -48,12 +48,12 @@ public class Image_Adapter extends RecyclerView.Adapter<Image_Adapter.ImageViewH
                         @Override
                         public void onError(Exception e) {
                             // Error loading image, set placeholder directly
-                            holder.imageView.setImageResource(R.drawable.merchant_image_placeholder);
+                            holder.imageView.setImageResource(R.drawable.clarivate_logo_black);
                             Log.d("Image_Adapter", "Error loading image: " + e.getMessage());
                         }
                     });
         } else {
-            holder.imageView.setImageResource(R.drawable.merchant_image_placeholder);
+            holder.imageView.setImageResource(R.drawable.clarivate_logo_black);
         }
     }
 

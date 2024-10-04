@@ -151,7 +151,7 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 Picasso.get()
                         .load(imageUrl)
-                        .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
+                        .placeholder(R.drawable.clarivate_logo_black) // Placeholder image
                         .fit()
                         .centerCrop()
                         .into(merchantImage, new com.squareup.picasso.Callback() {
@@ -164,8 +164,8 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
                             public void onError(Exception e) {
                                 // Error loading image, load placeholder
                                 Picasso.get()
-                                        .load(R.drawable.merchant_image_placeholder) // Default image
-                                        .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
+                                        .load(R.drawable.clarivate_logo_black) // Default image
+                                        .placeholder(R.drawable.clarivate_logo_black) // Placeholder image
                                         .fit()
                                         .centerCrop()
                                         .into(merchantImage);
@@ -173,8 +173,8 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
                         });
             } else {
                 Picasso.get()
-                        .load(R.drawable.merchant_image_placeholder) // Default image
-                        .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
+                        .load(R.drawable.clarivate_logo_black) // Default image
+                        .placeholder(R.drawable.clarivate_logo_black) // Placeholder image
                         .fit()
                         .centerCrop()
                         .into(merchantImage);
