@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.utils.AppUtils;
+import com.example.clarivate_employee_privilege.utils.MerchantUtils;
 import com.example.clarivate_employee_privilege.utils.ToastUtils;
 import com.example.clarivate_employee_privilege.websocket.EventBus;
 import com.google.android.material.textfield.TextInputLayout;
@@ -43,7 +44,7 @@ public class AddMerchantFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_merchant, container, false);
 
-        typeAutoComplete = view.findViewById(R.id.addmerchant_type);
+        typeAutoComplete = view.findViewById(R.id.merchantForm_type);
         categories_json = EventBus.getInstance().getCategoriesLiveData().getValue();
         if (categories_json != null) {
             List<String> categoryNames = new ArrayList<>();
@@ -71,22 +72,22 @@ public class AddMerchantFragment extends Fragment {
         }
         observeCategories();
 
-        imageurl = view.findViewById(R.id.addmerchant_imageurl_field);
-        name = view.findViewById(R.id.addmerchant_name_field);
-        type = view.findViewById(R.id.addmerchant_type_field);
-        address = view.findViewById(R.id.addmerchant_address_field);
-        discount = view.findViewById(R.id.addmerchant_discount_field);
-        info = view.findViewById(R.id.addmerchant_info_field);
-        terms = view.findViewById(R.id.addmerchant_terms_field);
+        imageurl = view.findViewById(R.id.merchantForm_imageurl_field);
+        name = view.findViewById(R.id.merchantForm_name_field);
+        type = view.findViewById(R.id.merchantForm_type_field);
+        address = view.findViewById(R.id.merchantForm_address_field);
+        discount = view.findViewById(R.id.merchantForm_discount_field);
+        info = view.findViewById(R.id.merchantForm_info_field);
+        terms = view.findViewById(R.id.merchantForm_terms_field);
 
-        imageUrlLayout = view.findViewById(R.id.addmerchant_imageurl_layout);
-        adressLayout = view.findViewById(R.id.addmerchant_address_layout);
+        imageUrlLayout = view.findViewById(R.id.merchantForm_imageurl_layout);
+        adressLayout = view.findViewById(R.id.merchantForm_address_layout);
 
-        add_imageURL = view.findViewById(R.id.addmerchant_addimageurl_button);
-        add_address = view.findViewById(R.id.addmerchant_addaddress_button);
+        add_imageURL = view.findViewById(R.id.merchantForm_addimageurl_button);
+        add_address = view.findViewById(R.id.merchantForm_addaddress_button);
 
-        add_imageURL.setOnClickListener(v -> AddMerchantUtils.addNewFields(imageUrlLayout, "Paste Image URL", getContext()));
-        add_address.setOnClickListener(v -> AddMerchantUtils.addNewFields(adressLayout, "Enter merchant address", getContext()));
+        add_imageURL.setOnClickListener(v -> MerchantUtils.addNewFields(imageUrlLayout, "Paste Image URL", getContext()));
+        add_address.setOnClickListener(v -> MerchantUtils.addNewFields(adressLayout, "Enter merchant address", getContext()));
         view.findViewById(R.id.addmerchant_submit).setOnClickListener(v -> {
             clearErrors();
             addMerchant(requireContext());
@@ -137,10 +138,10 @@ public class AddMerchantFragment extends Fragment {
         CountDownLatch latch = new CountDownLatch(imageUrlLayout.getChildCount());
 
         // Validate image URLs and populate imageURLList
-        AddMerchantUtils.validateImageURLs(imageURLList, imageUrlLayout, latch, hasError);
+        MerchantUtils.validateImageURLs(imageURLList, imageUrlLayout, latch, hasError);
 
         // Get text input values for addresses and populate addressList
-        AddMerchantUtils.getTextInputValues(addressList, adressLayout);
+        MerchantUtils.getTextInputValues(addressList, adressLayout);
 
         // Start a new thread to wait for URL validations to complete
         new Thread(() -> {
@@ -162,10 +163,10 @@ public class AddMerchantFragment extends Fragment {
 
                 // Create a JSON object to hold the merchant details
                 JsonObject add_merchant = new JsonObject();
-                add_merchant.add("imageURL", AddMerchantUtils.convertListToJsonArray(imageURLList));
+                add_merchant.add("imageURL", MerchantUtils.convertListToJsonArray(imageURLList));
                 add_merchant.addProperty("name", merchantName);
                 add_merchant.addProperty("type", merchantType);
-                add_merchant.add("address", AddMerchantUtils.convertListToJsonArray(addressList));
+                add_merchant.add("address", MerchantUtils.convertListToJsonArray(addressList));
                 add_merchant.addProperty("discount", merchantDiscount);
                 add_merchant.addProperty("info", merchantInfo);
                 add_merchant.addProperty("terms", merchantTerms);
@@ -187,8 +188,8 @@ public class AddMerchantFragment extends Fragment {
         discount.getEditText().setText("");
         info.getEditText().setText("");
         terms.getEditText().setText("");
-        AddMerchantUtils.removeAllViewsExceptFirst(imageUrlLayout);
-        AddMerchantUtils.removeAllViewsExceptFirst(adressLayout);
+        MerchantUtils.removeAllViewsExceptFirst(imageUrlLayout);
+        MerchantUtils.removeAllViewsExceptFirst(adressLayout);
     }
 
     public void handleError(String inputfield, String error) {

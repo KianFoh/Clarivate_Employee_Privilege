@@ -104,7 +104,15 @@ public class MerchantDetailFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.merchantdetail_edit:
-                        // Edit merchant
+                        // Start the Merchant_Edit fragment
+                        Merchant_Edit merchantEditFragment = new Merchant_Edit();
+                        Bundle args = new Bundle();
+                        args.putString("merchantData", merchantData.toString());
+                        merchantEditFragment.setArguments(args);
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragment, merchantEditFragment)
+                                .addToBackStack("merchant_edit")
+                                .commit();
                         return true;
                     case R.id.merchantdetail_delete:
                         dialog = Merchant_Utils.showDeleteMerchantDialog(requireContext(), new Merchant_API(), merchantId);
@@ -203,4 +211,6 @@ public class MerchantDetailFragment extends Fragment {
             }
         });
     }
+
+    
 }

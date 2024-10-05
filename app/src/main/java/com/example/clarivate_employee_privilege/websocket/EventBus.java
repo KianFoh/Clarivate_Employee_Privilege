@@ -99,6 +99,21 @@ public class EventBus {
         }
     }
 
+    public void editMerchantsUpdate(JsonObject merchant) {
+        Log.d("EventBus", "Updating merchant: " + merchant);
+        JsonArray currentMerchants = merchantsLiveData.getValue();
+        if (currentMerchants != null) {
+            for (int i = 0; i < currentMerchants.size(); i++) {
+                JsonObject currentMerchant = currentMerchants.get(i).getAsJsonObject();
+                if (currentMerchant.get("ID").getAsInt() == merchant.get("ID").getAsInt()) {
+                    currentMerchants.set(i, merchant); // Update the existing merchant
+                    break;
+                }
+            }
+            merchantsLiveData.postValue(currentMerchants);
+        }
+    }
+
     // New method to post merchant by ID update
     public LiveData<JsonObject> getMerchantByIdLiveData() {
         return merchantByIdLiveData;

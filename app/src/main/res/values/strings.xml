@@ -10,4 +10,6 @@
     <string name="email_domain">gmail.com</string> <!-- Change this to your email domain -->
     <string name="server_client_id">223452399978-323pardairq17ovgjd075bga67je0he1.apps.googleusercontent.com</string> <!-- Change this to your Server Client ID -->
     <string name="api_url">http://192.168.50.102:5000</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

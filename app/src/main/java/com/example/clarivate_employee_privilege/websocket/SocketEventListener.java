@@ -115,4 +115,14 @@ public class SocketEventListener {
         // Append the new merchant to the existing merchants in the EventBus
         EventBus.getInstance().removeMerchantsUpdate(merchantId);
     };
+    public  Emitter.Listener OnMerchantEditUpdate = args -> {
+        JSONObject data = (JSONObject) args[0];
+        Log.d("SocketEventListener", "Merchant Edit Updated received: " + data);
+
+        JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
+        JsonObject merchant = responseObject.getAsJsonObject("Merchants");
+
+        // Append the new merchant to the existing merchants in the EventBus
+        EventBus.getInstance().editMerchantsUpdate(merchant);
+    };
 }
