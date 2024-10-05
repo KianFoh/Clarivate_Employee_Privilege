@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 
 public class EventBus {
     private static EventBus instance;
-    private final MutableLiveData<Boolean> adminStatusLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isadminLiveData = new MutableLiveData<>();
     private final MutableLiveData<JsonArray> categoriesLiveData = new MutableLiveData<>();
     private final MutableLiveData<JsonArray> merchantsLiveData = new MutableLiveData<>();
     private final MutableLiveData<JsonObject> merchantByIdLiveData = new MutableLiveData<>();
@@ -25,12 +25,12 @@ public class EventBus {
         return instance;
     }
 
-    public LiveData<Boolean> getAdminStatusLiveData() {
-        return adminStatusLiveData;
+    public LiveData<Boolean> getIsadminLiveData() {
+        return isadminLiveData;
     }
 
     public void postAdminStatusUpdate(boolean isAdmin) {
-        adminStatusLiveData.postValue(isAdmin);
+        isadminLiveData.postValue(isAdmin);
     }
 
     public LiveData<JsonArray> getCategoriesLiveData() {
@@ -96,6 +96,21 @@ public class EventBus {
                 }
             }
             merchantsLiveData.postValue(updatedMerchants);
+        }
+    }
+
+    public void editMerchantsUpdate(JsonObject merchant) {
+        Log.d("EventBus", "Updating merchant: " + merchant);
+        JsonArray currentMerchants = merchantsLiveData.getValue();
+        if (currentMerchants != null) {
+            for (int i = 0; i < currentMerchants.size(); i++) {
+                JsonObject currentMerchant = currentMerchants.get(i).getAsJsonObject();
+                if (currentMerchant.get("ID").getAsInt() == merchant.get("ID").getAsInt()) {
+                    currentMerchants.set(i, merchant); // Update the existing merchant
+                    break;
+                }
+            }
+            merchantsLiveData.postValue(currentMerchants);
         }
     }
 

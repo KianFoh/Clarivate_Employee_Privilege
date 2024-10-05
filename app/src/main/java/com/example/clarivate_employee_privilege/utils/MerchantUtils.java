@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege.navbar_menu.add_merchant;
+package com.example.clarivate_employee_privilege.utils;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class AddMerchantUtils {
+public class MerchantUtils {
 
     public static void addNewFields(LinearLayout layout, String hint, Context context) {
         TextInputLayout newTextInputLayout = new TextInputLayout(context);
@@ -25,7 +25,7 @@ public class AddMerchantUtils {
         params.setMargins(0, 0, 0, dpToPx(5, context));
         newTextInputLayout.setLayoutParams(params);
         newTextInputLayout.setHintEnabled(false);
-        newTextInputLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT); // Set the end icon mode to clear text
+        newTextInputLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
 
         TextInputEditText newTextInputEditText = new TextInputEditText(newTextInputLayout.getContext());
         newTextInputEditText.setLayoutParams(new LinearLayout.LayoutParams(
@@ -39,26 +39,6 @@ public class AddMerchantUtils {
 
         newTextInputLayout.addView(newTextInputEditText);
         layout.addView(newTextInputLayout);
-    }
-
-    public static int dpToPx(int dp, Context context) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
-    }
-
-    public static void removeAllViewsExceptFirst(LinearLayout layout) {
-        for (int i = layout.getChildCount() - 1; i > 0; i--) {
-            layout.removeViewAt(i);
-        }
-    }
-
-    public static void getTextInputValues(List<String> list, LinearLayout layout) {
-        for (int i = 0; i < layout.getChildCount(); i++) {
-            TextInputLayout textInputLayout = (TextInputLayout) layout.getChildAt(i);
-            TextInputEditText editText = (TextInputEditText) textInputLayout.getEditText();
-            if (editText != null) {
-                list.add(editText.getText().toString());
-            }
-        }
     }
 
     public static void validateImageURLs(List<String> imageURLList, LinearLayout layout, CountDownLatch latch, AtomicBoolean hasError) {
@@ -94,6 +74,26 @@ public class AddMerchantUtils {
             }
             else {
                 latch.countDown(); // Decrement latch if editText is null
+            }
+        }
+    }
+
+    public static int dpToPx(int dp, Context context) {
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
+    }
+
+    public static void removeAllViewsExceptFirst(LinearLayout layout) {
+        for (int i = layout.getChildCount() - 1; i > 0; i--) {
+            layout.removeViewAt(i);
+        }
+    }
+
+    public static void getTextInputValues(List<String> list, LinearLayout layout) {
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            TextInputLayout textInputLayout = (TextInputLayout) layout.getChildAt(i);
+            TextInputEditText editText = (TextInputEditText) textInputLayout.getEditText();
+            if (editText != null && editText.getText() != null && !editText.getText().toString().trim().isEmpty()) {
+                list.add(editText.getText().toString());
             }
         }
     }

@@ -1,0 +1,15 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/merchantdetail_edit"
+        android:icon="@drawable/ic_manage_accounts"
+        android:title="Edit Merchant"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/merchantdetail_delete"
+        android:icon="@drawable/ic_file_download"
+        android:title="Delete Merchant"
+        app:showAsAction="never"/>
+</menu>

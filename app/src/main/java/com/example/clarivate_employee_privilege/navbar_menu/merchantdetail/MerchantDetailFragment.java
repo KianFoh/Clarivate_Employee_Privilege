@@ -2,14 +2,19 @@ package com.example.clarivate_employee_privilege.navbar_menu.merchantdetail;
 
 import static com.example.clarivate_employee_privilege.utils.APIUtils.loadMerchantById;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,8 +37,10 @@ public class MerchantDetailFragment extends Fragment {
     private JsonObject merchantData;
     private Addresses_Adapter addressesAdapter;
     private Image_Adapter imageAdapter;
-    private List<String> addressList;
-    private List<String> imgList;
+    private List<String> addressList, imgList;
+    private String merchantId;
+    private ImageButton toolbar_more;
+    private AlertDialog dialog;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -41,8 +48,8 @@ public class MerchantDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_merchantdetail, container, false);
 
-        String merchantId = getArguments().getString("merchantId");
-        observeMerchantById(merchantId, view);
+        merchantId = getArguments().getString("merchantId");
+        observeMerchant(merchantId, view);
         loadMerchantById(requireContext(), merchantId);
 
         // Initialize RecyclerView and Adapter for addresses
@@ -58,9 +65,6 @@ public class MerchantDetailFragment extends Fragment {
         imgList = new ArrayList<>();
         imageAdapter = new Image_Adapter(imgList);
         viewPager.setAdapter(imageAdapter);
-        view.findViewById(R.id.merchantdetail_delete_button).setOnClickListener(v -> {
-            Merchant_Utils.showDeleteMerchantDialog(requireContext(), new Merchant_API(), merchantId);
-        });
 
         // Attach TabLayout with ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
@@ -69,11 +73,64 @@ public class MerchantDetailFragment extends Fragment {
 
         AppUtils.setToolbarTitle(requireActivity(), "Merchant Details");
 
+        boolean isAdmin = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                .getBoolean("isAdmin", false);
+        int visibility = isAdmin ? View.VISIBLE : View.GONE;
+
+        toolbar_more = requireActivity().findViewById(R.id.toolbar_more);
+        toolbar_more.setVisibility(visibility);
+        toolbar_more.setOnClickListener(v -> merchantDetail_Popup(v));
+
+
         return view;
     }
 
-    private void observeMerchantById(String merchantId, View view) {
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (toolbar_more != null && toolbar_more.getVisibility() == View.VISIBLE) {
+            toolbar_more.setVisibility(View.GONE);
+        }
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    private void merchantDetail_Popup(View view) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.getMenuInflater().inflate(R.menu.merchantdetail_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.merchantdetail_edit:
+                        // Start the Merchant_Edit fragment
+                        Merchant_Edit merchantEditFragment = new Merchant_Edit();
+                        Bundle args = new Bundle();
+                        args.putString("merchantData", merchantData.toString());
+                        merchantEditFragment.setArguments(args);
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragment, merchantEditFragment)
+                                .addToBackStack("merchant_edit")
+                                .commit();
+                        return true;
+                    case R.id.merchantdetail_delete:
+                        dialog = Merchant_Utils.showDeleteMerchantDialog(requireContext(), new Merchant_API(), merchantId);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void observeMerchant(String merchantId, View view) {
+
+        // load merchant by ID
         EventBus.getInstance().getMerchantByIdLiveData().observe(getViewLifecycleOwner(), new Observer<JsonObject>() {
+
+           // API call to get merchant by ID
             @Override
             public void onChanged(JsonObject merchant) {
                 if (merchant != null && merchantId.equals(merchant.get("Merchant").getAsJsonObject().get("ID").getAsString())) {
@@ -102,7 +159,7 @@ public class MerchantDetailFragment extends Fragment {
                     imageAdapter.notifyDataSetChanged();
 
                     // Update merchant details
-                    String name  = merchantData.get("Name").getAsString();
+                    String name = merchantData.get("Name").getAsString();
                     ((TextView)view.findViewById(R.id.merchantdetail_name)).setText(name);
 
                     String category = merchantData.get("Category").getAsString();
@@ -135,5 +192,25 @@ public class MerchantDetailFragment extends Fragment {
                 }
             }
         });
+        EventBus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), new Observer<JsonArray>() {
+            @Override
+            public void onChanged(JsonArray merchants) {
+                boolean merchantIdFound = false;
+                for (int i = 0; i < merchants.size(); i++) {
+                    JsonObject merchant = merchants.get(i).getAsJsonObject();
+                    String id = merchant.get("ID").getAsString();
+                    if (merchantId.equals(id)) {
+                        merchantIdFound = true;
+                        break;
+                    }
+                }
+                if (!merchantIdFound) {
+                    Log.d("fragment_merchant", "Current merchant ID not found in the updated merchants list");
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
     }
+
+    
 }

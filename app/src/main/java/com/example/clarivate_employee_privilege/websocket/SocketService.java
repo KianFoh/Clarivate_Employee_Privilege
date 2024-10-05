@@ -50,8 +50,10 @@ public class SocketService extends Service {
             socket.on(Socket.EVENT_CONNECT_ERROR, socketEventListener.onConnectError);
             socket.on("admin_status_update", socketEventListener.onAdminStatusUpdate);
             socket.on("category_added", socketEventListener.onCategoriesAddedUpdate);
+            socket.on("category_deleted", socketEventListener.onCategoriesDeletedUpdate);
             socket.on("merchant_added", socketEventListener.onMerchantAddedUpdate);
-
+            socket.on("merchant_deleted", socketEventListener.onMerchantDeletedUpdate);
+            socket.on("merchant_edited", socketEventListener.OnMerchantEditUpdate);
             socket.connect();
         }
         catch (URISyntaxException e) {

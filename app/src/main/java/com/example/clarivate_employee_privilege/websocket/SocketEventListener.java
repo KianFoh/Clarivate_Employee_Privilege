@@ -3,7 +3,9 @@ package com.example.clarivate_employee_privilege.websocket;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.clarivate_employee_privilege.MainActivity;
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
+import com.example.clarivate_employee_privilege.utils.APIUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -21,8 +23,23 @@ public class SocketEventListener {
         this.context = context;
     }
 
-    public Emitter.Listener onConnect = args -> Log.d("SocketEventListener", "Connected to the server");
+    // SocketEventListener.java
+    public Emitter.Listener onConnect = args -> {
+        Log.d("SocketEventListener", "Connected to the server");
+        // Get the current Activity context
+        Context context = MainActivity.getContext();
 
+        // Load user data
+        APIUtils.loadUserInfo(context);
+
+        // Load merchants
+        APIUtils.loadMerchants(context);
+
+        // Load categories
+        APIUtils.loadCategories(context);
+
+        // Add other data loading methods as needed
+    };
     public Emitter.Listener onDisconnect = args -> Log.d("SocketEventListener", "Disconnected from the server");
 
     public Emitter.Listener onConnectError = args -> {
@@ -83,6 +100,17 @@ public class SocketEventListener {
         EventBus.getInstance().appendCategoriesUpdate(categoriesArray);
     };
 
+    public Emitter.Listener onCategoriesDeletedUpdate = args -> {
+        JSONObject data = (JSONObject) args[0];
+        Log.d("SocketEventListener", "Categories Deleted received: " + data);
+
+        JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
+        int categoryID = responseObject.get("Categories").getAsInt();
+
+        // Append the new category to the existing categories in the EventBus
+        EventBus.getInstance().removeCategoriesUpdate(categoryID);
+    };
+
     public Emitter.Listener onMerchantAddedUpdate = args -> {
         JSONObject data = (JSONObject) args[0];
         Log.d("SocketEventListener", "Merchant Added received: " + data);
@@ -96,12 +124,22 @@ public class SocketEventListener {
 
     public Emitter.Listener onMerchantDeletedUpdate  = args -> {
         JSONObject data = (JSONObject) args[0];
-        Log.d("SocketEventListener", "Merchant Added received: " + data);
+        Log.d("SocketEventListener", "Merchant Deleted received: " + data);
 
         JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
         int merchantId = responseObject.get("Merchants").getAsInt();
 
         // Append the new merchant to the existing merchants in the EventBus
         EventBus.getInstance().removeMerchantsUpdate(merchantId);
+    };
+    public  Emitter.Listener OnMerchantEditUpdate = args -> {
+        JSONObject data = (JSONObject) args[0];
+        Log.d("SocketEventListener", "Merchant Edit Updated received: " + data);
+
+        JsonObject responseObject = JsonParser.parseString(data.toString()).getAsJsonObject();
+        JsonObject merchant = responseObject.getAsJsonObject("Merchants");
+
+        // Append the new merchant to the existing merchants in the EventBus
+        EventBus.getInstance().editMerchantsUpdate(merchant);
     };
 }
