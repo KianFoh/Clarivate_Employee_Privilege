@@ -3,7 +3,9 @@ package com.example.clarivate_employee_privilege.websocket;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.clarivate_employee_privilege.MainActivity;
 import com.example.clarivate_employee_privilege.authentication.AuthUtils;
+import com.example.clarivate_employee_privilege.utils.APIUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -21,8 +23,23 @@ public class SocketEventListener {
         this.context = context;
     }
 
-    public Emitter.Listener onConnect = args -> Log.d("SocketEventListener", "Connected to the server");
+    // SocketEventListener.java
+    public Emitter.Listener onConnect = args -> {
+        Log.d("SocketEventListener", "Connected to the server");
+        // Get the current Activity context
+        Context context = MainActivity.getContext();
 
+        // Load user data
+        APIUtils.loadUserInfo(context);
+
+        // Load merchants
+        APIUtils.loadMerchants(context);
+
+        // Load categories
+        APIUtils.loadCategories(context);
+
+        // Add other data loading methods as needed
+    };
     public Emitter.Listener onDisconnect = args -> Log.d("SocketEventListener", "Disconnected from the server");
 
     public Emitter.Listener onConnectError = args -> {

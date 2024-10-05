@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 
 public class EventBus {
     private static EventBus instance;
-    private final MutableLiveData<Boolean> adminStatusLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isadminLiveData = new MutableLiveData<>();
     private final MutableLiveData<JsonArray> categoriesLiveData = new MutableLiveData<>();
     private final MutableLiveData<JsonArray> merchantsLiveData = new MutableLiveData<>();
     private final MutableLiveData<JsonObject> merchantByIdLiveData = new MutableLiveData<>();
@@ -25,12 +25,12 @@ public class EventBus {
         return instance;
     }
 
-    public LiveData<Boolean> getAdminStatusLiveData() {
-        return adminStatusLiveData;
+    public LiveData<Boolean> getIsadminLiveData() {
+        return isadminLiveData;
     }
 
     public void postAdminStatusUpdate(boolean isAdmin) {
-        adminStatusLiveData.postValue(isAdmin);
+        isadminLiveData.postValue(isAdmin);
     }
 
     public LiveData<JsonArray> getCategoriesLiveData() {
