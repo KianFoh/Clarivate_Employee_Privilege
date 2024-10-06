@@ -16,12 +16,10 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.fragment.app.Fragment;
 
-import com.example.clarivate_employee_privilege.MainActivity;
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.utils.AppUtils;
 import com.example.clarivate_employee_privilege.utils.PermissionUtils;
 import com.example.clarivate_employee_privilege.websocket.SocketService;
-import com.example.clarivate_employee_privilege.websocket.SocketServiceManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -107,16 +105,6 @@ public class ProfileFragment extends Fragment {
 
         ImageView card_pic = getView().findViewById(R.id.scan_card);
         Profile_Utils.loadCardImage(cardId, card_pic, requestPermissionLauncher, requireActivity());
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof MainActivity) {
-            MainActivity mainActivity = (MainActivity) context;
-            SocketServiceManager socketServiceManager = mainActivity.getSocketServiceManager();
-            socketService = socketServiceManager.getSocketService();
-        }
     }
 
     @Override

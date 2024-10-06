@@ -78,7 +78,7 @@ public class Merchant_API {
             }
         });
     }
-    public static void edit_merchant(Context context, JsonObject merchantData, Merchant_Edit fragment) {
+    public static void edit_merchant(Context context, JsonObject merchantData, MerchantEditFragment fragment) {
         Headers headers = new Headers.Builder()
                 .add("Authorization", "Bearer " + context
                         .getSharedPreferences("user_info", Context.MODE_PRIVATE)

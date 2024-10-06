@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:dropDownWidth="wrap_content"
                 android:dropDownHeight="wrap_content"
-                android:hint="Enter type of business"
+                android:hint="Enter Merchant Name"
                 app:dropDownBackgroundTint="@color/white" />
 
         </com.google.android.material.textfield.TextInputLayout>

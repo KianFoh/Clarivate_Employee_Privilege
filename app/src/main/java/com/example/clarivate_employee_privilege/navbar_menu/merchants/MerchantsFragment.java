@@ -38,6 +38,14 @@ public class MerchantsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static MerchantsFragment newInstance(String category) {
+        MerchantsFragment fragment = new MerchantsFragment();
+        Bundle args = new Bundle();
+        args.putString("selectedCategory", category);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +79,6 @@ public class MerchantsFragment extends Fragment {
 
         AppUtils.setToolbarTitle(requireActivity(), "Merchants");
 
-        // Ensure the "All" button is toggled initially
-        buttonAdapter.toggleButton("All");
-
         return view;
     }
 
@@ -88,9 +93,17 @@ public class MerchantsFragment extends Fragment {
         buttonAdapter = new FilterButton_Adapter(categoryNames, this::filterMerchants);
         categoryRecyclerView.setAdapter(buttonAdapter);
 
-        // Set the "All" button to be toggled initially
+        // Get the selected category from the arguments if any
+        Bundle args = getArguments();
+        if (args != null) {
+            String selectedCategory = args.getString("selectedCategory");
+            buttonAdapter.toggleButton(selectedCategory);
+            Log.d("MerchantsFragment", "Selected category: " + selectedCategory);
+        }
+        else{
+            Log.d("MerchantsFragment", "No selected category");
+        }
         buttonAdapter.updateCategories(categoryNames);
-        buttonAdapter.toggleButton("All");
     }
 
     /**
@@ -198,7 +211,6 @@ public class MerchantsFragment extends Fragment {
     /**
      * Observes changes in the merchants data and updates the UI accordingly.
      */
-// MerchantsFragment.java
     private void observeMerchants() {
         EventBus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), merchants -> {
             if (isFragmentVisible) {

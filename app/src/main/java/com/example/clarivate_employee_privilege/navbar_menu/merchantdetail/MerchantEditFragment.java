@@ -1,5 +1,7 @@
 package com.example.clarivate_employee_privilege.navbar_menu.merchantdetail;
 
+import static com.example.clarivate_employee_privilege.utils.APIUtils.loadMerchantById;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.utils.MerchantUtils;
@@ -27,7 +30,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Merchant_Edit extends Fragment {
+public class MerchantEditFragment extends Fragment {
 
     private JsonObject merchantData;
     private TextInputLayout name, type, discount, moreInfoTextView, terms, address;
@@ -68,47 +71,19 @@ public class Merchant_Edit extends Fragment {
             saveButton = view.findViewById(R.id.editmerchant_save);
             typeAutoComplete = view.findViewById(R.id.merchantForm_type);
 
-            // Assign values to views
-            name.getEditText().setText(merchantData.get("Name").getAsString());
-            type.getEditText().setText(merchantData.get("Category").getAsString());
-            discount.getEditText().setText(merchantData.get("Discount").getAsString());
-            moreInfoTextView.getEditText().setText(merchantData.get("More Info").getAsString());
-            terms.getEditText().setText(merchantData.get("Terms").getAsString());
-
             // Listeners
             addImageUrlButton.setOnClickListener(v -> MerchantUtils.addNewFields(imageUrlLayout, "Paste Image URL", getContext()));
             addAddressButton.setOnClickListener(v -> MerchantUtils.addNewFields(addressLayout, "Enter merchant address", getContext()));
             cancelButton.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
             saveButton.setOnClickListener(v -> saveEditedMerchant());
 
-            // Generate fields for image URLs
-            JsonArray imageUrls = merchantData.get("Images").getAsJsonArray();
-            if (imageUrls.size() > 0) {
-                TextInputLayout defaultImageUrlField = (TextInputLayout) imageUrlLayout.getChildAt(0);
-                defaultImageUrlField.getEditText().setText(imageUrls.get(0).getAsString());
-                for (int i = 1; i < imageUrls.size(); i++) {
-                    String imageUrl = imageUrls.get(i).getAsString();
-                    MerchantUtils.addNewFields(imageUrlLayout, "Paste Image URL", getContext());
-                    TextInputLayout textInputLayout = (TextInputLayout) imageUrlLayout.getChildAt(i);
-                    textInputLayout.getEditText().setText(imageUrl);
-                }
-            }
-
-            // Generate fields for addresses
-            JsonArray addresses = merchantData.get("Addresses").getAsJsonArray();
-            if (addresses.size() > 0) {
-                TextInputLayout defaultAddressField = (TextInputLayout) addressLayout.getChildAt(0);
-                defaultAddressField.getEditText().setText(addresses.get(0).getAsString());
-                for (int i = 1; i < addresses.size(); i++) {
-                    String address = addresses.get(i).getAsString();
-                    MerchantUtils.addNewFields(addressLayout, "Enter merchant address", getContext());
-                    TextInputLayout textInputLayout = (TextInputLayout) addressLayout.getChildAt(i);
-                    textInputLayout.getEditText().setText(address);
-                }
-            }
+            // Update fields with merchant data
+            updateMerchantFields(merchantData);
         }
 
         observeCategories();
+        observeMerchant();
+
         return view;
     }
 
@@ -155,14 +130,14 @@ public class Merchant_Edit extends Fragment {
                 Log.d("EditMerchant", "Updated merchant data: " + merchantData);
 
                 // Call the API to update the merchant
-                Merchant_API.edit_merchant(requireContext(), merchantData, Merchant_Edit.this);
+                Merchant_API.edit_merchant(requireContext(), merchantData, MerchantEditFragment.this);
             } catch (InterruptedException e) {
                 Log.d("EditMerchant", "Error waiting for image URL validation: " + e.getMessage());
             }
         }).start();
     }
 
-    public void observeCategories() {
+    private void observeCategories() {
         EventBus.getInstance().getCategoriesLiveData().observe(requireActivity(), categories -> {
             List<String> categoryNames = new ArrayList<>();
             for (int i = 0; i < categories.size(); i++) {
@@ -172,6 +147,66 @@ public class Merchant_Edit extends Fragment {
             }
             updateAdapter(categoryNames);
         });
+    }
+
+    private void observeMerchant() {
+        EventBus.getInstance().getMerchantByIdLiveData().observe(getViewLifecycleOwner(), new Observer<JsonObject>() {
+            @Override
+            public void onChanged(JsonObject merchant) {
+                if (merchant != null && merchantData.get("ID").getAsString().equals(merchant.get("Merchant").getAsJsonObject().get("ID").getAsString())) {
+                    merchantData = merchant.get("Merchant").getAsJsonObject();
+                    updateMerchantFields(merchantData);
+                }
+            }
+        });
+
+        EventBus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), new Observer<JsonArray>() {
+            @Override
+            public void onChanged(JsonArray merchants) {
+                boolean merchantIdFound = false;
+                for (int i = 0; i < merchants.size(); i++) {
+                    JsonObject merchant = merchants.get(i).getAsJsonObject();
+                    String id = merchant.get("ID").getAsString();
+                    if (merchantData.get("ID").getAsString().equals(id)) {
+                        merchantIdFound = true;
+                        loadMerchantById(requireContext(), id);
+                        break;
+                    }
+                }
+                if (!merchantIdFound) {
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
+    }
+
+    private void updateMerchantFields(JsonObject merchantData) {
+        // Assign values to views
+        name.getEditText().setText(merchantData.get("Name").getAsString());
+        type.getEditText().setText(merchantData.get("Category").getAsString());
+        discount.getEditText().setText(merchantData.get("Discount").getAsString());
+        moreInfoTextView.getEditText().setText(merchantData.get("More Info").getAsString());
+        terms.getEditText().setText(merchantData.get("Terms").getAsString());
+
+        // Generate fields for image URLs
+        JsonArray imageUrls = merchantData.get("Images").getAsJsonArray();
+        imageUrlLayout.removeAllViews();
+        for (int i = 0; i < imageUrls.size(); i++) {
+            String imageUrl = imageUrls.get(i).getAsString();
+            MerchantUtils.addNewFields(imageUrlLayout, "Paste Image URL", getContext());
+            TextInputLayout textInputLayout = (TextInputLayout) imageUrlLayout.getChildAt(i);
+            textInputLayout.getEditText().setText(imageUrl);
+        }
+
+        // Generate fields for addresses
+        JsonArray addresses = merchantData.get("Addresses").getAsJsonArray();
+        addressLayout.removeAllViews();
+        for (int i = 0; i < addresses.size(); i++) {
+            String address = addresses.get(i).getAsString();
+            MerchantUtils.addNewFields(addressLayout, "Enter merchant address", getContext());
+            TextInputLayout textInputLayout = (TextInputLayout) addressLayout.getChildAt(i);
+            textInputLayout.getEditText().setText(address);
+        }
     }
 
     public void updateAdapter(List<String> newCategoryNames) {

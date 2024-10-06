@@ -1,4 +1,4 @@
-package com.example.clarivate_employee_privilege;
+package com.example.clarivate_employee_privilege;// MainActivity.java
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,8 +18,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.clarivate_employee_privilege.authentication.SignInActivity;
-import com.example.clarivate_employee_privilege.navbar_menu.HomeFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.add_merchant.AddMerchantFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.home.HomeFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.merchants.MerchantsFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.profile.ProfileFragment;
 import com.example.clarivate_employee_privilege.navbar_menu.request_merchant.RequestMerchantFragment;
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static MainActivity instance;
     private SocketServiceManager socketServiceManager;
+    private Boolean previousIsAdmin = null; // Field to store the previous isAdmin status
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -185,9 +186,12 @@ public class MainActivity extends AppCompatActivity {
     public void observeEventBus() {
         // Observe the admin status updates
         EventBus.getInstance().getIsadminLiveData().observe(this, isAdmin -> {
-            // Handle the admin status update here
-            MainActivity.this.runOnUiThread(() -> navbar(isAdmin));
-            Log.d("MainActivity", "Admin Status UI updated");
+            // Check if the isAdmin status has changed
+            if (previousIsAdmin == null || !previousIsAdmin.equals(isAdmin)) {
+                previousIsAdmin = isAdmin; // Update the previous isAdmin status
+                MainActivity.this.runOnUiThread(() -> navbar(isAdmin));
+                Log.d("MainActivity", "Admin Status UI updated");
+            }
         });
     }
 
@@ -227,5 +231,4 @@ public class MainActivity extends AppCompatActivity {
     public static Context getContext() {
         return instance;
     }
-
 }

@@ -69,29 +69,6 @@ public class MerchantsUtils {
     }
 
     /**
-     * Filters merchants by selected categories.
-     * @param allMerchants The JsonArray containing all merchants.
-     * @param selectedCategories The list of selected categories.
-     * @return A JsonArray of filtered merchants.
-     */
-    public static JsonArray filterMerchantsByCategories(JsonArray allMerchants, List<String> selectedCategories) {
-        JsonArray filteredMerchants = new JsonArray();
-        if (selectedCategories.contains("All") || selectedCategories.isEmpty()) {
-            return allMerchants;
-        } else {
-            for (JsonElement merchantElement : allMerchants) {
-                if (merchantElement.isJsonObject()) {
-                    JsonObject merchant = merchantElement.getAsJsonObject();
-                    if (selectedCategories.contains(merchant.get("Category").getAsString())) {
-                        filteredMerchants.add(merchant);
-                    }
-                }
-            }
-        }
-        return filteredMerchants;
-    }
-
-    /**
      * Filters merchants by name and selected categories.
      * @param allMerchants The JsonArray containing all merchants.
      * @param name The name to filter by.

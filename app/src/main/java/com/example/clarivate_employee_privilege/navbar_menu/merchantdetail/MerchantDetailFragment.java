@@ -105,7 +105,7 @@ public class MerchantDetailFragment extends Fragment {
                 switch (item.getItemId()) {
                     case R.id.merchantdetail_edit:
                         // Start the Merchant_Edit fragment
-                        Merchant_Edit merchantEditFragment = new Merchant_Edit();
+                        MerchantEditFragment merchantEditFragment = new MerchantEditFragment();
                         Bundle args = new Bundle();
                         args.putString("merchantData", merchantData.toString());
                         merchantEditFragment.setArguments(args);
@@ -200,7 +200,9 @@ public class MerchantDetailFragment extends Fragment {
                     JsonObject merchant = merchants.get(i).getAsJsonObject();
                     String id = merchant.get("ID").getAsString();
                     if (merchantId.equals(id)) {
+                        Log.d("fragment_merchant", "Current merchant ID found in the updated merchants list");
                         merchantIdFound = true;
+                        refreshMerchantDetails(merchantId);
                         break;
                     }
                 }
@@ -212,5 +214,8 @@ public class MerchantDetailFragment extends Fragment {
         });
     }
 
-    
+
+    private void refreshMerchantDetails(String merchantId) {
+        loadMerchantById(requireContext(), merchantId);
+    }
 }
