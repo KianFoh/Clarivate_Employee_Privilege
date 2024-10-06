@@ -168,10 +168,16 @@ public class HomeFragment extends Fragment implements CategoryAdapter.OnCategory
                     homemerchantsRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns
                     Merchants_Adapter merchantsAdapter = new Merchants_Adapter(getContext(), randomFourMerchantsJsonArray);
                     homemerchantsRecycler.setAdapter(merchantsAdapter);
-
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.main_bottomnavigation);
+        bottomNavigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
     }
 
     @Override
