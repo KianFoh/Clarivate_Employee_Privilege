@@ -2,7 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Clarivate_Employee_Privilege" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:statusBarColor">@color/gray</item>
+        <item name="android:navigationBarColor">@color/gray</item>
 
     </style>
 

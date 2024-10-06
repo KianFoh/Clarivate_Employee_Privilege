@@ -8,10 +8,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="603dp"
+        android:layout_height="998dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/signin_background_9_16" />
+
     <Button
         android:id="@+id/signin_googlesignin_button"
         style="@style/SignInButtonStyle"
-        android:drawableStart="@drawable/ic_google_icon"
         android:text="@string/sign_in_with_google"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,15 +32,14 @@
 
     <ImageView
         android:id="@+id/signin_googlesignin_img"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:contentDescription="@string/sign_in_with_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/signin_googlesignin_button"
         app:layout_constraintEnd_toEndOf="@+id/signin_googlesignin_button"
-        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintHorizontal_bias="0.214"
         app:layout_constraintStart_toStartOf="@+id/signin_googlesignin_button"
         app:layout_constraintTop_toTopOf="@+id/signin_googlesignin_button"
-        app:srcCompat="@drawable/ic_google_icon" />
+        app:srcCompat="@drawable/ic_google_logo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
