@@ -120,57 +120,54 @@ public class Add_Merchant_Fragment extends Fragment {
         }
     }
 
-    private void addMerchant(Context context, Runnable enableButtonRunnable) {
-        // Initialize lists to store image URLs and addresses
-        List<String> imageURLList = new ArrayList<>();
-        List<String> addressList = new ArrayList<>();
+    public void addMerchant(Context context, Runnable enableButtonRunnable) {
+        // Extract data from fields
+        String name = this.name.getEditText().getText().toString();
+        String type = this.type.getEditText().getText().toString();
+        String discount = this.discount.getEditText().getText().toString();
+        String moreInfo = this.info.getEditText().getText().toString();
+        String terms = this.terms.getEditText().getText().toString();
 
-        // AtomicBoolean to track if there are any errors during URL validation
-        AtomicBoolean hasError = new AtomicBoolean(false);
+        // Get image URLs and addresses
+        List<String> imageUrls = new ArrayList<>();
+        List<String> addresses = new ArrayList<>();
+        Merchant_Utils.getTextInputValues(addresses, addressLayout);
+        Log.d("AddMerchant", "Addresses: " + addresses);
 
-        // CountDownLatch to wait for all image URL validations to complete
+        // Validate image URLs
         CountDownLatch latch = new CountDownLatch(imageUrlLayout.getChildCount());
+        AtomicBoolean hasError = new AtomicBoolean(false);
+        Merchant_Utils.validateImageURLs(imageUrls, imageUrlLayout, latch, hasError);
 
-        // Validate image URLs and populate imageURLList
-        Merchant_Utils.validateImageURLs(imageURLList, imageUrlLayout, latch, hasError);
-
-        // Get text input values for addresses and populate addressList
-        Merchant_Utils.getTextInputValues(addressList, addressLayout);
-
-        // Start a new thread to wait for URL validations to complete
+        // Wait for validation to complete
         new Thread(() -> {
             try {
-                // Wait for all image URL validations to complete
                 latch.await();
-
-                // If there was an error, do not proceed with the API call
                 if (hasError.get()) {
                     ((Activity) context).runOnUiThread(enableButtonRunnable);
                     return;
                 }
 
-                // Retrieve merchant details from input fields
-                String merchantName = name.getEditText().getText().toString();
-                String merchantType = type.getEditText().getText().toString();
-                String merchantDiscount = discount.getEditText().getText().toString();
-                String merchantInfo = info.getEditText().getText().toString();
-                String merchantTerms = terms.getEditText().getText().toString();
+                // Convert lists to JsonArray
+                JsonArray imageUrlsJsonArray = Merchant_Utils.convertListToJsonArray(imageUrls);
+                JsonArray addressesJsonArray = Merchant_Utils.convertListToJsonArray(addresses);
 
-                // Create a JSON object to hold the merchant details
-                JsonObject add_merchant = new JsonObject();
-                add_merchant.add("imageURL", Merchant_Utils.convertListToJsonArray(imageURLList));
-                add_merchant.addProperty("name", merchantName);
-                add_merchant.addProperty("type", merchantType);
-                add_merchant.add("address", Merchant_Utils.convertListToJsonArray(addressList));
-                add_merchant.addProperty("discount", merchantDiscount);
-                add_merchant.addProperty("info", merchantInfo);
-                add_merchant.addProperty("terms", merchantTerms);
+                // Create a new JsonObject for the merchant data
+                JsonObject newMerchantData = new JsonObject();
+                newMerchantData.addProperty("Name", name);
+                newMerchantData.addProperty("Category", type);
+                newMerchantData.addProperty("Discount", discount);
+                newMerchantData.addProperty("More Info", moreInfo);
+                newMerchantData.addProperty("Terms", terms);
+                newMerchantData.add("Images", imageUrlsJsonArray);
+                newMerchantData.add("Addresses", addressesJsonArray);
+
+                Log.d("AddMerchant", "New merchant data: " + newMerchantData);
 
                 // Call the API to add the merchant
-                Add_Merchant_API.addMerchant(context, add_merchant, Add_Merchant_Fragment.this, enableButtonRunnable);
-            }
-            catch (InterruptedException e) {
-                Log.e("AddMerchantFragment", "Error waiting for image URL validation", e);
+                Add_Merchant_API.addMerchant(requireContext(), newMerchantData, Add_Merchant_Fragment.this, enableButtonRunnable);
+            } catch (InterruptedException e) {
+                Log.d("AddMerchant", "Error waiting for image URL validation: " + e.getMessage());
                 ((Activity) context).runOnUiThread(enableButtonRunnable);
             }
         }).start();
