@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".navbar_menu.merchantdetail.MerchantEditFragment">
+    tools:context=".navbar_menu.merchant_detail.Merchant_Edit_Fragment">
 
     <ScrollView
         android:id="@+id/addmerchant_scroll"

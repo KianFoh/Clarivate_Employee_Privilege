@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navbar_menu.home.HomeFragment">
+    tools:context=".navbar_menu.home.Home_Fragment">
 
     <ScrollView
         android:layout_width="match_parent"

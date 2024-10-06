@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navbar_menu.profile.CardName"
+    tools:context=".navbar_menu.profile.Card_Name"
     android:background="@color/black">
 
     <ImageView

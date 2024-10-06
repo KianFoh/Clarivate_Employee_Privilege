@@ -8,9 +8,9 @@ import android.util.Log;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.clarivate_employee_privilege.R;
-import com.example.clarivate_employee_privilege.api.CallAPI;
-import com.example.clarivate_employee_privilege.api.CustomCallback;
-import com.example.clarivate_employee_privilege.utils.ToastUtils;
+import com.example.clarivate_employee_privilege.api.Call_API;
+import com.example.clarivate_employee_privilege.api.Custom_Callback;
+import com.example.clarivate_employee_privilege.utils.Toast_Utils;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -36,7 +36,7 @@ public class Profile_API {
     }
 
     // Add Admin
-    public void add_admin(String body, AlertDialog dialog) {
+    public void add_admin(String body, AlertDialog dialog, Runnable enableButtonRunnable) {
         Headers headers = new Headers.Builder()
                 .add("Authorization", "Bearer " + context
                         .getSharedPreferences("user_info", Context.MODE_PRIVATE)
@@ -49,7 +49,7 @@ public class Profile_API {
                 .headers(headers)
                 .build();
 
-        CallAPI.getClient().newCall(request).enqueue(new CustomCallback(context, request) {
+        Call_API.getClient().newCall(request).enqueue(new Custom_Callback(context, request, enableButtonRunnable) {
 
             @Override
             public void onFailure(Call call, IOException e) {
@@ -57,7 +57,7 @@ public class Profile_API {
                     // Show fail api call message
                     Log.d("API_CALL_ADD_ADMIN_ERROR", e.toString());
                     String message = "Failed to add admin";
-                    ToastUtils.showToast(context, message, false);
+                    Toast_Utils.showToast(context, message, false);
                 });
             }
 
@@ -67,7 +67,7 @@ public class Profile_API {
                 // Show success message
                 ((Activity) context).runOnUiThread(() -> {
                     String message = body + " added as Admin";
-                    ToastUtils.showToast(context, message, true);
+                    Toast_Utils.showToast(context, message, true);
                     dialog.dismiss();
                 });
             }
@@ -86,7 +86,7 @@ public class Profile_API {
     }
 
     // Remove Admin
-    public void remove_admin(String email, AlertDialog dialog) {
+    public void remove_admin(String email, AlertDialog dialog, Runnable enableButtonRunnable) {
         Headers headers = new Headers.Builder()
                 .add("Authorization", "Bearer " + context
                         .getSharedPreferences("user_info", Context.MODE_PRIVATE)
@@ -102,7 +102,7 @@ public class Profile_API {
                 .headers(headers)
                 .build();
 
-        CallAPI.getClient().newCall(request).enqueue(new CustomCallback(context, request) {
+        Call_API.getClient().newCall(request).enqueue(new Custom_Callback(context, request, enableButtonRunnable) {
 
             @Override
             public void onFailure(Call call, IOException e) {
@@ -110,7 +110,7 @@ public class Profile_API {
                     // Show fail API call message
                     Log.d("API_CALL_REMOVE_ADMIN_ERROR", e.toString());
                     String message = "Failed to remove admin";
-                    ToastUtils.showToast(context, message, false);
+                    Toast_Utils.showToast(context, message, false);
                 });
             }
 
@@ -120,7 +120,7 @@ public class Profile_API {
                 // Show success message
                 ((Activity) context).runOnUiThread(() -> {
                     String message = email + " removed from Admin";
-                    ToastUtils.showToast(context, message, true);
+                    Toast_Utils.showToast(context, message, true);
                     dialog.dismiss();
                 });
             }
@@ -154,14 +154,14 @@ public class Profile_API {
                 .headers(headers)
                 .build();
 
-        CallAPI.getClient().newCall(request).enqueue(new CustomCallback(context, request) {
+        Call_API.getClient().newCall(request).enqueue(new Custom_Callback(context, request) {
 
             @Override
             public void onFailure(Call call, IOException e) {
                 ((Activity) context).runOnUiThread(() -> {
                     Log.d("API_CALL_DOWNLOAD_REQUESTS_ERROR", e.toString());
                     String message = "Failed to download requests";
-                    ToastUtils.showToast(context, message, false);
+                    Toast_Utils.showToast(context, message, false);
                 });
             }
 
@@ -185,13 +185,13 @@ public class Profile_API {
                     }
 
                     ((Activity) context).runOnUiThread(() -> {
-                        ToastUtils.showToast(context, "Requests downloaded successfully", true);
+                        Toast_Utils.showToast(context, "Requests downloaded successfully", true);
                     });
 
                 }
                 catch (IOException e) {
                     ((Activity) context).runOnUiThread(() -> {
-                        ToastUtils.showToast(context, "Failed to save the file", false);
+                        Toast_Utils.showToast(context, "Failed to save the file", false);
                     });
                 }
             }
@@ -202,7 +202,7 @@ public class Profile_API {
                 String error = jsonObject.get("error").getAsString();
                 Log.e("API_CALL_DOWNLOAD_REQUESTS", "API call failed: " + error);
                 ((Activity) context).runOnUiThread(() -> {
-                    ToastUtils.showToast(context, "Failed to download requests: " + error, false);
+                    Toast_Utils.showToast(context, "Failed to download requests: " + error, false);
                 });
             }
         });

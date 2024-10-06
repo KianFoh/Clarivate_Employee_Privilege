@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name=".MyApplication"
+        android:name=".My_Application"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -31,24 +31,24 @@
         tools:targetApi="31">
 
         <service
-            android:name=".websocket.SocketService"
+            android:name=".websocket.Socket_Service"
             android:exported="false" />
 
         <activity
-            android:name=".navbar_menu.profile.CardName"
+            android:name=".navbar_menu.profile.Card_Name"
             android:exported="false" />
 
         <activity
-            android:name=".navbar_menu.profile.ScanCardActivity"
+            android:name=".navbar_menu.profile.Scan_Card_Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".authentication.SignInActivity"
+            android:name=".authentication.Sign_In_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Main_Activity"
             android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:screenOrientation="portrait">

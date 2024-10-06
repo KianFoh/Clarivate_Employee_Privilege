@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".navbar_menu.profile.ProfileFragment">
+    tools:context=".navbar_menu.profile.Profile_Fragment">
 
     <ScrollView
         android:layout_width="match_parent"
