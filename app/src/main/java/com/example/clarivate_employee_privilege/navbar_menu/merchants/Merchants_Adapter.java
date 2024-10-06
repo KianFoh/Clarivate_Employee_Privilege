@@ -15,7 +15,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clarivate_employee_privilege.R;
-import com.example.clarivate_employee_privilege.navbar_menu.merchantdetail.MerchantDetailFragment;
+import com.example.clarivate_employee_privilege.navbar_menu.merchant_detail.Merchant_Detail_Fragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
@@ -200,7 +201,7 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
     private void startMerchantFragment(String merchantId) {
         FragmentActivity activity = (FragmentActivity) context;
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        Fragment merchantFragment = new MerchantDetailFragment();
+        Fragment merchantFragment = new Merchant_Detail_Fragment();
 
         Bundle bundle = new Bundle();
         bundle.putString("merchantId", merchantId);
@@ -209,6 +210,9 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
         transaction.replace(R.id.main_fragment, merchantFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
+        BottomNavigationView bottomNavigationView = activity.findViewById(R.id.main_bottomnavigation);
+        bottomNavigationView.getMenu().findItem(R.id.nav_merchants).setChecked(true);
     }
 
 }

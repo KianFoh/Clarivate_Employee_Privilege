@@ -20,8 +20,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.clarivate_employee_privilege.R;
-import com.example.clarivate_employee_privilege.websocket.SocketService;
-import com.example.clarivate_employee_privilege.authentication.SignInActivity;
+import com.example.clarivate_employee_privilege.utils.App_Utils;
+import com.example.clarivate_employee_privilege.websocket.Socket_Service;
+import com.example.clarivate_employee_privilege.authentication.Sign_In_Activity;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.MemoryPolicy;
@@ -31,7 +32,7 @@ public class Profile_Utils {
     private static final int REQUEST_CAMERA_PERMISSION = 200;
 
     // SignOut
-    public static void signOut(Activity activity, GoogleSignInClient googleSignInClient, SocketService socketService) {
+    public static void signOut(Activity activity, GoogleSignInClient googleSignInClient, Socket_Service socketService) {
         // Disconnect the socket
         if (socketService != null) {
             socketService.disconnectSocket();
@@ -40,10 +41,11 @@ public class Profile_Utils {
         googleSignInClient.signOut()
                 .addOnCompleteListener(activity, task -> {
                     // Redirect user to signIn activity
-                    Intent i = new Intent(activity, SignInActivity.class);
+                    Intent i = new Intent(activity, Sign_In_Activity.class);
                     activity.startActivity(i);
                     activity.finish();
                 });
+
     }
 
     // Show Add Admin Dialog
@@ -64,23 +66,27 @@ public class Profile_Utils {
 
         // Set up the close button
         ImageButton close = dialogView.findViewById(R.id.adminmanage_close);
-        close.setOnClickListener(v -> dialog.dismiss());
+        close.setOnClickListener(v -> {
+                dialog.dismiss();
+        });
 
         // Set up the add admin button
         Button submit = dialogView.findViewById(R.id.adminmanage_addadmin);
         submit.setOnClickListener(v -> {
+            App_Utils.disableButton(v);
             email_field.setError(null);
             String email = email_field.getEditText().getText().toString();
             Log.d("EMAIL", email);
-            profileAPI.add_admin(email, dialog);
+            profileAPI.add_admin(email, dialog, () -> v.setEnabled(true));
         });
 
         // Set up the remove admin button
         Button remove = dialogView.findViewById(R.id.adminmanage_removeadmin);
         remove.setOnClickListener(v -> {
+            App_Utils.disableButton(v);
             String email = email_field.getEditText().getText().toString();
             Log.d("EMAIL", email);
-            profileAPI.remove_admin(email, dialog);
+            profileAPI.remove_admin(email, dialog, () -> v.setEnabled(true));
         });
 
         // Set the dialog window size to custom width and height
@@ -98,14 +104,14 @@ public class Profile_Utils {
         }
         else {
             // Redirect user to ScanCard activity if permission is already granted
-            Intent i = new Intent(activity, ScanCardActivity.class);
+            Intent i = new Intent(activity, Scan_Card_Activity.class);
             activity.startActivity(i);
         }
     }
 
     // Start ScanCard activity
     public static void startScanCardActivity(Activity activity) {
-        Intent i = new Intent(activity, ScanCardActivity.class);
+        Intent i = new Intent(activity, Scan_Card_Activity.class);
         activity.startActivity(i);
     }
 
@@ -131,7 +137,7 @@ public class Profile_Utils {
                     @Override
                     public void onSuccess() {
                         cardImageView.setOnClickListener(v -> {
-                            Intent intent = new Intent(activity, CardName.class);
+                            Intent intent = new Intent(activity, Card_Name.class);
                             activity.startActivity(intent);
                         });
                     }

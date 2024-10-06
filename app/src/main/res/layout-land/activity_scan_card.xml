@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navbar_menu.profile.ScanCardActivity"
+    tools:context=".navbar_menu.profile.Scan_Card_Activity"
     android:background="@color/black">
 
     <androidx.camera.view.PreviewView
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.example.clarivate_employee_privilege.navbar_menu.profile.CameraOverlayViewLand
+    <com.example.clarivate_employee_privilege.navbar_menu.profile.Camera_Overlay_View_Land
         android:id="@+id/scancard_filter_land"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
