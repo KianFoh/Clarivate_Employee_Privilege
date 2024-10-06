@@ -46,6 +46,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/merchants_searchLayout" />
 
+        <!-- ImageView and TextView for "No merchant is found" message -->
+        <ImageView
+            android:id="@+id/merchants_nodata_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/spongebob_rainbow"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/merchants_filterRecycler" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/merchants_merchantList_Recycler"
             android:layout_width="match_parent"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.DefaultLifecycleObserver;
@@ -33,6 +34,8 @@ public class MerchantsFragment extends Fragment {
     private MerchantsSearchAdapter searchAdapter;
     private AutoCompleteTextView searchAutocomplete;
     private boolean isFragmentVisible = false;
+    private RecyclerView merchantsRecyclerView;
+    private ImageView noMerchantsImage;
 
     public MerchantsFragment() {
         // Required empty public constructor
@@ -111,10 +114,12 @@ public class MerchantsFragment extends Fragment {
      * @param view The root view of the fragment.
      */
     private void setupMerchantsRecyclerView(View view) {
-        RecyclerView merchantsRecyclerView = view.findViewById(R.id.merchants_merchantList_Recycler);
+        merchantsRecyclerView = view.findViewById(R.id.merchants_merchantList_Recycler);
         merchantsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns
         merchantsAdapter = new Merchants_Adapter(getContext(), new JsonArray());
         merchantsRecyclerView.setAdapter(merchantsAdapter);
+
+        noMerchantsImage = view.findViewById(R.id.merchants_nodata_image);
     }
 
     /**
@@ -217,6 +222,14 @@ public class MerchantsFragment extends Fragment {
                 List<JsonObject> merchantList = MerchantsUtils.convertJsonArrayToList(merchants);
                 Log.d("MerchantsFragment", "Merchants updated: " + merchantList);
                 merchantsAdapter.updateData(merchants);
+
+                if (merchants.size() == 0) {
+                    noMerchantsImage.setVisibility(View.VISIBLE);
+                    merchantsRecyclerView.setVisibility(View.GONE);
+                } else {
+                    noMerchantsImage.setVisibility(View.GONE);
+                    merchantsRecyclerView.setVisibility(View.VISIBLE);
+                }
 
                 // Reapply the current filters
                 filterMerchants(buttonAdapter.getSelectedCategories());

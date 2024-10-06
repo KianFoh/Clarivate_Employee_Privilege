@@ -82,6 +82,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_category" />
+
+            <!-- ImageView for "No merchant is found" message -->
+            <ImageView
+                android:id="@+id/home_no_merchants_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/spongebob_rainbow"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_category" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

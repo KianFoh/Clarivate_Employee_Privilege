@@ -39,6 +39,8 @@ public class HomeFragment extends Fragment implements CategoryAdapter.OnCategory
 
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
+    private RecyclerView homemerchantsRecycler;
+    private ImageView noMerchantsImage, homeNewMerchantImageView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -49,6 +51,10 @@ public class HomeFragment extends Fragment implements CategoryAdapter.OnCategory
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        homemerchantsRecycler = view.findViewById(R.id.home_random_merchants);
+        noMerchantsImage = view.findViewById(R.id.home_no_merchants_image);
+        homeNewMerchantImageView = view.findViewById(R.id.home_newmerchant);
 
         TextView home_seeAll_button = view.findViewById(R.id.home_seeAll_button);
         home_seeAll_button.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +97,15 @@ public class HomeFragment extends Fragment implements CategoryAdapter.OnCategory
             @Override
             public void onChanged(JsonArray merchants) {
                 if (merchants != null && merchants.size() > 0) {
+                    if (merchants.size() == 1) {
+                        noMerchantsImage.setVisibility(View.VISIBLE);
+                        homemerchantsRecycler.setVisibility(View.GONE);
+                    }
+                    else {
+                        noMerchantsImage.setVisibility(View.GONE);
+                        homemerchantsRecycler.setVisibility(View.VISIBLE);
+                    }
+
                     // Get the last JsonObject in the list
                     JsonObject newestMerchant = merchants.get(merchants.size() - 1).getAsJsonObject();
 
@@ -98,7 +113,6 @@ public class HomeFragment extends Fragment implements CategoryAdapter.OnCategory
                     String imageUrl = newestMerchant.get("Image").getAsString();
                     Log.d("HomeFragment", "Newest merchant image URL: " + newestMerchant);
                     // Load the image using Picasso
-                    ImageView homeNewMerchantImageView = getView().findViewById(R.id.home_newmerchant);
                     if (imageUrl != null && !imageUrl.isEmpty()) {
                         Picasso.get()
                                 .load(imageUrl)
@@ -146,28 +160,34 @@ public class HomeFragment extends Fragment implements CategoryAdapter.OnCategory
                         }
                     });
 
+                    if (merchants.size() >1) {
+                        // Exclude the last merchant and get a list of remaining merchants
+                        List<JsonObject> remainingMerchants = new ArrayList<>();
+                        for (int i = 0; i < merchants.size() - 1; i++) {
+                            remainingMerchants.add(merchants.get(i).getAsJsonObject());
+                        }
 
-                    // Exclude the last merchant and get a list of remaining merchants
-                    List<JsonObject> remainingMerchants = new ArrayList<>();
-                    for (int i = 0; i < merchants.size() - 1; i++) {
-                        remainingMerchants.add(merchants.get(i).getAsJsonObject());
+                        // Shuffle the list and select four random merchants
+                        Collections.shuffle(remainingMerchants);
+                        List<JsonObject> randomFourMerchants = remainingMerchants.subList(0, Math.min(4, remainingMerchants.size()));
+
+                        // Convert the list to JsonArray
+                        JsonArray randomFourMerchantsJsonArray = new JsonArray();
+                        for (JsonObject merchant : randomFourMerchants) {
+                            randomFourMerchantsJsonArray.add(merchant);
+                        }
+
+                        // Update the RecyclerView with the selected merchants
+                        RecyclerView homemerchantsRecycler = getView().findViewById(R.id.home_random_merchants);
+                        homemerchantsRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns
+                        Merchants_Adapter merchantsAdapter = new Merchants_Adapter(getContext(), randomFourMerchantsJsonArray);
+                        homemerchantsRecycler.setAdapter(merchantsAdapter);
                     }
-
-                    // Shuffle the list and select four random merchants
-                    Collections.shuffle(remainingMerchants);
-                    List<JsonObject> randomFourMerchants = remainingMerchants.subList(0, Math.min(4, remainingMerchants.size()));
-
-                    // Convert the list to JsonArray
-                    JsonArray randomFourMerchantsJsonArray = new JsonArray();
-                    for (JsonObject merchant : randomFourMerchants) {
-                        randomFourMerchantsJsonArray.add(merchant);
-                    }
-
-                    // Update the RecyclerView with the selected merchants
-                    RecyclerView homemerchantsRecycler = getView().findViewById(R.id.home_random_merchants);
-                    homemerchantsRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 columns
-                    Merchants_Adapter merchantsAdapter = new Merchants_Adapter(getContext(), randomFourMerchantsJsonArray);
-                    homemerchantsRecycler.setAdapter(merchantsAdapter);
+                }
+                else{
+                    noMerchantsImage.setVisibility(View.VISIBLE);
+                    homemerchantsRecycler.setVisibility(View.GONE);
+                    homeNewMerchantImageView.setImageDrawable(getResources().getDrawable(R.drawable.spongebob_rainbow));
                 }
             }
         });
