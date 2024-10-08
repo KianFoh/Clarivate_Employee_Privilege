@@ -10,25 +10,25 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="603dp"
-        android:layout_height="998dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/signin_background_9_16" />
+        app:srcCompat="@drawable/signin_background_9_16"
+        android:scaleType="fitXY" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/signin_googlesignin_button"
         style="@style/SignInButtonStyle"
+        android:layout_marginHorizontal="20dp"
         android:text="@string/sign_in_with_google"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.919" />
+        app:layout_constraintVertical_bias="0.919"/>
 
     <ImageView
         android:id="@+id/signin_googlesignin_img"
