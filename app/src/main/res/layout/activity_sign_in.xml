@@ -11,8 +11,9 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="603dp"
-        android:layout_height="998dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
         android:textAlignment="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="109dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/clarivate_logo_white" />
@@ -96,7 +98,7 @@
         android:layout_width="match_parent"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/rectangle"
         android:drawableStart="@drawable/ic_google_logo"
         android:paddingLeft="60dp"
