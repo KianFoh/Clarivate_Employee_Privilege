@@ -102,7 +102,7 @@ public class API_Utils {
 
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("ERROR_API_CALL_GET_CATEGORIES", e.toString());
+                Log.e("ERROR_API_CALL_GET_CATEGORIES", e.toString());
             }
 
             @Override
@@ -111,6 +111,7 @@ public class API_Utils {
                 JsonObject responseObject = JsonParser.parseString(responseData).getAsJsonObject();
                 JsonArray categoriesArray = responseObject.getAsJsonArray("Categories");
                 Event_Bus.getInstance().postCategoriesUpdate(categoriesArray);
+                Log.d("API_CALL_GET_CATEGORIES", "Categories loaded: " + categoriesArray);
             }
 
             @Override
@@ -137,7 +138,7 @@ public class API_Utils {
 
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("API_CALL_GET_MERCHANTS_ERROR", e.toString());
+                Log.e("API_CALL_GET_MERCHANTS_ERROR", e.toString());
             }
 
             @Override
@@ -151,7 +152,7 @@ public class API_Utils {
 
             @Override
             public void handleFailResponse(Response response, String responseBody) {
-                Log.d("API_CALL_GET_MERCHANTS", "API call failed: " + responseBody);
+                Log.e("API_CALL_GET_MERCHANTS", "API call failed: " + responseBody);
             }
         });
     }
@@ -173,7 +174,7 @@ public class API_Utils {
 
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("API_CALL_GET_MERCHANT_BY_ID_ERROR", e.toString());
+                Log.e("API_CALL_GET_MERCHANT_BY_ID_ERROR", e.toString());
             }
 
             @Override
@@ -186,7 +187,7 @@ public class API_Utils {
 
             @Override
             public void handleFailResponse(Response response, String responseBody) {
-                Log.d("API_CALL_GET_MERCHANT_BY_ID", "API call failed: " + responseBody);
+                Log.e("API_CALL_GET_MERCHANT_BY_ID", "API call failed: " + responseBody);
             }
         });
     }

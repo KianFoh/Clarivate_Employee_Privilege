@@ -50,7 +50,6 @@ public class Merchant_Detail_Fragment extends Fragment {
 
         merchantId = getArguments().getString("merchantId");
         observeMerchant(merchantId, view);
-        loadMerchantById(requireContext(), merchantId);
 
         // Initialize RecyclerView and Adapter for addresses
         RecyclerView recyclerView = view.findViewById(R.id.merchantdetail_addresses_recycler);
