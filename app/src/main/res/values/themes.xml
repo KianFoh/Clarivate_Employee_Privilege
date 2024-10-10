@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Clarivate_Employee_Privilege" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.Clarivate_Employee_Privilege" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/white</item>
