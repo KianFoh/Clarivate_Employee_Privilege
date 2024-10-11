@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -51,14 +50,23 @@
         android:id="@+id/merchantForm_addimageurl_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="7dp"
-        android:drawableStart="@drawable/baseline_add_circle_outline_24"
-        android:drawablePadding="4dp"
-        android:gravity="center"
         android:text="Add Image URL"
         android:textColor="#B075E1"
         android:textColorLink="#000"
+        app:layout_constraintStart_toEndOf="@+id/merchantForm_addimageurl_button"
+        app:layout_constraintTop_toBottomOf="@+id/merchantForm_imageurl_layout" />
+
+    <ImageButton
+        android:id="@+id/merchantForm_addimageurl_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:clickable="true"
+        android:src="@drawable/baseline_add_circle_outline_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/merchantForm_imageurl_layout" />
 
@@ -163,18 +171,26 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/merchantForm_addaddress_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:src="@drawable/baseline_add_circle_outline_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/merchantForm_address_layout" />
+
     <TextView
         android:id="@+id/merchantForm_addaddress_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="7dp"
-        android:drawableStart="@drawable/baseline_add_circle_outline_24"
-        android:drawablePadding="4dp"
-        android:gravity="center"
         android:text="Add New Address"
         android:textColor="#B075E1"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/merchantForm_addaddress_button"
         app:layout_constraintTop_toBottomOf="@+id/merchantForm_address_layout" />
 
     <TextView
