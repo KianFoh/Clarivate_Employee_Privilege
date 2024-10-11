@@ -61,7 +61,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
                             android:background="@drawable/rectangle2"
-                            android:text="TextView"
+                            android:text="Employee"
                             android:textColor="@color/purple"
                             android:textSize="12sp" />
                     </LinearLayout>

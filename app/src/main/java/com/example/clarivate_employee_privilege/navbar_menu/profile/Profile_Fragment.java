@@ -76,6 +76,14 @@ public class Profile_Fragment extends Fragment {
         String image = sharedpreferences.getString("profile_image", "Not found");
         boolean isAdmin = sharedpreferences.getBoolean("isAdmin", false);
 
+        TextView userLabel = (TextView) view.findViewById(R.id.user_label);
+
+        if (isAdmin) {
+            userLabel.setText("Admin");
+        } else {
+            userLabel.setText("Employee");
+        }
+
         // Display user details
         ImageView profile_pic = view.findViewById(R.id.profile_pic);
         Profile_Utils.loadProfileImage(image, profile_pic);
