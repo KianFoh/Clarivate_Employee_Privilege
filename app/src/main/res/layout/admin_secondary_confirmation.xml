@@ -51,17 +51,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/adminsecond_confirm_cancel" />
+        app:layout_constraintStart_toEndOf="@+id/adminsecond_confirm_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/admin_second_confirm_tag"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/admin_second_confirm_tag"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="25dp"
         android:gravity="center_vertical"
-        android:text="Are you confirm to remove all fill?"
+        android:text="Clear all entries?"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/adminsecond_confirm_cancel"
