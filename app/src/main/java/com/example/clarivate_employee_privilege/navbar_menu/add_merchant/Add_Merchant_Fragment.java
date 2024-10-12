@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.utils.App_Utils;
@@ -96,6 +98,15 @@ public class Add_Merchant_Fragment extends Fragment {
         });
 
         App_Utils.setToolbarTitle(requireActivity(), "Add Merchant");
+
+        Button cancelButton = view.findViewById(R.id.addmerchant_cancel);
+        cancelButton.setOnClickListener(v -> {
+            FragmentManager fragmentManager = getParentFragmentManager();
+            AdminSecondaryConfirmationDialog dialog = new AdminSecondaryConfirmationDialog();
+            dialog.setOnConfirmCallback(this::clearAllFields);
+            dialog.show(fragmentManager, "AdminSecondaryConfirmationDialog");
+
+        });
 
         return view;
     }
