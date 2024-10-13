@@ -15,11 +15,13 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import com.example.clarivate_employee_privilege.Main_Activity;
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.utils.App_Utils;
 import com.example.clarivate_employee_privilege.utils.Permission_Utils;
+import com.example.clarivate_employee_privilege.websocket.Event_Bus;
 import com.example.clarivate_employee_privilege.websocket.Socket_Service;
 import com.example.clarivate_employee_privilege.websocket.Socket_Service_Manager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,8 +34,8 @@ public class Profile_Fragment extends Fragment {
     private Socket_Service socketService;
     private Profile_API profileAPI;
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
-    private String username;
-    private String cardId;
+    private String username, cardId;
+    private Boolean previousIsAdmin = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,15 +76,6 @@ public class Profile_Fragment extends Fragment {
         SharedPreferences sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
         String email = sharedpreferences.getString("email", "Not found");
         String image = sharedpreferences.getString("profile_image", "Not found");
-        boolean isAdmin = sharedpreferences.getBoolean("isAdmin", false);
-
-        TextView userLabel = (TextView) view.findViewById(R.id.user_label);
-
-        if (isAdmin) {
-            userLabel.setText("Admin");
-        } else {
-            userLabel.setText("Employee");
-        }
 
         // Display user details
         ImageView profile_pic = view.findViewById(R.id.profile_pic);
@@ -94,14 +87,13 @@ public class Profile_Fragment extends Fragment {
         ((TextView) view.findViewById(R.id.profile_name)).setText(username);
         ((TextView) view.findViewById(R.id.profile_email)).setText(email);
 
-        int visibility = isAdmin ? View.VISIBLE : View.GONE;
-        requireActivity().findViewById(R.id.toolbar_more).setVisibility(visibility);
-
         // Listeners
         view.findViewById(R.id.profile_signout).setOnClickListener(v -> {
             Profile_Utils.signOut(requireActivity(), googleSignInClient, socketService);
         });
         requireActivity().findViewById(R.id.toolbar_more).setOnClickListener(v -> showPopupMenu(v));
+
+        observeEventBus();
 
         return view;
     }
@@ -150,5 +142,29 @@ public class Profile_Fragment extends Fragment {
             }
         });
         popupMenu.show();
+    }
+
+    public void observeEventBus() {
+        // Observe the admin status updates
+        Event_Bus.getInstance().getIsadminLiveData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            // Check if the isAdmin status has changed
+            @Override
+            public void onChanged(Boolean isAdmin){
+                if (previousIsAdmin == null || !previousIsAdmin.equals(isAdmin)) {
+                    previousIsAdmin = isAdmin; // Update the previous isAdmin status
+                    getActivity().runOnUiThread(() -> {
+                        View view = getView();
+                        if (isAdmin) {
+                            getActivity().findViewById(R.id.toolbar_more).setVisibility(View.VISIBLE);
+                            ((TextView) view.findViewById(R.id.user_label)).setText("Admin");
+                            Log.d("ProfileFragment", "Admin Status Update");
+                        } else {
+                            ((TextView) view.findViewById(R.id.user_label)).setText("Employee");
+                            Log.d("ProfileFragment", "Employee Status UI updated");
+                        }
+                    });
+                }
+            }
+        });
     }
 }

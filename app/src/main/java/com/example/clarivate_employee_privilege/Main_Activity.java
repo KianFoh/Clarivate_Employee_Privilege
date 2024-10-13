@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,6 +43,9 @@ public class Main_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
         EdgeToEdge.enable(this);
+
+        // Set the default theme to light mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
 
         App_Utils.showLoading(true, findViewById(R.id.main_progressbar));
