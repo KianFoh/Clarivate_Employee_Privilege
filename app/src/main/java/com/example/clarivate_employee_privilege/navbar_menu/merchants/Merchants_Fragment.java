@@ -41,12 +41,22 @@ public class Merchants_Fragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static Merchants_Fragment newInstance(String category) {
+    public static Merchants_Fragment newInstance(String[] selectedCategories) {
         Merchants_Fragment fragment = new Merchants_Fragment();
         Bundle args = new Bundle();
-        args.putString("selectedCategory", category);
+        args.putStringArray("selectedCategories", selectedCategories);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Bundle outState = new Bundle();
+        outState.putStringArray("selectedCategories", buttonAdapter.getSelectedCategories().toArray(new String[0]));
+        Log.d("MerchantsFragment", "onPause: " + buttonAdapter.getSelectedCategories());
+        // Save the state to the fragment's arguments
+        setArguments(outState);
     }
 
     @Override
@@ -99,9 +109,13 @@ public class Merchants_Fragment extends Fragment {
         // Get the selected category from the arguments if any
         Bundle args = getArguments();
         if (args != null) {
-            String selectedCategory = args.getString("selectedCategory");
-            buttonAdapter.toggleButton(selectedCategory);
-            Log.d("MerchantsFragment", "Selected category: " + selectedCategory);
+            String[] selectedCategories = args.getStringArray("selectedCategories");
+            if (selectedCategories != null) {
+                for (String category : selectedCategories) {
+                    buttonAdapter.toggleButton(category);
+                    Log.d("MerchantsFragment", "Selected category: " + category);
+                }
+            }
         }
         else{
             Log.d("MerchantsFragment", "No selected category");

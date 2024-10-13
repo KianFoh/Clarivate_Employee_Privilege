@@ -228,8 +228,11 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
 
     @Override
     public void onCategoryClick(String category) {
+        // Create an array with the selected category
+        String[] selectedCategories = new String[]{category};
+
         // Replace the fragment and pass the selected category
-        Merchants_Fragment merchantsFragment = Merchants_Fragment.newInstance(category);
+        Merchants_Fragment merchantsFragment = Merchants_Fragment.newInstance(selectedCategories);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, merchantsFragment)
                 .commit();
