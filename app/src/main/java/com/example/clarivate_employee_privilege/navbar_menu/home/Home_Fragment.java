@@ -41,6 +41,7 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
     private Category_Adapter categoryAdapter;
     private RecyclerView homemerchantsRecycler;
     private ImageView noMerchantsImage, homeNewMerchantImageView;
+    private Boolean previousIsAdmin = null;
 
     public Home_Fragment() {
         // Required empty public constructor
@@ -73,7 +74,7 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
         categoryRecyclerView.setAdapter(categoryAdapter);
 
         // Observe categories data
-        observeCategories();
+        observeEventBus();
 
         // Observe merchants data
         observeMerchants();
@@ -82,12 +83,37 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
         return view;
     }
 
-    private void observeCategories() {
+    @Override
+    public void onStart() {
+        super.onStart();
+        App_Utils.setToolbarTitle(getActivity(), "Home");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        App_Utils.enableTitleBar(getActivity());
+        App_Utils.disableProfile(getActivity());
+    }
+
+    private void observeEventBus() {
         Event_Bus.getInstance().getCategoriesLiveData().observe(getViewLifecycleOwner(), new Observer<JsonArray>() {
             @Override
             public void onChanged(JsonArray categories) {
                 List<String> categoryNames = Merchants_Utils.initializeCategoryNames(categories);
                 categoryAdapter.updateCategories(categoryNames);
+            }
+        });
+
+        Event_Bus.getInstance().getIsadminLiveData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isAdmin){
+                if (previousIsAdmin == null || !previousIsAdmin.equals(isAdmin)) {
+                    previousIsAdmin = isAdmin; // Update the previous isAdmin status
+                    getActivity().runOnUiThread(() -> {
+                        App_Utils.setProfile(getActivity(), isAdmin);
+                    });
+                }
             }
         });
     }

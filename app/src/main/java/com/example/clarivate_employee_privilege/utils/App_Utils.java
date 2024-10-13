@@ -3,12 +3,15 @@ package com.example.clarivate_employee_privilege.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.clarivate_employee_privilege.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -70,6 +73,44 @@ public class App_Utils {
     public static void disableButton(final View button) {
         if (button instanceof Button || button instanceof ImageButton) {
             button.setEnabled(false);
+        }
+    }
+
+    public static void disableTitleBar(Activity activity) {
+        activity.findViewById(R.id.toolbar_title).setVisibility(View.GONE);
+    }
+
+    public static void enableTitleBar(Activity activity) {
+        activity.findViewById(R.id.toolbar_title).setVisibility(View.VISIBLE);
+    }
+
+    public static void enableProfile(Activity activity) {
+        activity.findViewById(R.id.toolbar_profile_layout).setVisibility(View.VISIBLE);
+    }
+
+    public static void disableProfile(Activity activity) {
+        activity.findViewById(R.id.toolbar_profile_layout).setVisibility(View.GONE);
+    }
+
+    public static void setProfile(Activity activity, Boolean isAdmin) {
+        enableProfile(activity);
+        disableTitleBar(activity);
+
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        String image = sharedPreferences.getString("profile_image", "Not found");
+        String username = sharedPreferences.getString("username", "Not found");
+
+        TextView userLabel = activity.findViewById(R.id.toolbar_profile_label);
+        userLabel.setText(isAdmin ? "Admin" : "Employee");
+
+        TextView profileName = activity.findViewById(R.id.toolbar_profile_name);
+        profileName.setText(username);
+
+        ImageView profilePic = activity.findViewById(R.id.toolbar_profile_pic);
+        if ("Not found".equals(image)) {
+            profilePic.setImageResource(R.drawable.round_account_circle_24);
+        } else {
+            Picasso.get().load(image).into(profilePic);
         }
     }
 }
