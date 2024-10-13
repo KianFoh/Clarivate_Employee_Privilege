@@ -20,6 +20,13 @@ public class AdminSecondaryConfirmationDialog extends DialogFragment {
     public void setOnConfirmCallback(Runnable onConfirmCallback) {
         this.onConfirmCallback = onConfirmCallback;
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog() != null) {
+            getDialog().getWindow().setLayout(1050, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+    }
 
     @Nullable
     @Override
