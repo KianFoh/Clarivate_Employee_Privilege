@@ -121,11 +121,15 @@
         <AutoCompleteTextView
             android:id="@+id/merchantForm_type"
             style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:dropDownWidth="wrap_content"
             android:dropDownHeight="wrap_content"
             android:hint="Enter type of business"
+            android:maxLength="20"
             app:dropDownBackgroundTint="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
