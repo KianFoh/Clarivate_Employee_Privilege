@@ -36,6 +36,7 @@ public class Profile_Fragment extends Fragment {
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
     private String username, cardId;
     private Boolean previousIsAdmin = null;
+    private SharedPreferences sharedpreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,11 +59,8 @@ public class Profile_Fragment extends Fragment {
         );
 
         // Get user details
-        SharedPreferences sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        sharedpreferences = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
         username = sharedpreferences.getString("username", "Not found");
-
-        sharedpreferences = requireActivity().getSharedPreferences("name_card " + username, Context.MODE_PRIVATE);
-        cardId = sharedpreferences.getString("card_id", "Not found");
 
         App_Utils.setToolbarTitle(requireActivity(), "Profile");
     }
@@ -102,6 +100,9 @@ public class Profile_Fragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("ProfileFragment", "Reloading image from URL: " + cardId);
+
+        sharedpreferences = requireActivity().getSharedPreferences("name_card " + username, Context.MODE_PRIVATE);
+        cardId = sharedpreferences.getString("card_id", "Not found");
 
         ImageView card_pic = getView().findViewById(R.id.scan_card);
         Profile_Utils.loadCardImage(cardId, card_pic, requestPermissionLauncher, requireActivity());
