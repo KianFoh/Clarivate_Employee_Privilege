@@ -42,6 +42,7 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
     private RecyclerView homemerchantsRecycler;
     private ImageView noMerchantsImage, homeNewMerchantImageView;
     private Boolean previousIsAdmin = null;
+    private BottomNavigationView bottomNavigationView;
 
     public Home_Fragment() {
         // Required empty public constructor
@@ -53,16 +54,17 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        bottomNavigationView = getActivity().findViewById(R.id.main_bottomnavigation);
         homemerchantsRecycler = view.findViewById(R.id.home_random_merchants);
         noMerchantsImage = view.findViewById(R.id.home_no_merchants_image);
         homeNewMerchantImageView = view.findViewById(R.id.home_newmerchant);
+
 
         TextView home_seeAll_button = view.findViewById(R.id.home_seeAll_button);
         home_seeAll_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Update the bottom navigation bar
-                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.main_bottomnavigation);
                 bottomNavigationView.setSelectedItemId(R.id.nav_merchants);
             }
         });
@@ -79,14 +81,14 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
         // Observe merchants data
         observeMerchants();
 
-        App_Utils.setToolbarTitle(getActivity(), "Home");
         return view;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        App_Utils.setToolbarTitle(getActivity(), "Home");
+    public void onResume() {
+        super.onResume();
+        App_Utils.disableTitleBar(getActivity());
+        App_Utils.enableProfile(getActivity());
     }
 
     @Override
@@ -179,10 +181,6 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
                             transaction.replace(R.id.main_fragment, merchantFragment);
                             transaction.addToBackStack(null);
                             transaction.commit();
-
-                            // Update the bottom navigation bar
-                            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.main_bottomnavigation);
-                            bottomNavigationView.getMenu().findItem(R.id.nav_merchants).setChecked(true);
                         }
                     });
 
@@ -220,13 +218,6 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.main_bottomnavigation);
-        bottomNavigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
-    }
-
-    @Override
     public void onCategoryClick(String category) {
         // Create an array with the selected category
         String[] selectedCategories = new String[]{category};
@@ -238,7 +229,6 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
                 .commit();
 
         // Update the bottom navigation bar
-        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.main_bottomnavigation);
         bottomNavigationView.getMenu().findItem(R.id.nav_merchants).setChecked(true);
     }
 }

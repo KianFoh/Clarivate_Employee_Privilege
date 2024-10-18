@@ -93,7 +93,7 @@ public class Request_Merchant_Fragment extends Fragment {
                 .build();
 
         Request request = new Request.Builder()
-                .url(context.getString(R.string.api_url) + "/add_request_merchant")
+                .url(context.getString(R.string.api_url) + "/request_merchant")
                 .post(RequestBody.create(body, MediaType.get("application/json; charset=utf-8")))
                 .headers(headers)
                 .build();
