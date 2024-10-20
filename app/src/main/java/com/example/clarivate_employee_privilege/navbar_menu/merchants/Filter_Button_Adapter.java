@@ -1,12 +1,13 @@
 package com.example.clarivate_employee_privilege.navbar_menu.merchants;
 
-import android.graphics.Color;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clarivate_employee_privilege.R;
@@ -52,7 +53,7 @@ public class Filter_Button_Adapter extends RecyclerView.Adapter<Filter_Button_Ad
         String buttonText = buttonList.get(position);
         holder.button.setText(buttonText);
         // Set initial button colors based on state
-        updateButtonColors(holder.button, buttonStates.get(position));
+        updateButtonColors(holder.button.getContext(), holder.button, buttonStates.get(position));
 
         holder.button.setOnClickListener(v -> {
             // Toggle the button state
@@ -92,7 +93,7 @@ public class Filter_Button_Adapter extends RecyclerView.Adapter<Filter_Button_Ad
             }
 
             // Update button colors based on new state
-            updateButtonColors(holder.button, newState);
+            updateButtonColors(holder.button.getContext() ,holder.button, newState);
 
             // Collect all selected categories
             List<String> selectedCategories = new ArrayList<>();
@@ -125,13 +126,13 @@ public class Filter_Button_Adapter extends RecyclerView.Adapter<Filter_Button_Ad
     }
 
     // Helper method to update button colors based on state
-    private void updateButtonColors(Button button, boolean isToggled) {
+    private void updateButtonColors(Context context, Button button, boolean isToggled) {
         if (isToggled) {
-            button.setBackgroundColor(Color.WHITE);
-            button.setTextColor(Color.BLACK);
+            button.setBackgroundColor(ContextCompat.getColor(context, R.color.darkgray));
+            button.setTextColor(ContextCompat.getColor(context, R.color.white));
         } else {
-            button.setBackgroundColor(Color.BLACK);
-            button.setTextColor(Color.WHITE);
+            button.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            button.setTextColor(ContextCompat.getColor(context, R.color.darkgray));
         }
     }
 
