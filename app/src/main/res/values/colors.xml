@@ -8,4 +8,5 @@
     <color name="primary">#FF000000</color>
     <color name="gray">#FFBDBDBD</color>
     <color name="lightgray">#BBBCBE</color>
+    <color name="darkgray">#5F6368</color>
 </resources>

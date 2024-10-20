@@ -141,7 +141,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+           <Button
             android:id="@+id/requestmerchant_submit"
             style="@style/SignInButtonStyle"
             android:layout_width="match_parent"
