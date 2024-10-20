@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginRight="8dp"
-    android:backgroundTint="@android:color/transparent"
+    android:backgroundTint="@android:color/white"
     android:gravity="center"
     android:minWidth="0dp"
     android:minHeight="0dp"
