@@ -1,6 +1,7 @@
 // HomeFragment.java
 package com.example.clarivate_employee_privilege.navbar_menu.home;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -122,6 +123,7 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
 
     private void observeMerchants() {
         Event_Bus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), new Observer<JsonArray>() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onChanged(JsonArray merchants) {
                 if (merchants != null && merchants.size() > 0) {
@@ -211,7 +213,7 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
                 else{
                     noMerchantsImage.setVisibility(View.VISIBLE);
                     homemerchantsRecycler.setVisibility(View.GONE);
-                    homeNewMerchantImageView.setImageDrawable(getResources().getDrawable(R.drawable.spongebob_rainbow));
+                    homeNewMerchantImageView.setImageDrawable(getResources().getDrawable(R.drawable.no_merchant_found));
                 }
             }
         });
