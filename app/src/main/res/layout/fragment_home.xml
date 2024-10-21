@@ -89,17 +89,18 @@
             <!-- ImageView for "No merchant is found" message -->
             <ImageView
                 android:id="@+id/home_no_merchants_image"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="36dp"
+                android:layout_marginBottom="24dp"
                 android:src="@drawable/no_merchant_found"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.489"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_category" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
