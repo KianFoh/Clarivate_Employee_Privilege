@@ -146,7 +146,7 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
                     if (imageUrl != null && !imageUrl.isEmpty()) {
                         Picasso.get()
                                 .load(imageUrl)
-                                .placeholder(R.drawable.merchant_image_placeholder) // Placeholder image
+                                .placeholder(R.drawable.clarivate_logo_black) // Placeholder image
                                 .fit()
                                 .centerCrop()
                                 .into(homeNewMerchantImageView, new com.squareup.picasso.Callback() {
@@ -159,13 +159,13 @@ public class Home_Fragment extends Fragment implements Category_Adapter.OnCatego
                                     @Override
                                     public void onError(Exception e) {
                                         // Error loading image, set placeholder directly
-                                        homeNewMerchantImageView.setImageResource(R.drawable.merchant_image_placeholder);
+                                        homeNewMerchantImageView.setImageResource(R.drawable.clarivate_logo_black);
                                         Log.d("HomeFragment", "Error loading image: " + e.getMessage());
                                     }
                                 });
                     } else {
                         Log.d("HomeFragment", "Image URL is null or empty");
-                        homeNewMerchantImageView.setImageResource(R.drawable.merchant_image_placeholder);
+                        homeNewMerchantImageView.setImageResource(R.drawable.clarivate_logo_black);
                     }
 
                     homeNewMerchantImageView.setOnClickListener(new View.OnClickListener() {
