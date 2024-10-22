@@ -1,6 +1,7 @@
 package com.example.clarivate_employee_privilege.authentication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -14,7 +15,6 @@ public class Auth_Utils {
 
     public interface TokenRefreshCallback {
         void onTokenRefreshed(String newToken);
-        void onTokenRefreshFailed();
     }
 
     // Overloaded method without callback
@@ -49,9 +49,10 @@ public class Auth_Utils {
                 }
             } else {
                 Log.e("TOKEN_STATUS", "Silent sign-in failed");
-                if (callback != null) {
-                    callback.onTokenRefreshFailed();
-                }
+                Context appContext = context.getApplicationContext();
+                Intent signInIntent = new Intent(appContext, Sign_In_Activity.class);
+                signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                appContext.startActivity(signInIntent);
             }
         });
     }
