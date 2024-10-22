@@ -4,7 +4,6 @@ package com.example.clarivate_employee_privilege.navbar_menu.profile;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -83,12 +82,7 @@ public class Profile_Fragment extends Fragment {
         ImageView card_pic = view.findViewById(R.id.scan_card);
         Profile_Utils.loadCardImage(cardId, card_pic, requestPermissionLauncher, requireActivity());
 
-        TextView profileName = view.findViewById(R.id.profile_name);
-        profileName.setText(username);
-        profileName.setEllipsize(TextUtils.TruncateAt.END);
-        profileName.setMaxLines(1);
-
-//        ((TextView) view.findViewById(R.id.profile_name)).setText(username);
+        ((TextView) view.findViewById(R.id.profile_name)).setText(App_Utils.truncateText(username, 18));
         ((TextView) view.findViewById(R.id.profile_email)).setText(email);
 
         // Listeners

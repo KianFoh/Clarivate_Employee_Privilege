@@ -16,7 +16,19 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class App_Utils {
-
+    /**
+     * Truncates the text to a specified maximum length.
+     * @param text The text to truncate.
+     * @param maxLength The maximum length of the text.
+     * @return The truncated text.
+     */
+    public static String truncateText(String text, int maxLength) {
+        if (text.length() > maxLength) {
+            return text.substring(0, maxLength - 3) + "...";
+        } else {
+            return text;
+        }
+    }
     /**
      * Checks if the app is currently running in the foreground.
      *

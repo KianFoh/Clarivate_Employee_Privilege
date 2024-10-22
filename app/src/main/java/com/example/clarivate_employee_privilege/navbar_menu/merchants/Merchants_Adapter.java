@@ -1,5 +1,7 @@
 package com.example.clarivate_employee_privilege.navbar_menu.merchants;
 
+import static com.example.clarivate_employee_privilege.utils.App_Utils.truncateText;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -181,20 +183,6 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
                         .into(merchantImage);
             }
             merchantImage.setOnClickListener(v -> startMerchantFragment(merchantId));
-        }
-    }
-
-    /**
-     * Truncates the text to a specified maximum length.
-     * @param text The text to truncate.
-     * @param maxLength The maximum length of the text.
-     * @return The truncated text.
-     */
-    private static String truncateText(String text, int maxLength) {
-        if (text.length() > maxLength) {
-            return text.substring(0, maxLength - 3) + "...";
-        } else {
-            return text;
         }
     }
 
