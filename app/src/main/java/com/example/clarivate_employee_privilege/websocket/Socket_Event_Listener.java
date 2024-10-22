@@ -68,10 +68,6 @@ public class Socket_Event_Listener {
                     public void onTokenRefreshed(String newToken) {
                         socketService.reconnectSocket(newToken);
                     }
-                    @Override
-                    public void onTokenRefreshFailed() {
-                        Log.d("SocketEventListener", "Failed to refresh token");
-                    }
                 });
             }
         } catch (Exception e) {

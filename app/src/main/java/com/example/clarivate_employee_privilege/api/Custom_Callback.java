@@ -61,14 +61,6 @@ public abstract class Custom_Callback implements Callback {
                         public void onTokenRefreshed(String newToken) {
                             retryApiCall(newToken);
                         }
-
-                        @Override
-                        public void onTokenRefreshFailed() {
-                            Log.e("API_CALL", "Token refresh failed");
-                            if (enableButtonRunnable != null) {
-                                ((Activity) context).runOnUiThread(enableButtonRunnable);
-                            }
-                        }
                     });
                 } else {
                     if ("Invalid token".equals(error)) {
