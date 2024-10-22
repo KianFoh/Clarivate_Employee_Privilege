@@ -1,10 +1,12 @@
 package com.example.clarivate_employee_privilege.websocket;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.clarivate_employee_privilege.Main_Activity;
 import com.example.clarivate_employee_privilege.authentication.Auth_Utils;
+import com.example.clarivate_employee_privilege.authentication.Sign_In_Activity;
 import com.example.clarivate_employee_privilege.utils.API_Utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -71,6 +73,12 @@ public class Socket_Event_Listener {
                     @Override
                     public void onTokenRefreshFailed() {
                         Log.d("SocketEventListener", "Failed to refresh token");
+
+                        // Redirect the user to the sign-in page
+                        Context context = Main_Activity.getContext();
+                        Intent signInIntent = new Intent(context, Sign_In_Activity.class);
+                        signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(signInIntent);
                     }
                 });
             }
