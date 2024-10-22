@@ -116,7 +116,7 @@ public class App_Utils {
         userLabel.setText(isAdmin ? "Admin" : "Employee");
 
         TextView profileName = activity.findViewById(R.id.toolbar_profile_name);
-        profileName.setText(username);
+        profileName.setText(truncateText(username, 20));
 
         ImageView profilePic = activity.findViewById(R.id.toolbar_profile_pic);
         if ("Not found".equals(image)) {

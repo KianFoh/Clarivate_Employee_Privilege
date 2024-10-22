@@ -147,8 +147,8 @@ public class Merchants_Adapter extends RecyclerView.Adapter<Merchants_Adapter.Me
             String category = merchant.has("Category") && !merchant.get("Category").isJsonNull() ? merchant.get("Category").getAsString() : "Unknown";
             String merchantId = merchant.has("ID") && !merchant.get("ID").isJsonNull() ? merchant.get("ID").getAsString() : "";
 
-            merchantName.setText(truncateText(name, 20)); // Adjust the maxLength as needed
-            merchantCategory.setText(truncateText(category, 20)); // Adjust the maxLength as needed
+            merchantName.setText(truncateText(name, 17)); // Adjust the maxLength as needed
+            merchantCategory.setText(truncateText(category, 17)); // Adjust the maxLength as needed
 
             String imageUrl = merchant.has("Image") && !merchant.get("Image").isJsonNull() ? merchant.get("Image").getAsString() : null;
             if (imageUrl != null && !imageUrl.isEmpty()) {
