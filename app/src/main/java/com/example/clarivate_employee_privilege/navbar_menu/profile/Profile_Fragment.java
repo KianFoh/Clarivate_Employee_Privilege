@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 
 import com.example.clarivate_employee_privilege.Main_Activity;
 import com.example.clarivate_employee_privilege.R;
@@ -82,7 +81,7 @@ public class Profile_Fragment extends Fragment {
         ImageView card_pic = view.findViewById(R.id.scan_card);
         Profile_Utils.loadCardImage(cardId, card_pic, requestPermissionLauncher, requireActivity());
 
-        ((TextView) view.findViewById(R.id.profile_name)).setText(App_Utils.truncateText(username, 18));
+        ((TextView) view.findViewById(R.id.profile_name)).setText(App_Utils.truncateText(username, 15));
         ((TextView) view.findViewById(R.id.profile_email)).setText(email);
 
         // Listeners
@@ -147,24 +146,21 @@ public class Profile_Fragment extends Fragment {
 
     public void observeEventBus() {
         // Observe the admin status updates
-        Event_Bus.getInstance().getIsadminLiveData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            // Check if the isAdmin status has changed
-            @Override
-            public void onChanged(Boolean isAdmin){
-                if (previousIsAdmin == null || !previousIsAdmin.equals(isAdmin)) {
-                    previousIsAdmin = isAdmin; // Update the previous isAdmin status
-                    getActivity().runOnUiThread(() -> {
-                        View view = getView();
-                        if (isAdmin) {
-                            getActivity().findViewById(R.id.toolbar_more).setVisibility(View.VISIBLE);
-                            ((TextView) view.findViewById(R.id.user_label)).setText("Admin");
-                            Log.d("ProfileFragment", "Admin Status Update");
-                        } else {
-                            ((TextView) view.findViewById(R.id.user_label)).setText("Employee");
-                            Log.d("ProfileFragment", "Employee Status UI updated");
-                        }
-                    });
-                }
+        // Check if the isAdmin status has changed
+        Event_Bus.getInstance().getIsadminLiveData().observe(getViewLifecycleOwner(), isAdmin -> {
+            if (previousIsAdmin == null || !previousIsAdmin.equals(isAdmin)) {
+                previousIsAdmin = isAdmin; // Update the previous isAdmin status
+                getActivity().runOnUiThread(() -> {
+                    View view = getView();
+                    if (isAdmin) {
+                        getActivity().findViewById(R.id.toolbar_more).setVisibility(View.VISIBLE);
+                        ((TextView) view.findViewById(R.id.user_label)).setText("Admin");
+                        Log.d("ProfileFragment", "Admin Status Update");
+                    } else {
+                        ((TextView) view.findViewById(R.id.user_label)).setText("Employee");
+                        Log.d("ProfileFragment", "Employee Status UI updated");
+                    }
+                });
             }
         });
     }

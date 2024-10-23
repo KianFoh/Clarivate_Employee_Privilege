@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 
 import com.example.clarivate_employee_privilege.R;
 import com.example.clarivate_employee_privilege.utils.App_Utils;
@@ -40,8 +39,8 @@ public class Merchant_Edit_Fragment extends Fragment {
     private ImageView addImageUrlButton, addAddressButton;
     private Button saveButton;
     private AutoCompleteTextView typeAutoComplete;
-    private ArrayAdapter<String> adapter;
-    private JsonArray categories_json;
+    private ArrayAdapter<String> categories_adapter;
+    private JsonObject currentMerchantData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,11 +85,9 @@ public class Merchant_Edit_Fragment extends Fragment {
 
             // Update fields with merchant data
             updateMerchantFields(merchantData);
+            observeCategories();
+            observeMerchant();
         }
-
-        observeCategories();
-        observeMerchant();
-
         return view;
     }
 
@@ -159,32 +156,29 @@ public class Merchant_Edit_Fragment extends Fragment {
     }
 
     private void observeMerchant() {
-        Event_Bus.getInstance().getMerchantByIdLiveData().observe(getViewLifecycleOwner(), new Observer<JsonObject>() {
-            @Override
-            public void onChanged(JsonObject merchant) {
-                if (merchant != null && merchantData.get("ID").getAsString().equals(merchant.get("Merchant").getAsJsonObject().get("ID").getAsString())) {
-                    merchantData = merchant.get("Merchant").getAsJsonObject();
-                    updateMerchantFields(merchantData);
+        Event_Bus.getInstance().getMerchantByIdLiveData().observe(getViewLifecycleOwner(), merchant -> {
+            if (merchant != null && merchantData.get("ID").getAsString().equals(merchant.get("Merchant").getAsJsonObject().get("ID").getAsString())) {
+                JsonObject newMerchantData = merchant.get("Merchant").getAsJsonObject();
+                if (!newMerchantData.equals(currentMerchantData)) {
+                    currentMerchantData = newMerchantData;
+                    updateMerchantFields(newMerchantData);
                 }
             }
         });
 
-        Event_Bus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), new Observer<JsonArray>() {
-            @Override
-            public void onChanged(JsonArray merchants) {
-                boolean merchantIdFound = false;
-                for (int i = 0; i < merchants.size(); i++) {
-                    JsonObject merchant = merchants.get(i).getAsJsonObject();
-                    String id = merchant.get("ID").getAsString();
-                    if (merchantData.get("ID").getAsString().equals(id)) {
-                        merchantIdFound = true;
-                        loadMerchantById(requireContext(), id);
-                        break;
-                    }
+        Event_Bus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), merchants -> {
+            boolean merchantIdFound = false;
+            for (int i = 0; i < merchants.size(); i++) {
+                JsonObject merchant = merchants.get(i).getAsJsonObject();
+                String id = merchant.get("ID").getAsString();
+                if (merchantData.get("ID").getAsString().equals(id)) {
+                    merchantIdFound = true;
+                    loadMerchantById(requireContext(), id);
+                    break;
                 }
-                if (!merchantIdFound) {
-                    requireActivity().getSupportFragmentManager().popBackStack();
-                }
+            }
+            if (!merchantIdFound) {
+                requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
     }
@@ -219,23 +213,23 @@ public class Merchant_Edit_Fragment extends Fragment {
     }
 
     public void updateAdapter(List<String> newCategoryNames) {
-        if (adapter != null) {
-            adapter.clear();
-            adapter.addAll(newCategoryNames);
-            adapter.notifyDataSetChanged();
+        if (categories_adapter != null) {
+            categories_adapter.clear();
+            categories_adapter.addAll(newCategoryNames);
+            categories_adapter.notifyDataSetChanged();
         } else {
-            adapter = new ArrayAdapter<>(
+            categories_adapter = new ArrayAdapter<>(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
                     newCategoryNames
             );
-            typeAutoComplete.setAdapter(adapter);
+            typeAutoComplete.setAdapter(categories_adapter);
             typeAutoComplete.setThreshold(1);
         }
     }
 
     public void handleError(String inputfield, String error) {
-        Merchant_Utils.handleError(inputfield, error, name, type, addressLayout, discount, terms, getContext());
+        Merchant_Utils.handleError(inputfield, error, name, type, addressLayout, imageUrlLayout, discount, terms, getContext());
     }
     private void clearErrors() {
         Merchant_Utils.clearErrors(

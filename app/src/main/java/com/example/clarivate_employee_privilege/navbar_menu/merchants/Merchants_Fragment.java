@@ -11,8 +11,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +31,6 @@ public class Merchants_Fragment extends Fragment {
     private Merchants_Adapter merchantsAdapter;
     private Merchants_Search_Adapter searchAdapter;
     private AutoCompleteTextView searchAutocomplete;
-    private boolean isFragmentVisible = false;
     private RecyclerView merchantsRecyclerView;
     private ImageView noMerchantsImage;
 
@@ -62,7 +59,6 @@ public class Merchants_Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLifecycle().addObserver(new MerchantsFragmentLifecycleObserver());
     }
 
     @Override
@@ -232,31 +228,27 @@ public class Merchants_Fragment extends Fragment {
      */
     private void observeMerchants() {
         Event_Bus.getInstance().getMerchantsLiveData().observe(getViewLifecycleOwner(), merchants -> {
-            if (isFragmentVisible) {
-                List<JsonObject> merchantList = Merchants_Utils.convertJsonArrayToList(merchants);
-                Log.d("MerchantsFragment", "Merchants updated: " + merchantList);
-                merchantsAdapter.updateData(merchants);
+            List<JsonObject> merchantList = Merchants_Utils.convertJsonArrayToList(merchants);
+            Log.d("MerchantsFragment", "Merchants updated: " + merchantList);
+            merchantsAdapter.updateData(merchants);
 
-                if (merchants.size() == 0) {
-                    noMerchantsImage.setVisibility(View.VISIBLE);
-                    merchantsRecyclerView.setVisibility(View.GONE);
-                } else {
-                    noMerchantsImage.setVisibility(View.GONE);
-                    merchantsRecyclerView.setVisibility(View.VISIBLE);
-                }
-
-                // Reapply the current filters
-                filterMerchants(buttonAdapter.getSelectedCategories());
-
-                // Reapply the search filter
-                String currentSearchText = searchAutocomplete.getText().toString();
-                filterMerchantsByName(currentSearchText);
-
-                // Update the search adapter with the filtered merchant names
-                updateSearchAdapter();
+            if (merchants.size() == 0) {
+                noMerchantsImage.setVisibility(View.VISIBLE);
+                merchantsRecyclerView.setVisibility(View.GONE);
             } else {
-                Log.d("MerchantsFragment", "Fragment not visible, skipping UI update.");
+                noMerchantsImage.setVisibility(View.GONE);
+                merchantsRecyclerView.setVisibility(View.VISIBLE);
             }
+
+            // Reapply the current filters
+            filterMerchants(buttonAdapter.getSelectedCategories());
+
+            // Reapply the search filter
+            String currentSearchText = searchAutocomplete.getText().toString();
+            filterMerchantsByName(currentSearchText);
+
+            // Update the search adapter with the filtered merchant names
+            updateSearchAdapter();
         });
     }
 
@@ -264,30 +256,10 @@ public class Merchants_Fragment extends Fragment {
      * Observes changes in the categories data and updates the UI accordingly.
      */
     private void observeCategories() {
-        Event_Bus.getInstance().getCategoriesLiveData().observe(requireActivity(), categories -> {
-            if (isFragmentVisible) {
-                List<String> categoryNames = Merchants_Utils.initializeCategoryNames(categories);
-                buttonAdapter.updateCategories(categoryNames);
-                updateSearchAdapter(); // Update the search adapter when categories change
-            } else {
-                Log.d("MerchantsFragment", "Fragment not visible, skipping UI update.");
-            }
+        Event_Bus.getInstance().getCategoriesLiveData().observe(getViewLifecycleOwner(), categories -> {
+            List<String> categoryNames = Merchants_Utils.initializeCategoryNames(categories);
+            buttonAdapter.updateCategories(categoryNames);
+            updateSearchAdapter(); // Update the search adapter when categories change
         });
-    }
-
-    /**
-     * Lifecycle observer to track the fragment's visibility state.
-     */
-    class MerchantsFragmentLifecycleObserver implements DefaultLifecycleObserver {
-
-        @Override
-        public void onStart(LifecycleOwner owner) {
-            isFragmentVisible = true;
-        }
-
-        @Override
-        public void onStop(LifecycleOwner owner) {
-            isFragmentVisible = false;
-        }
     }
 }

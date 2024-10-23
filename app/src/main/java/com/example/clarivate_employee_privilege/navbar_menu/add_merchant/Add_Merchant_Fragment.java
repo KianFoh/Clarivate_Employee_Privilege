@@ -37,7 +37,7 @@ public class Add_Merchant_Fragment extends Fragment {
     private TextInputLayout imageurl, name, type, address, discount, info, terms;
     private JsonArray categories_json;
     private AutoCompleteTextView typeAutoComplete;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> categories_adapter;
 
     public Add_Merchant_Fragment() {
         // Required empty public constructor
@@ -57,12 +57,12 @@ public class Add_Merchant_Fragment extends Fragment {
                 categoryNames.add(categoryName);
             }
 
-            adapter = new ArrayAdapter<>(
+            categories_adapter = new ArrayAdapter<>(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
                     categoryNames
             );
-            typeAutoComplete.setAdapter(adapter);
+            typeAutoComplete.setAdapter(categories_adapter);
             typeAutoComplete.setThreshold(1);
 
             ScrollView scroll = view.findViewById(R.id.addmerchant_scroll);
@@ -124,10 +124,10 @@ public class Add_Merchant_Fragment extends Fragment {
     }
 
     public void updateAdapter(List<String> newCategoryNames) {
-        if (adapter != null) {
-            adapter.clear();
-            adapter.addAll(newCategoryNames);
-            adapter.notifyDataSetChanged();
+        if (categories_adapter != null) {
+            categories_adapter.clear();
+            categories_adapter.addAll(newCategoryNames);
+            categories_adapter.notifyDataSetChanged();
         }
     }
 
@@ -196,7 +196,7 @@ public class Add_Merchant_Fragment extends Fragment {
         Merchant_Utils.removeAllViewsExceptFirst(addressLayout);
     }
     public void handleError(String inputfield, String error) {
-        Merchant_Utils.handleError(inputfield, error, name, type, addressLayout, discount, terms, getContext());
+        Merchant_Utils.handleError(inputfield, error, name, type, addressLayout, imageUrlLayout, discount, terms, getContext());
     }
     private void clearErrors() {
             Merchant_Utils.clearErrors(

@@ -125,7 +125,7 @@ public class Merchant_Utils {
     }
 
 
-    public static void handleError(String inputfield, String error, TextInputLayout name, TextInputLayout type, LinearLayout addressLayout, TextInputLayout discount, TextInputLayout terms, Context context) {
+    public static void handleError(String inputfield, String error, TextInputLayout name, TextInputLayout type, LinearLayout addressLayout, LinearLayout imageLayout, TextInputLayout discount, TextInputLayout terms, Context context) {
         switch (inputfield) {
             case "Name":
                 name.setError(("** " + error));
@@ -135,6 +135,9 @@ public class Merchant_Utils {
                 break;
             case "Address":
                 ((TextInputLayout) addressLayout.getChildAt(0)).setError(("** " + error));
+                break;
+            case "Images":
+                ((TextInputLayout) imageLayout.getChildAt(0)).setError(("** " + error));
                 break;
             case "Discount":
                 discount.setError(("** " + error));
