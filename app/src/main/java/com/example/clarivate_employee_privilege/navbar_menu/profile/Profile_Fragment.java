@@ -98,6 +98,10 @@ public class Profile_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (previousIsAdmin) {
+            requireActivity().findViewById(R.id.toolbar_more).setVisibility(View.VISIBLE);
+        }
+
         Log.d("ProfileFragment", "Reloading image from URL: " + cardId);
 
         sharedpreferences = requireActivity().getSharedPreferences("name_card " + username, Context.MODE_PRIVATE);
