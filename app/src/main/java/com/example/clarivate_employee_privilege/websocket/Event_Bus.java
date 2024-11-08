@@ -23,7 +23,7 @@ public class Event_Bus {
             instance = new Event_Bus();
         }
         return instance;
-    }
+    }   
 
     public LiveData<Boolean> getIsadminLiveData() {
         return isadminLiveData;

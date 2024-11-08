@@ -119,7 +119,7 @@ public class Request_Merchant_Fragment extends Fragment {
                     Toast_Utils.showToast(context, message, true);
                     name_field.getEditText().setText("");
                     type_field.getEditText().setText("");
-                    contact_field.getEditText().setText("");
+                    contact_field.getEditText().setText("+60 ");
                 });
             }
 
