@@ -94,13 +94,15 @@
 
             <ImageView
                 android:id="@+id/scan_card"
-                android:layout_width="221dp"
-                android:layout_height="251dp"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="30dp"
+                android:layout_marginBottom="41dp"
                 android:clickable="true"
                 android:src="@drawable/card_name"
+                app:layout_constraintBottom_toTopOf="@+id/profile_signout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.43"
                 app:layout_constraintStart_toStartOf="parent"
