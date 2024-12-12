@@ -111,7 +111,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="15dp"
                 android:drawableStart="@drawable/baseline_copyright_24"
                 android:drawablePadding="4dp"
                 android:gravity="center"
@@ -120,7 +120,8 @@
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_signout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
