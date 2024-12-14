@@ -40,6 +40,7 @@ public class Socket_Service extends Service {
         try {
             IO.Options options = new IO.Options();
             options.query = "email=" + email + "&token=" + token;
+            options.transports = new String[] {"websocket", "polling"};
 
             socket = IO.socket(getString(R.string.api_url), options);
 
