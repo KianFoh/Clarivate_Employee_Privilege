@@ -85,6 +85,7 @@ public class Merchant_Detail_Fragment extends Fragment {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+        App_Utils.showLoading(false, requireActivity().findViewById(R.id.main_progressbar));
     }
 
     private void merchantDetail_Popup(View view) {
