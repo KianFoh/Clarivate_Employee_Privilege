@@ -31,7 +31,7 @@ public class Socket_Service_Manager {
                 isBound = true;
 
                 // Initialize the socket connection
-                socketService.initializeSocket(email, token);
+                socketService.startSocketConnection(email);
                 Log.d("SocketServiceManager", "SocketService connected and socket initialized");
             }
 

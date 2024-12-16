@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.example.clarivate_employee_privilege.R;
+import com.example.clarivate_employee_privilege.authentication.Auth_Utils;
 
 import java.net.URISyntaxException;
 
@@ -104,5 +105,9 @@ public class Socket_Service extends Service {
         super.onDestroy();
         disconnectSocket();
         Log.d("SocketService", "Service destroyed");
+    }
+
+    public void startSocketConnection(String email) {
+        Auth_Utils.refreshToken(getApplicationContext(), newToken -> initializeSocket(email, newToken));
     }
 }
