@@ -45,9 +45,10 @@ public class Merchant_Detail_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        App_Utils.showLoading(true, requireActivity().findViewById(R.id.main_progressbar));
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_merchantdetail, container, false);
-
         merchantId = getArguments().getString("merchantId");
         observeMerchant(merchantId, view);
 
@@ -71,15 +72,6 @@ public class Merchant_Detail_Fragment extends Fragment {
         }).attach();
 
         App_Utils.setToolbarTitle(requireActivity(), "Merchant Details");
-
-        boolean isAdmin = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
-                .getBoolean("isAdmin", false);
-        int visibility = isAdmin ? View.VISIBLE : View.GONE;
-
-        toolbar_more = requireActivity().findViewById(R.id.toolbar_more);
-        toolbar_more.setVisibility(visibility);
-        toolbar_more.setOnClickListener(v -> merchantDetail_Popup(v));
-
 
         return view;
     }
@@ -125,6 +117,8 @@ public class Merchant_Detail_Fragment extends Fragment {
     }
 
     private void observeMerchant(String merchantId, View view) {
+        // Observe admin status
+        Event_Bus.getInstance().getIsadminLiveData().observe(getViewLifecycleOwner(), this::updateToolbarVisibility);
 
         // load merchant by ID
         Event_Bus.getInstance().getMerchantByIdLiveData().observe(getViewLifecycleOwner(), new Observer<JsonObject>() {
@@ -188,6 +182,16 @@ public class Merchant_Detail_Fragment extends Fragment {
 
                     String terms = merchantData.get("Terms").getAsString();
                     ((TextView)view.findViewById(R.id.merchantdetail_terms)).setText(terms);
+
+                    boolean isAdmin = requireActivity().getSharedPreferences(   "user_info", Context.MODE_PRIVATE)
+                            .getBoolean("isAdmin", false);
+                    int visibility = isAdmin ? View.VISIBLE : View.GONE;
+
+                    toolbar_more = requireActivity().findViewById(R.id.toolbar_more);
+                    toolbar_more.setVisibility(visibility);
+                    toolbar_more.setOnClickListener(v -> merchantDetail_Popup(v));
+                    App_Utils.showLoading(false, requireActivity().findViewById(R.id.main_progressbar));
+                    updateToolbarVisibility(Event_Bus.getInstance().getIsadminLiveData().getValue());
                 }
             }
         });
@@ -212,8 +216,14 @@ public class Merchant_Detail_Fragment extends Fragment {
             }
         });
     }
-
-
+    private void updateToolbarVisibility(Boolean isAdmin) {
+        if (isAdmin != null && merchantData != null) {
+            int visibility = isAdmin ? View.VISIBLE : View.GONE;
+            toolbar_more = requireActivity().findViewById(R.id.toolbar_more);
+            toolbar_more.setVisibility(visibility);
+            toolbar_more.setOnClickListener(v -> merchantDetail_Popup(v));
+        }
+    }
     private void refreshMerchantDetails(String merchantId) {
         loadMerchantById(requireContext(), merchantId);
     }

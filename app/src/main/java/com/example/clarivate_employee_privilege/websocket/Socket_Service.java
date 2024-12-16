@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 
 import com.example.clarivate_employee_privilege.R;
@@ -20,6 +22,8 @@ public class Socket_Service extends Service {
     private final IBinder binder = new LocalBinder();
     private Socket socket;
     private Socket_Event_Listener socketEventListener;
+    private Handler connectionTimeoutHandler;
+    private Runnable connectionTimeoutRunnable;
 
     public class LocalBinder extends Binder {
         public Socket_Service getService() {
@@ -46,7 +50,13 @@ public class Socket_Service extends Service {
 
             socketEventListener = new Socket_Event_Listener(this, getApplicationContext());
 
-            socket.on(Socket.EVENT_CONNECT, socketEventListener.onConnect);
+            socket.on(Socket.EVENT_CONNECT, args -> {
+                // Socket connected successfully, clear the timer
+                if (connectionTimeoutHandler != null && connectionTimeoutRunnable != null) {
+                    connectionTimeoutHandler.removeCallbacks(connectionTimeoutRunnable);
+                }
+                socketEventListener.onConnect.call(args);
+            });
             socket.on(Socket.EVENT_DISCONNECT, socketEventListener.onDisconnect);
             socket.on(Socket.EVENT_CONNECT_ERROR, socketEventListener.onConnectError);
             socket.on("admin_status_update", socketEventListener.onAdminStatusUpdate);
@@ -55,6 +65,17 @@ public class Socket_Service extends Service {
             socket.on("merchant_added", socketEventListener.onMerchantAddedUpdate);
             socket.on("merchant_deleted", socketEventListener.onMerchantDeletedUpdate);
             socket.on("merchant_edited", socketEventListener.OnMerchantEditUpdate);
+
+            // Set connect timer to 20 seconds
+            connectionTimeoutHandler = new Handler(Looper.getMainLooper());
+            connectionTimeoutRunnable = () -> {
+                if (socket != null && !socket.connected()) {
+                    socket.disconnect();
+                    Log.d("SocketService", "Connection timed out");
+                }
+            };
+            connectionTimeoutHandler.postDelayed(connectionTimeoutRunnable, 10000);
+
             socket.connect();
         }
         catch (URISyntaxException e) {

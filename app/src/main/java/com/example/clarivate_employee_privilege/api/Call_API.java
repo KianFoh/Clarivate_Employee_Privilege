@@ -1,5 +1,7 @@
 package com.example.clarivate_employee_privilege.api;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -8,7 +10,10 @@ import okhttp3.RequestBody;
 
 public class Call_API {
 
-    private static final OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS) // connect timeout
+            .readTimeout(30, TimeUnit.SECONDS)    // socket timeout
+            .build();
 
     public static OkHttpClient getClient() {
         return client;
