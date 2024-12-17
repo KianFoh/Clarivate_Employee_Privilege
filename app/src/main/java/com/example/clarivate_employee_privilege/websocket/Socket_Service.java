@@ -75,7 +75,7 @@ public class Socket_Service extends Service {
                     Log.d("SocketService", "Connection timed out");
                 }
             };
-            connectionTimeoutHandler.postDelayed(connectionTimeoutRunnable, 10000);
+            connectionTimeoutHandler.postDelayed(connectionTimeoutRunnable, 100000);
 
             socket.connect();
         }
