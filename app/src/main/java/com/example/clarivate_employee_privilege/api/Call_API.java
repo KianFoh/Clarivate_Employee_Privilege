@@ -11,8 +11,9 @@ import okhttp3.RequestBody;
 public class Call_API {
 
     private static final OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS) // connect timeout
-            .readTimeout(30, TimeUnit.SECONDS)    // socket timeout
+            .connectTimeout(100, TimeUnit.SECONDS) // connect timeout
+            .readTimeout(100, TimeUnit.SECONDS)    // socket timeout
+            .writeTimeout(100, TimeUnit.SECONDS)   // write timeout
             .build();
 
     public static OkHttpClient getClient() {

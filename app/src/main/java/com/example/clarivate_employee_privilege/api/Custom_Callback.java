@@ -9,6 +9,7 @@ import com.example.clarivate_employee_privilege.authentication.Auth_Utils;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,6 +22,8 @@ public abstract class Custom_Callback implements Callback {
     private final Context context;
     private final Request originalRequest;
     private final Runnable enableButtonRunnable;
+    private static final int MAX_RETRIES = 3;
+    private int retryCount = 0;
 
     public Custom_Callback(Context context, Request originalRequest) {
         this(context, originalRequest, null);
@@ -35,9 +38,15 @@ public abstract class Custom_Callback implements Callback {
     // API call failed
     @Override
     public void onFailure(Call call, IOException e) {
-        Log.e("API_CALL", "API call failed: " + e.getMessage());
-        if (enableButtonRunnable != null) {
-            ((Activity) context).runOnUiThread(enableButtonRunnable);
+        if (e instanceof SocketTimeoutException && retryCount < MAX_RETRIES) {
+            retryCount++;
+            Log.d("API_CALL", "Timeout occurred, retrying... (" + retryCount + "/" + MAX_RETRIES + ")");
+            retryApiCall(null);
+        } else {
+            Log.e("API_CALL", "API call failed: " + e.getMessage());
+            if (enableButtonRunnable != null) {
+                ((Activity) context).runOnUiThread(enableButtonRunnable);
+            }
         }
     }
 
@@ -91,10 +100,11 @@ public abstract class Custom_Callback implements Callback {
 
     // Retry the API call with the new token
     private void retryApiCall(String newToken) {
-        Request newRequest = originalRequest.newBuilder()
-                .header("Authorization", "Bearer " + newToken)
-                .build();
-
+        Request.Builder requestBuilder = originalRequest.newBuilder();
+        if (newToken != null) {
+            requestBuilder.header("Authorization", "Bearer " + newToken);
+        }
+        Request newRequest = requestBuilder.build();
         Call_API.getClient().newCall(newRequest).enqueue(this);
     }
 
