@@ -104,7 +104,8 @@ public class Sign_In_Activity extends AppCompatActivity {
 
             // Invalid email domain
             else {
-                Toast_Utils.showToast(this,"Sign-in is restricted to Clarivate Employee email only.", false);
+                String domainEmail = getString(R.string.email_domain);
+                Toast_Utils.showToast(this, "Sign-in is restricted to " + domainEmail + " domain only.", false);
                 googleSignInClient.signOut();
             }
         }
