@@ -10,14 +10,16 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/scan_camera_camerapreview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-    </androidx.camera.view.PreviewView>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:4"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.clarivate_employee_privilege.navbar_menu.profile.Camera_Overlay_View_Portrait
         android:id="@+id/scancard_filter_portrait"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/scancard_capturedimg"
@@ -36,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/takephoto_button" />
+        app:srcCompat="@drawable/takephoto_button"/>
 
     <ImageView
         android:id="@+id/scancard_back"

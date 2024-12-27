@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.AspectRatio;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
@@ -129,13 +130,17 @@ public class Scan_Card_Activity extends AppCompatActivity {
 
     private void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
         // Set up the preview use case
-        Preview preview = new Preview.Builder().build();
+        Preview preview = new Preview.Builder()
+                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .build();
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
 
-        // Set up the image capture use case
-        imageCapture = new ImageCapture.Builder().build();
+        // Set up the image capture use case and assign it to the instance variable
+        imageCapture = new ImageCapture.Builder()
+                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .build();
 
         // Bind the preview to the PreviewView
         PreviewView previewView = findViewById(R.id.scan_camera_camerapreview);
