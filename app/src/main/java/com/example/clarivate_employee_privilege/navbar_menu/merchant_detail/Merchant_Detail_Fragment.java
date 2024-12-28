@@ -71,6 +71,16 @@ public class Merchant_Detail_Fragment extends Fragment {
             // This can be left empty
         }).attach();
 
+        // Set item click listener
+        imageAdapter.setOnItemClickListener(imageUrl -> {
+            int position = imgList.indexOf(imageUrl);
+            FullscreenImageFragment fullscreenImageFragment = FullscreenImageFragment.newInstance(imgList, position);
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, fullscreenImageFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         App_Utils.setToolbarTitle(requireActivity(), "Merchant Details");
 
         return view;
