@@ -1,6 +1,5 @@
 package com.example.clarivate_employee_privilege.navbar_menu.merchant_detail;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,15 @@ import java.util.List;
 
 public class Merchant_Detail_Image_Adapter extends RecyclerView.Adapter<Merchant_Detail_Image_Adapter.ImageViewHolder> {
     private List<String> imgList;
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(String imageUrl);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
 
     public Merchant_Detail_Image_Adapter(List<String> imgList) {
         this.imgList = imgList;
@@ -35,26 +43,19 @@ public class Merchant_Detail_Image_Adapter extends RecyclerView.Adapter<Merchant
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Picasso.get()
                     .load(imageUrl)
-                    .placeholder(R.drawable.clarivate_logo_black) // Placeholder image
+                    .placeholder(R.drawable.clarivate_logo_black)
                     .fit()
                     .centerCrop()
-                    .into(holder.imageView, new com.squareup.picasso.Callback() {
-                        @Override
-                        public void onSuccess() {
-                            // Image loaded successfully
-                            Log.d("Image_Adapter", "Image loaded successfully");
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            // Error loading image, set placeholder directly
-                            holder.imageView.setImageResource(R.drawable.clarivate_logo_black);
-                            Log.d("Image_Adapter", "Error loading image: " + e.getMessage());
-                        }
-                    });
+                    .into(holder.imageView);
         } else {
             holder.imageView.setImageResource(R.drawable.clarivate_logo_black);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(imageUrl);
+            }
+        });
     }
 
     @Override
